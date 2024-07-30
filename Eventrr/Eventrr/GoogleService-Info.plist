@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBHvW9uFC5e2XyZwfZLfpd9VWU_NbrQai4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>465674031046</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>irtiza.Eventrr</string>
+	<key>PROJECT_ID</key>
+	<string>eventrr-7b9ff</string>
+	<key>STORAGE_BUCKET</key>
+	<string>eventrr-7b9ff.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:465674031046:ios:5c2ee550fb349a54626cc7</string>
+</dict>
+</plist>
