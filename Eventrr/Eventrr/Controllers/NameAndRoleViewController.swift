@@ -23,12 +23,7 @@ class NameAndRoleViewController: UIViewController {
     
     private let viewModel = NameAndRoleViewModel()
     private var userTypes = ["Admin", "Attendee"]
-    private var selectedUserType: String = ""
-    
-    
-    deinit {
-        
-    }
+    private var selectedUserType: String = "Admin"
     
     // MARK: - Life Cycle Methods
     
@@ -44,7 +39,7 @@ class NameAndRoleViewController: UIViewController {
     // MARK: - IBActions
     
     @IBAction func saveButtonPressed(_ sender: Any) {
-        guard let name = nameField.text else {return}
+        guard let name = nameField.text else { return }
         
         if name == "" {
             nameErrorLabel.text = K.AuthConstants.requiredFieldString
@@ -76,6 +71,7 @@ class NameAndRoleViewController: UIViewController {
         
         userTypePickerView.layer.borderWidth = 1
         userTypePickerView.layer.cornerRadius = 8
+        
         if let accentPrimaryColor = UIColor(named: K.ColorConstants.AccentPrimary.rawValue) {
             userTypePickerView.layer.borderColor = accentPrimaryColor.cgColor
         } else {

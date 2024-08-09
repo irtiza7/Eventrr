@@ -228,9 +228,9 @@
 				D7D3F79F2C596AAA00B05D28 /* Services */,
 				D7D3F76F2C59611600B05D28 /* AppDelegate.swift */,
 				D7D3F7712C59611600B05D28 /* SceneDelegate.swift */,
+				D7D3F77A2C59611800B05D28 /* LaunchScreen.storyboard */,
 				D7D3F7752C59611600B05D28 /* Main.storyboard */,
 				D7D3F7782C59611800B05D28 /* Assets.xcassets */,
-				D7D3F77A2C59611800B05D28 /* LaunchScreen.storyboard */,
 				D7D3F77D2C59611800B05D28 /* Info.plist */,
 				D7D3F7A22C596C2700B05D28 /* GoogleService-Info.plist */,
 			);
