@@ -15,7 +15,6 @@ class ForgotPasswordViewController: UIViewController {
     @IBOutlet weak var emailErrorLabel: UILabel!
     
     @IBOutlet weak var sendResetLinkButton: UIButton!
-    @IBOutlet weak var backToLoginButton: UIButton!
     
     // MARK: - Private Properties
     
@@ -46,10 +45,6 @@ class ForgotPasswordViewController: UIViewController {
         viewModel.sendPasswordResetEmail(email: email, view: self)
     }
     
-    @IBAction func backToLoginButtonPressed(_ sender: UIButton) {
-        dismiss(animated: true)
-    }
-    
     // MARK: - Private Methods
     
     @objc func dismissKeyboard() {
@@ -64,6 +59,5 @@ class ForgotPasswordViewController: UIViewController {
         emailErrorLabel.isHidden = true
         
         sendResetLinkButton.layer.cornerRadius = 12
-        backToLoginButton.layer.cornerRadius = 12
     }
 }

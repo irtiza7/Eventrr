@@ -33,21 +33,20 @@ class LaunchScreenViewController: UIViewController {
         }) { animationCompleted in
             if animationCompleted {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-                    self.presentAuthViewController()
+                    self.showLoginViewController()
                 })
             }
         }
     }
     
-    private func presentAuthViewController() {
+    private func showLoginViewController() {
         let storyboard = UIStoryboard(name: K.StoryboardIdentifiers.mainBundleStoryboard, bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: K.StoryboardIdentifiers.loginViewController)
+        let authNavigationController = storyboard.instantiateViewController(withIdentifier: K.StoryboardIdentifiers.authNavigationController)
         
-        let loginVC = viewController as! LoginViewController
-        loginVC.modalPresentationStyle = .fullScreen
-        loginVC.modalTransitionStyle = .crossDissolve
+        authNavigationController.modalTransitionStyle = .crossDissolve
+        authNavigationController.modalPresentationStyle = .fullScreen
         
-        present(loginVC, animated: true)
+        present(authNavigationController, animated: true)
     }
 }
 

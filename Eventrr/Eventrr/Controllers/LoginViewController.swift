@@ -32,6 +32,10 @@ class LoginViewController: UIViewController {
         setupUserInterface()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     // MARK: - IBActions
     
     @IBAction func loginButtonPressed(_ sender: UIButton) {
@@ -61,29 +65,20 @@ class LoginViewController: UIViewController {
     
     @IBAction func forgotPassswordButtonPressed(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: K.StoryboardIdentifiers.mainBundleStoryboard, bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: K.StoryboardIdentifiers.forgotPasswordViewController)
-        
-        let forgotPasswordVC = viewController as! ForgotPasswordViewController
-        forgotPasswordVC.modalPresentationStyle = .fullScreen
-        forgotPasswordVC.modalTransitionStyle = .coverVertical
+        let forgotViewController = storyboard.instantiateViewController(withIdentifier: K.StoryboardIdentifiers.forgotPasswordViewController) as! ForgotPasswordViewController
         
         if let email = emailField.text {
-            forgotPasswordVC.userEmail = email
+            forgotViewController.userEmail = email
         }
-        
-        present(forgotPasswordVC, animated: true)
+        navigationController?.pushViewController(forgotViewController, animated: true)
     }
     
     
     @IBAction func registerButtonPressed(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: K.StoryboardIdentifiers.mainBundleStoryboard, bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: K.StoryboardIdentifiers.signupViewController)
+        let signupViewController = storyboard.instantiateViewController(withIdentifier: K.StoryboardIdentifiers.signupViewController)
         
-        let signupVC = viewController as! SignupViewController
-        signupVC.modalPresentationStyle = .fullScreen
-        signupVC.modalTransitionStyle = .coverVertical
-        
-        present(signupVC, animated: true)
+        navigationController?.pushViewController(signupViewController, animated: true)
     }
     
     // MARK: - Private Methods

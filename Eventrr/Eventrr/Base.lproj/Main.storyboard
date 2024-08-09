@@ -36,7 +36,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="-34"/>
+            <point key="canvasLocation" x="109" y="-20"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="N9g-MU-NG5">
@@ -265,6 +265,7 @@
                             <constraint firstItem="7pr-eN-TAD" firstAttribute="centerY" secondItem="XRd-Iv-BEe" secondAttribute="centerY" id="xIK-aZ-uAu"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Qot-pu-8sl"/>
                     <connections>
                         <outlet property="emailErrorLabel" destination="ieT-01-jIi" id="0Lq-fZ-g3R"/>
                         <outlet property="emailField" destination="bs2-cH-mfw" id="Y4n-DK-f81"/>
@@ -276,7 +277,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M9J-sm-bdh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="941" y="-35"/>
+            <point key="canvasLocation" x="2098" y="-20"/>
         </scene>
         <!--Signup View Controller-->
         <scene sceneID="z1b-AU-mvt">
@@ -532,7 +533,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SCK-YQ-tme" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1707.6335877862596" y="-35.211267605633807"/>
+            <point key="canvasLocation" x="2868" y="-20"/>
         </scene>
         <!--Name And Role View Controller-->
         <scene sceneID="HXi-k9-2ur">
@@ -554,8 +555,8 @@
                                                 <color key="textColor" name="BlackPrimary"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter name and select role." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9lG-63-USU">
-                                                <rect key="frame" x="0.0" y="55.999999999999993" width="246.33333333333334" height="19.333333333333336"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please fill following information to continue." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9lG-63-USU">
+                                                <rect key="frame" x="0.0" y="55.999999999999993" width="309" height="19.333333333333336"/>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                                                 <color key="textColor" name="AccentSecondary"/>
                                                 <nil key="highlightedColor"/>
@@ -694,7 +695,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GHh-uJ-Rmq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2419" y="-35"/>
+            <point key="canvasLocation" x="2868" y="667"/>
         </scene>
         <!--Forgot Password View Controller-->
         <scene sceneID="1Uw-YM-qi9">
@@ -705,7 +706,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="ewy-UB-5LV">
-                                <rect key="frame" x="39.666666666666657" y="225" width="314" height="402"/>
+                                <rect key="frame" x="39.666666666666657" y="242.66666666666663" width="314" height="367"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="udz-Y1-vCw">
                                         <rect key="frame" x="0.0" y="0.0" width="310.66666666666669" height="75.333333333333329"/>
@@ -717,7 +718,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter email to reset password." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdF-ch-B1e">
-                                                <rect key="frame" x="0.0" y="56.000000000000007" width="267" height="19.333333333333336"/>
+                                                <rect key="frame" x="0.0" y="56.000000000000036" width="267" height="19.333333333333336"/>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                                                 <color key="textColor" name="AccentSecondary"/>
                                                 <nil key="highlightedColor"/>
@@ -728,8 +729,8 @@
                                             <constraint firstItem="CTo-Sb-8dl" firstAttribute="leading" secondItem="udz-Y1-vCw" secondAttribute="leading" id="w21-ZY-NPt"/>
                                         </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="70" translatesAutoresizingMaskIntoConstraints="NO" id="0Lw-Vt-95o">
-                                        <rect key="frame" x="0.0" y="125.33333333333329" width="314" height="276.66666666666674"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="100" translatesAutoresizingMaskIntoConstraints="NO" id="0Lw-Vt-95o">
+                                        <rect key="frame" x="0.0" y="125.33333333333336" width="314" height="241.66666666666663"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="en7-RQ-nph">
                                                 <rect key="frame" x="0.0" y="0.0" width="314" height="96.666666666666671"/>
@@ -752,7 +753,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Required" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cOu-i4-jww">
-                                                        <rect key="frame" x="0.0" y="26.333333333333371" width="64.333333333333329" height="19.333333333333329"/>
+                                                        <rect key="frame" x="0.0" y="26.333333333333314" width="64.333333333333329" height="19.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                                                         <color key="textColor" systemColor="systemRedColor"/>
                                                         <nil key="highlightedColor"/>
@@ -780,48 +781,26 @@
                                                     </textField>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="6GO-c3-0mV">
-                                                <rect key="frame" x="0.0" y="166.66666666666669" width="314" height="110"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cpF-p5-Xs7">
-                                                        <rect key="frame" x="0.0" y="0.0" width="314" height="45"/>
-                                                        <color key="backgroundColor" name="AccentSecondary"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="45" id="rRI-5r-rOX"/>
-                                                        </constraints>
-                                                        <color key="tintColor" name="BlackPrimary"/>
-                                                        <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" title="SEND RESET LINK" cornerStyle="capsule">
-                                                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="25"/>
-                                                            <color key="baseForegroundColor" name="AccentPrimary"/>
-                                                        </buttonConfiguration>
-                                                        <connections>
-                                                            <action selector="sendResetLinkButtonPressed:" destination="DOo-R4-Q8r" eventType="touchUpInside" id="lcv-v6-UQq"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6db-GY-1lv">
-                                                        <rect key="frame" x="0.0" y="65" width="314" height="45"/>
-                                                        <color key="backgroundColor" name="AccentSecondary"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="45" id="uar-cQ-S3G"/>
-                                                        </constraints>
-                                                        <color key="tintColor" name="BlackPrimary"/>
-                                                        <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" imagePlacement="leading" title="BACK TO LOGIN" cornerStyle="capsule">
-                                                            <imageReference key="image" image="arrow.left" catalog="system" symbolScale="medium"/>
-                                                            <fontDescription key="titleFontDescription" type="system" pointSize="20"/>
-                                                            <color key="baseForegroundColor" name="AccentPrimary"/>
-                                                        </buttonConfiguration>
-                                                        <connections>
-                                                            <action selector="backToLoginButtonPressed:" destination="DOo-R4-Q8r" eventType="touchUpInside" id="U09-tQ-CDc"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                            </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cpF-p5-Xs7">
+                                                <rect key="frame" x="0.0" y="196.66666666666663" width="314" height="45"/>
+                                                <color key="backgroundColor" name="AccentSecondary"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="45" id="rRI-5r-rOX"/>
+                                                </constraints>
+                                                <color key="tintColor" name="BlackPrimary"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="SEND RESET LINK" cornerStyle="capsule">
+                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="25"/>
+                                                    <color key="baseForegroundColor" name="AccentPrimary"/>
+                                                </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="sendResetLinkButtonPressed:" destination="DOo-R4-Q8r" eventType="touchUpInside" id="lcv-v6-UQq"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="6GO-c3-0mV" secondAttribute="trailing" id="ohg-lB-Mmz"/>
-                                            <constraint firstItem="6GO-c3-0mV" firstAttribute="leading" secondItem="0Lw-Vt-95o" secondAttribute="leading" id="rxM-Ta-gUz"/>
+                                            <constraint firstAttribute="trailing" secondItem="cpF-p5-Xs7" secondAttribute="trailing" id="8jl-u7-1Zs"/>
+                                            <constraint firstItem="cpF-p5-Xs7" firstAttribute="leading" secondItem="0Lw-Vt-95o" secondAttribute="leading" id="wbh-rK-Qzh"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
@@ -835,7 +814,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="backToLoginButton" destination="6db-GY-1lv" id="S36-20-Tci"/>
                         <outlet property="emailErrorLabel" destination="cOu-i4-jww" id="L8d-mA-HKG"/>
                         <outlet property="emailField" destination="Hh2-WI-Myl" id="0rn-mb-39K"/>
                         <outlet property="sendResetLinkButton" destination="cpF-p5-Xs7" id="nZU-C8-beG"/>
@@ -843,7 +821,28 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lat-Dr-5xR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="940" y="662"/>
+            <point key="canvasLocation" x="2098" y="667"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="m2o-Yg-Gp4">
+            <objects>
+                <navigationController storyboardIdentifier="AuthNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="LIT-C9-tRW" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="eLe-kS-xhn">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" name="WhitePrimary"/>
+                        <color key="tintColor" name="AccentPrimary"/>
+                        <color key="barTintColor" name="WhitePrimary"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="mBN-8O-guh" kind="relationship" relationship="rootViewController" id="iQh-QR-OAG"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZJS-R8-gwc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1173" y="-20"/>
         </scene>
     </scenes>
     <designables>
@@ -871,7 +870,6 @@
     </designables>
     <resources>
         <image name="LogoTransparent" width="250" height="250"/>
-        <image name="arrow.left" catalog="system" width="128" height="95"/>
         <image name="arrow.right" catalog="system" width="128" height="95"/>
         <image name="envelope" catalog="system" width="128" height="93"/>
         <image name="lock" catalog="system" width="125" height="128"/>

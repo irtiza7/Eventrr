@@ -19,13 +19,9 @@ class LoginViewModel {
     @MainActor
     private func showNameAndRoleViewController(parentView: UIViewController) {
         let storyboard = UIStoryboard(name: K.StoryboardIdentifiers.mainBundleStoryboard, bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: K.StoryboardIdentifiers.nameAndRoleViewController)
+        let nameAndRoleViewController = storyboard.instantiateViewController(withIdentifier: K.StoryboardIdentifiers.nameAndRoleViewController) as! NameAndRoleViewController
         
-        let nameAndRoleVC = viewController as! NameAndRoleViewController
-        nameAndRoleVC.modalPresentationStyle = .fullScreen
-        nameAndRoleVC.modalTransitionStyle = .coverVertical
-        
-        parentView.present(nameAndRoleVC, animated: true)
+        parentView.navigationController?.pushViewController(nameAndRoleViewController, animated: true)
     }
     
     private func showNextViewController(parentView: UIViewController) async {

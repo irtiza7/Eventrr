@@ -19,13 +19,8 @@ class SignupViewModel {
     @MainActor
     private func showNameAndRoleViewController(parentView: UIViewController) {
         let storyboard = UIStoryboard(name: K.StoryboardIdentifiers.mainBundleStoryboard, bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: K.StoryboardIdentifiers.nameAndRoleViewController)
-        
-        let nameAndRoleVC = viewController as! NameAndRoleViewController
-        nameAndRoleVC.modalPresentationStyle = .fullScreen
-        nameAndRoleVC.modalTransitionStyle = .coverVertical
-        
-        parentView.present(nameAndRoleVC, animated: true)
+        let nameAndRoleViewController = storyboard.instantiateViewController(withIdentifier: K.StoryboardIdentifiers.nameAndRoleViewController) as! NameAndRoleViewController
+        parentView.navigationController?.pushViewController(nameAndRoleViewController, animated: true)
     }
     
     // MARK: - Public Methods
@@ -33,10 +28,10 @@ class SignupViewModel {
     public func signupUser(email: String, password: String, view: UIViewController) {
         let loadingAlertVC = AlertService.shared.getLoadingAlertViewController()
         view.present(loadingAlertVC, animated: true)
-    
+        
         Task {
             do {
-                let authResult = try await FirebaseService.shared.signup(email: email, password: password)
+                let _ = try await FirebaseService.shared.signup(email: email, password: password)
                 
                 DispatchQueue.main.async {
                     loadingAlertVC.dismiss(animated: true)

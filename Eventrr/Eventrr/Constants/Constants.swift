@@ -32,6 +32,7 @@ struct K {
     struct StoryboardIdentifiers {
         static let mainBundleStoryboard = "Main"
         
+        static let authNavigationController = "AuthNavigationController"
         static let loginViewController = "LoginViewController"
         static let signupViewController = "SIgnupViewController"
         static let forgotPasswordViewController = "ForgotPasswordViewController"
