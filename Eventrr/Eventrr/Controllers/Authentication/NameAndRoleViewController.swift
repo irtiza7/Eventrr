@@ -9,21 +9,19 @@ import UIKit
 
 class NameAndRoleViewController: UIViewController {
     
+    static let identifier = String(describing: NameAndRoleViewController.self)
+    
     //MARK: - IBOutlets
     
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var nameErrorLabel: UILabel!
-    
     @IBOutlet weak var userTypePickerView: UIPickerView!
     @IBOutlet weak var userTypeErrorLabel: UILabel!
-    
     @IBOutlet weak var saveButton: UIButton!
     
     // MARK: - Private Properties
     
     private let viewModel = NameAndRoleViewModel()
-    private var userTypes = ["Admin", "Attendee"]
-    private var selectedUserType: String = "Admin"
     
     // MARK: - Life Cycle Methods
     
@@ -32,8 +30,11 @@ class NameAndRoleViewController: UIViewController {
         
         userTypePickerView.delegate = self
         userTypePickerView.dataSource = self
-        
         setupInterface()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = true
     }
     
     // MARK: - IBActions
@@ -42,35 +43,54 @@ class NameAndRoleViewController: UIViewController {
         guard let name = nameField.text else { return }
         
         if name == "" {
-            nameErrorLabel.text = K.AuthConstants.requiredFieldString
+            nameErrorLabel.text = K.StringMessages.requiredFieldString
             nameErrorLabel.isHidden = false
         } else {
             nameErrorLabel.isHidden = true
         }
         
-        if selectedUserType == "" {
-            userTypeErrorLabel.text = K.AuthConstants.requiredFieldString
-            userTypeErrorLabel.isHidden = false
-        } else {
-            userTypeErrorLabel.isHidden = true
-        }
-        
         guard viewModel.validateForm(nameErrorLabel, userTypeErrorLabel) == true else {return}
-        viewModel.saveUserInformation(name: name, userType: selectedUserType, view: self)
+        saveAndNavigate(name: name)
+//        viewModel.saveUserInformation(name: name, userType: selectedUserType, view: self)
     }
     
     // MARK: - Private Methods
     
-    @objc func dismissKeyboard() {
+    private func saveAndNavigate(name: String) {
+        let spinner = Popups.loadingPopup()
+        present(spinner, animated: true)
+        
+        Task {
+            do {
+                try await viewModel.saveUserInformation(name: name)
+                spinner.dismiss(animated: true)
+                
+                let storyboard = UIStoryboard(name: K.EventsStoryboardIdentifiers.eventsBundle, bundle: nil)
+                let viewController = storyboard.instantiateViewController(withIdentifier: K.EventsStoryboardIdentifiers.mainTabViewController)
+                navigationController?.pushViewController(viewController, animated: true)
+            } catch {
+                spinner.dismiss(animated: true)
+                
+                print("[\(NameAndRoleViewController.identifier)] - Error: \n\(error)]")
+                Popups.displayFailure(message: K.StringMessages.somethingWentWrong) { [weak self] popup in
+                    self?.present(popup, animated: true)
+                }
+            }
+        }
+    }
+    
+    @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
     
     private func setupInterface() {
+        navigationController?.isNavigationBarHidden = false
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         
-        userTypePickerView.layer.borderWidth = 1
-        userTypePickerView.layer.cornerRadius = 8
+        userTypePickerView.layer.borderWidth = K.UI.defaultPrimaryBorderWidth
+        userTypePickerView.layer.cornerRadius = K.UI.defaultSecondardCornerRadius
         
         if let accentPrimaryColor = UIColor(named: K.ColorConstants.AccentPrimary.rawValue) {
             userTypePickerView.layer.borderColor = accentPrimaryColor.cgColor
@@ -80,7 +100,7 @@ class NameAndRoleViewController: UIViewController {
         
         nameErrorLabel.isHidden = true
         userTypeErrorLabel.isHidden = true
-        saveButton.layer.cornerRadius = 12
+        saveButton.layer.cornerRadius = K.UI.defaultPrimaryCornerRadius
     }
 }
 
@@ -92,15 +112,15 @@ extension NameAndRoleViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        userTypes.count
+        viewModel.userRoles.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        userTypes[row]
+        viewModel.userRoles[row].rawValue
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedUserType = userTypes[row]
+        viewModel.selectedUserRole = viewModel.userRoles[row]
     }
 }
 

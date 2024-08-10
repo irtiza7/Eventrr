@@ -1,13 +1,13 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '13.0'
+platform :ios, '17.0'
 
 target 'Eventrr' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-  pod 'Firebase', '8.13.0'
-  pod 'FirebaseCore', '8.13.0'
-  pod 'FirebaseAuth', '8.13.0'
-  pod 'FirebaseFirestore', '8.13.0'
+  pod 'Firebase'
+  pod 'FirebaseCore'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
 
   # Pods for Eventrr
 

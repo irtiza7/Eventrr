@@ -10,6 +10,8 @@ import FirebaseAuth
 
 class SignupViewController: UIViewController {
     
+    static let identifier = String(describing: SignupViewController.self)
+    
     // MARK: - IBOutlets
     
     @IBOutlet weak var emailField: UITextField!
@@ -35,6 +37,10 @@ class SignupViewController: UIViewController {
         setupUserInterface()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     // MARK: - IBActions
     
     @IBAction func signupButtonPressed(_ sender: UIButton) {
@@ -46,21 +52,21 @@ class SignupViewController: UIViewController {
         passwordField.resignFirstResponder()
         confirmPasswordField.resignFirstResponder()
         
-        if let errorMessage = viewModel.validateEmail(email) {
+        if let errorMessage = Utility.validateEmail(email) {
             emailErrorLabel.text = errorMessage
             emailErrorLabel.isHidden = false
         } else {
             emailErrorLabel.isHidden = true
         }
         
-        if let errorMessage = viewModel.validatePassword(password) {
+        if let errorMessage = Utility.validatePassword(password) {
             passwordErrorLabel.text = errorMessage
             passwordErrorLabel.isHidden = false
         } else {
             passwordErrorLabel.isHidden = true
         }
         
-        if let errorMessage = viewModel.validatePasswordAndConfirmPassword(password, confirmPassword) {
+        if let errorMessage = Utility.validatePasswordAndConfirmPassword(password, confirmPassword) {
             confirmPasswordErrorLabel.text = errorMessage
             confirmPasswordErrorLabel.isHidden = false
         } else {
@@ -68,7 +74,7 @@ class SignupViewController: UIViewController {
         }
         
         guard viewModel.validateForm(emailErrorLabel, passwordErrorLabel, confirmPasswordErrorLabel) == true else {return}
-        viewModel.signupUser(email: email, password: password, view:  self)
+        signupUser(email: email, password: password)
     }
     
     @IBAction func loginButtonPressed(_ sender: UIButton) {
@@ -77,11 +83,40 @@ class SignupViewController: UIViewController {
     
     // MARK: - Private Methods
     
+    private func signupUser(email: String, password: String) {
+        let spinner = Popups.loadingPopup()
+        present(spinner, animated: true)
+        
+        Task {
+            do {
+                let _ = try await viewModel.signupUser(email: email, password: password)
+                spinner.dismiss(animated: true)
+                
+                let storyboard = UIStoryboard(name: K.MainStoryboardIdentifiers.mainBundle, bundle: nil)
+                let viewController = storyboard.instantiateViewController(withIdentifier: NameAndRoleViewController.identifier)
+                
+                navigationController?.pushViewController(viewController, animated: true)
+            } catch {
+                spinner.dismiss(animated: true)
+                
+                print("[\(SignupViewController.identifier)] - Error: \n\(error)]")
+                guard let parsedError = FirebaseService.shared.parseSignupError(error as NSError) else {return}
+                
+                Popups.displayFailure(title: K.StringMessages.signupFailurePopupTitle, message: parsedError.message) {
+                    [weak self] popup in
+                    self?.present(popup, animated: true)
+                }
+            }
+        }
+    }
+    
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
     
     private func setupUserInterface() {
+        navigationController?.isNavigationBarHidden = false
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         
@@ -89,7 +124,7 @@ class SignupViewController: UIViewController {
         passwordErrorLabel.isHidden = true
         confirmPasswordErrorLabel.isHidden = true
         
-        signupButton.layer.cornerRadius = 12
-        loginButton.layer.cornerRadius = 8
+        signupButton.layer.cornerRadius = K.UI.defaultPrimaryCornerRadius
+        loginButton.layer.cornerRadius = K.UI.defaultSecondardCornerRadius
     }
 }

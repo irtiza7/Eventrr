@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -79,32 +78,32 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="314" height="94.666666666666671"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="55E-oI-LXu">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="65.333333333333329" height="20.333333333333332"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="66.666666666666671" height="20.333333333333332"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PKm-LY-4r2">
-                                                                                <rect key="frame" x="0.0" y="3.3333333333333321" width="18.666666666666668" height="14"/>
+                                                                                <rect key="frame" x="0.0" y="3.3333333333333321" width="20" height="14"/>
                                                                                 <color key="tintColor" name="AccentPrimary"/>
                                                                                 <imageReference key="image" image="envelope" catalog="system" symbolScale="small"/>
                                                                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="bold"/>
                                                                             </imageView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKg-In-3Dj">
-                                                                                <rect key="frame" x="24.666666666666668" y="0.0" width="40.666666666666657" height="20.333333333333332"/>
+                                                                                <rect key="frame" x="26.000000000000011" y="0.0" width="40.666666666666657" height="20.333333333333332"/>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                 <color key="textColor" name="AccentSecondary"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
-                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="abc@abc.com" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bs2-cH-mfw" customClass="UITextFieldDesignable" customModule="Eventrr" customModuleProvider="target">
+                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="admin@eventrr.com" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bs2-cH-mfw" customClass="UITextFieldDesignable" customModule="Eventrr" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="25.333333333333343" width="314" height="45"/>
                                                                         <color key="backgroundColor" name="WhitePrimary"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="45" id="Ij9-sa-j1g"/>
                                                                             <constraint firstAttribute="width" constant="314" id="trG-md-cNS"/>
                                                                         </constraints>
-                                                                        <color key="textColor" name="AccentSecondary"/>
+                                                                        <color key="textColor" name="BlackPrimary"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress"/>
                                                                         <userDefinedRuntimeAttributes>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                                 <integer key="value" value="10"/>
@@ -158,8 +157,9 @@
                                                                             <constraint firstAttribute="height" constant="45" id="PhJ-Vt-C5w"/>
                                                                             <constraint firstAttribute="width" constant="314" id="VsY-bS-6ag"/>
                                                                         </constraints>
+                                                                        <color key="textColor" name="BlackPrimary"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" secureTextEntry="YES"/>
                                                                         <userDefinedRuntimeAttributes>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                                 <integer key="value" value="10"/>
@@ -277,12 +277,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M9J-sm-bdh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2098" y="-20"/>
+            <point key="canvasLocation" x="2096.9465648854962" y="-20.422535211267608"/>
         </scene>
         <!--Signup View Controller-->
         <scene sceneID="z1b-AU-mvt">
             <objects>
-                <viewController storyboardIdentifier="SIgnupViewController" id="6Qp-LW-wXq" customClass="SignupViewController" customModule="Eventrr" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SignupViewController" id="6Qp-LW-wXq" customClass="SignupViewController" customModule="Eventrr" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="glC-1L-aj0">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -320,16 +320,16 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="314" height="94.666666666666671"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="nL5-EI-xrg">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="65.333333333333329" height="20.333333333333332"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="66.666666666666671" height="20.333333333333332"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6kK-wg-xdV">
-                                                                                <rect key="frame" x="0.0" y="3.3333333333333321" width="18.666666666666668" height="14"/>
+                                                                                <rect key="frame" x="0.0" y="3.3333333333333321" width="20" height="14"/>
                                                                                 <color key="tintColor" name="AccentPrimary"/>
                                                                                 <imageReference key="image" image="envelope" catalog="system" symbolScale="small"/>
                                                                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="bold"/>
                                                                             </imageView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7NW-Xl-DgX">
-                                                                                <rect key="frame" x="24.666666666666668" y="0.0" width="40.666666666666657" height="20.333333333333332"/>
+                                                                                <rect key="frame" x="26.000000000000011" y="0.0" width="40.666666666666657" height="20.333333333333332"/>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                 <color key="textColor" name="AccentSecondary"/>
                                                                                 <nil key="highlightedColor"/>
@@ -342,9 +342,9 @@
                                                                             <constraint firstAttribute="width" constant="314" id="EOu-dk-bWN"/>
                                                                             <constraint firstAttribute="height" constant="45" id="Zva-6m-No5"/>
                                                                         </constraints>
-                                                                        <color key="textColor" name="AccentSecondary"/>
+                                                                        <color key="textColor" name="BlackPrimary"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress"/>
                                                                         <userDefinedRuntimeAttributes>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                                 <real key="value" value="7"/>
@@ -391,8 +391,9 @@
                                                                             <constraint firstAttribute="width" constant="314" id="HWa-q1-AIR"/>
                                                                             <constraint firstAttribute="height" constant="45" id="Kwx-Fz-r07"/>
                                                                         </constraints>
+                                                                        <color key="textColor" name="BlackPrimary"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                        <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="one-time-code"/>
+                                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="one-time-code"/>
                                                                         <userDefinedRuntimeAttributes>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                                 <real key="value" value="7"/>
@@ -439,8 +440,9 @@
                                                                             <constraint firstAttribute="width" constant="314" id="P6y-YR-LTD"/>
                                                                             <constraint firstAttribute="height" constant="45" id="naz-hd-na4"/>
                                                                         </constraints>
+                                                                        <color key="textColor" name="BlackPrimary"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                        <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="one-time-code"/>
+                                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="one-time-code"/>
                                                                         <userDefinedRuntimeAttributes>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                                 <real key="value" value="7"/>
@@ -573,16 +575,16 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="320" height="94.666666666666671"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="V0T-rz-0U2">
-                                                                <rect key="frame" x="0.0" y="0.0" width="98.666666666666671" height="20.333333333333332"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="98.333333333333329" height="20.333333333333332"/>
                                                                 <subviews>
                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qds-J9-D6R">
-                                                                        <rect key="frame" x="0.0" y="2" width="17" height="15.666666666666664"/>
+                                                                        <rect key="frame" x="0.0" y="1" width="17" height="16.666666666666664"/>
                                                                         <color key="tintColor" name="AccentPrimary"/>
                                                                         <imageReference key="image" image="square.and.pencil" catalog="system" symbolScale="small"/>
                                                                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="bold"/>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Full Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iwa-z1-mWF">
-                                                                        <rect key="frame" x="23" y="0.0" width="75.666666666666671" height="20.333333333333332"/>
+                                                                        <rect key="frame" x="22.666666666666671" y="0.0" width="75.666666666666671" height="20.333333333333332"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" name="AccentSecondary"/>
                                                                         <nil key="highlightedColor"/>
@@ -596,7 +598,7 @@
                                                                     <constraint firstAttribute="height" constant="45" id="gp1-4C-xtT"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" enablesReturnKeyAutomatically="YES"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                         <real key="value" value="7"/>
@@ -621,16 +623,16 @@
                                                         <rect key="frame" x="0.0" y="114.66666666666669" width="320" height="275.66666666666669"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="6W9-HW-IuI">
-                                                                <rect key="frame" x="0.0" y="0.0" width="98.666666666666671" height="20.333333333333332"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="112.66666666666667" height="20.333333333333332"/>
                                                                 <subviews>
                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ev5-Kc-bRV">
-                                                                        <rect key="frame" x="0.0" y="3" width="15" height="14.666666666666664"/>
+                                                                        <rect key="frame" x="0.0" y="3" width="29" height="15.666666666666664"/>
                                                                         <color key="tintColor" name="AccentPrimary"/>
-                                                                        <imageReference key="image" image="person" catalog="system" symbolScale="small"/>
+                                                                        <imageReference key="image" image="person.3" catalog="system" symbolScale="small"/>
                                                                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="bold"/>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dfl-sZ-KHN">
-                                                                        <rect key="frame" x="21" y="0.0" width="77.666666666666671" height="20.333333333333332"/>
+                                                                        <rect key="frame" x="35.000000000000007" y="0.0" width="77.666666666666686" height="20.333333333333332"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" name="AccentSecondary"/>
                                                                         <nil key="highlightedColor"/>
@@ -736,16 +738,16 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="314" height="96.666666666666671"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="DKd-g7-3Cb">
-                                                        <rect key="frame" x="0.0" y="0.0" width="65.333333333333329" height="20.333333333333332"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="66.666666666666671" height="20.333333333333332"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kFk-ih-92V">
-                                                                <rect key="frame" x="0.0" y="3.3333333333333321" width="18.666666666666668" height="14"/>
+                                                                <rect key="frame" x="0.0" y="3.3333333333333321" width="20" height="14"/>
                                                                 <color key="tintColor" name="AccentPrimary"/>
                                                                 <imageReference key="image" image="envelope" catalog="system" symbolScale="small"/>
                                                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="bold"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vt6-Ns-5zU">
-                                                                <rect key="frame" x="24.666666666666668" y="0.0" width="40.666666666666657" height="20.333333333333332"/>
+                                                                <rect key="frame" x="26.000000000000011" y="0.0" width="40.666666666666657" height="20.333333333333332"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" name="AccentSecondary"/>
                                                                 <nil key="highlightedColor"/>
@@ -766,7 +768,7 @@
                                                         </constraints>
                                                         <color key="textColor" name="AccentSecondary"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                 <real key="value" value="7"/>
@@ -831,7 +833,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="eLe-kS-xhn">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" name="WhitePrimary"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" name="AccentPrimary"/>
                         <color key="barTintColor" name="WhitePrimary"/>
                     </navigationBar>
@@ -859,7 +861,7 @@
             <size key="intrinsicContentSize" width="66" height="17"/>
         </designable>
         <designable name="bs2-cH-mfw">
-            <size key="intrinsicContentSize" width="92" height="18.666666666666668"/>
+            <size key="intrinsicContentSize" width="129" height="18.666666666666668"/>
         </designable>
         <designable name="q4Y-yx-YLC">
             <size key="intrinsicContentSize" width="4" height="18.666666666666668"/>
@@ -871,10 +873,10 @@
     <resources>
         <image name="LogoTransparent" width="250" height="250"/>
         <image name="arrow.right" catalog="system" width="128" height="95"/>
-        <image name="envelope" catalog="system" width="128" height="93"/>
+        <image name="envelope" catalog="system" width="128" height="85"/>
         <image name="lock" catalog="system" width="125" height="128"/>
-        <image name="person" catalog="system" width="128" height="121"/>
-        <image name="square.and.pencil" catalog="system" width="128" height="113"/>
+        <image name="person.3" catalog="system" width="128" height="66"/>
+        <image name="square.and.pencil" catalog="system" width="128" height="121"/>
         <namedColor name="AccentPrimary">
             <color red="0.0" green="0.67799997329711914" blue="0.70999997854232788" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
