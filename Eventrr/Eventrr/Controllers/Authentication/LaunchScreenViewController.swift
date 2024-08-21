@@ -40,8 +40,8 @@ class LaunchScreenViewController: UIViewController {
     }
     
     private func showLoginViewController() {
-        let storyboard = UIStoryboard(name: K.StoryboardIdentifiers.mainBundleStoryboard, bundle: nil)
-        let authNavigationController = storyboard.instantiateViewController(withIdentifier: K.StoryboardIdentifiers.authNavigationController)
+        let storyboard = UIStoryboard(name: K.MainStoryboardIdentifiers.mainBundle, bundle: nil)
+        let authNavigationController = storyboard.instantiateViewController(withIdentifier: K.MainStoryboardIdentifiers.authNavigationController)
         
         authNavigationController.modalTransitionStyle = .crossDissolve
         authNavigationController.modalPresentationStyle = .fullScreen
