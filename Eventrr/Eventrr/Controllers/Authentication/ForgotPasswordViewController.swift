@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class ForgotPasswordViewController: UIViewController {
     
@@ -19,13 +20,19 @@ class ForgotPasswordViewController: UIViewController {
     
     // MARK: - Public Properties
     
-    public var userEmail: String?
+    private let spinner = Popups.loadingPopup()
+    private var cancellables: Set<AnyCancellable> = []
+    
+    // MARK: - Public Properties
+    
+    public let viewModel = ForgotPasswordViewModel()
     
     // MARK: - Life Cycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUserInterface()
+        setupSubscriptions()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -37,37 +44,40 @@ class ForgotPasswordViewController: UIViewController {
     @IBAction func sendResetLinkButtonPressed(_ sender: UIButton) {
         guard let email = emailField.text else {return}
         
-        if let errorMessage = Utility.validateEmail(email) {
+        if let errorMessage = ValidationUtility.validateEmail(email) {
             emailErrorLabel.text = errorMessage
             emailErrorLabel.isHidden = false
+            return
         }
         
         emailErrorLabel.isHidden = true
-        sendPasswordResetEmail(email: email)
+        viewModel.userEmail = email
+        
+        present(spinner, animated: true)
+        viewModel.sendPasswordResetEmail()
     }
     
     // MARK: - Private Methods
     
-    private func sendPasswordResetEmail(email: String) {
-        let spinner = Popups.loadingPopup()
-        present(spinner, animated: true)
-        
-        Task {
-            do {
-                try await FirebaseService.shared.sendPasswordResetEmail(email: email)
-                spinner.dismiss(animated: true)
-                Popups.displaySuccess(message: K.StringMessages.emailSentForPasswordReset) { [weak self] popup in
-                    self?.present(popup, animated: true)
-                }
-            } catch {
-                spinner.dismiss(animated: true)
+    private func setupSubscriptions() {
+        viewModel.$sendPasswordResetEmailStatus
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (status: SendPasswordResetEmailStatus?) in
+                guard let status, let self else {return}
+                self.spinner.dismiss(animated: true)
                 
-                print("[\(ForgotPasswordViewController.identifier)] - Error: \n\(error)")
-                Popups.displayFailure(message: K.StringMessages.somethingWentWrong) { [weak self] popup in
-                    self?.present(popup, animated: true)
+                switch status {
+                case .success(let message):
+                    Popups.displaySuccess(message: message) { [weak self] popup in
+                        self?.present(popup, animated: true)
+                    }
+                    
+                case .failure(let errorMessage):
+                    Popups.displayFailure(message: errorMessage) { [weak self] popup in
+                        self?.present(popup, animated: true)
+                    }
                 }
-            }
-        }
+            }.store(in: &cancellables)
     }
     
     @objc private func dismissKeyboard() {
@@ -80,7 +90,7 @@ class ForgotPasswordViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         
-        emailField.text = userEmail ?? ""
+        emailField.text = viewModel.userEmail ?? ""
         emailErrorLabel.isHidden = true
         
         sendResetLinkButton.layer.cornerRadius = K.UI.defaultPrimaryCornerRadius

@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-class ProfileViewModel: ObservableObject {
+class UserProfileViewModel: ObservableObject {
     
     public var userModel: UserModel?
     

@@ -33,7 +33,7 @@ class EditProfileViewModel: ObservableObject {
     // MARK: - Public Methods
     
     public func updateProfile() async -> String? {
-        guard let currentUser = user else {
+        guard let currentUser = user, let id = currentUser.id else {
             return "Something went wrong, try later."
         }
         guard modifiedName != "" else {
@@ -44,12 +44,12 @@ class EditProfileViewModel: ObservableObject {
         var data: [String: String] = [:]
         
         if selectedRole.rawValue != currentUser.role!.rawValue {
-            data[DBCollectionFields.Users.type.rawValue] = selectedRole.rawValue
+            data[DatabaseTableColumns.Users.type.rawValue] = selectedRole.rawValue
             isInformationModified = true
         }
         
         if modifiedName != currentUser.name! {
-            data[DBCollectionFields.Users.name.rawValue] = modifiedName
+            data[DatabaseTableColumns.Users.name.rawValue] = modifiedName
             isInformationModified = true
         }
         
@@ -58,7 +58,11 @@ class EditProfileViewModel: ObservableObject {
         }
         
         do {
-            try await FirebaseService.shared.updateUserDocument(data: data, collection: DBCollections.Users.rawValue, authID: currentUser.id)
+            try await FirebaseService.shared.update(
+                data: data,
+                recordId: id,
+                table: DatabaseTables.Users.rawValue
+            )
             try Auth.auth().signOut()
         } catch {
             print("[\(String(describing: EditProfileView.self))] - Error: \n\(error)")

@@ -23,9 +23,11 @@ struct Popups {
             alertVC.view.backgroundColor = UIColor(named: K.ColorConstants.WhitePrimary.rawValue)
             alertVC.view.tintColor = UIColor(named: K.ColorConstants.AccentRed.rawValue)
             
-            let alertAction: UIAlertAction = UIAlertAction(title: K.StringMessages.errorPopupActionButtonTitle, style: .default)
+            let alertAction: UIAlertAction = UIAlertAction(
+                title: K.StringMessages.errorPopupActionButtonTitle,
+                style: .default
+            )
             alertVC.addAction(alertAction)
-            
             presentHandler(alertVC)
         }
     
@@ -40,9 +42,11 @@ struct Popups {
             alertVC.view.backgroundColor = UIColor(named: K.ColorConstants.WhitePrimary.rawValue)
             alertVC.view.tintColor = UIColor(named: K.ColorConstants.AccentPrimary.rawValue)
             
-            let alertAction: UIAlertAction = UIAlertAction(title: K.StringMessages.successPopActionButtonTitle, style: .default)
+            let alertAction: UIAlertAction = UIAlertAction(
+                title: K.StringMessages.successPopActionButtonTitle,
+                style: .default
+            )
             alertVC.addAction(alertAction)
-            
             presentHandler(alertVC)
         }
     

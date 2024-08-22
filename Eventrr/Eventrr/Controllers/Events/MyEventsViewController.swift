@@ -1,28 +1,27 @@
 //
-//  EventsViewController.swift
+//  MyEventsViewController.swift
 //  Eventrr
 //
-//  Created by Dev on 8/9/24.
+//  Created by Irtiza on 8/25/24.
 //
 
 import UIKit
 import Combine
 
-class HomeViewController: UIViewController {
+class MyEventsViewController: UIViewController {
     
-    static let identifier = String(describing: HomeViewController.self)
+    static let identifier = String(describing: MyEventsViewController.self)
     
     // MARK: - IBOutlets
     
-    @IBOutlet weak var createEventButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var categoryCollectionView: UICollectionView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Private Properties
     
-    private let viewModel = HomeViewModel()
-    private var cancellables: Set<AnyCancellable> = []
+    private let viewModel = MyEventsViewModel()
+    private var cancellabels: Set<AnyCancellable> = []
     private let spinner = Popups.loadingPopup()
     
     // MARK: - Life Cycle Methods
@@ -30,37 +29,29 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupSubscriptions()
-        setupCategoryCollectionView()
+        searchBar.delegate = self
         setupEventsTableView()
-        
-        guard let userRole = UserService.shared?.user.role,
-              userRole == .Admin else {
-            createEventButton.isHidden = true
-            return
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        navigationController?.isNavigationBarHidden = true
+        setupSubscriptions()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         present(spinner, animated: true)
-        viewModel.fetchAllEvents()
+        viewModel.fetchEvents()
     }
     
     // MARK: - IBActions
     
-    @IBAction func createEventButtonPressed(_ sender: Any) {
-        let storyboard = UIStoryboard(name: K.EventsStoryboardIdentifiers.eventsBundle, bundle: nil)
-        let navigationController = storyboard.instantiateViewController(
-            withIdentifier: K.EventsStoryboardIdentifiers.createEventNavigationController
-        )
-        navigationController.modalPresentationStyle = .fullScreen
-        navigationController.modalTransitionStyle = .coverVertical
+    @IBAction func segmentedControlClicked(_ sender: UISegmentedControl) {
+        searchBar.endEditing(true)
+        searchBar.text = ""
         
-        present(navigationController, animated: true)
+        switch segmentedControl.selectedSegmentIndex {
+        case 0: viewModel.selectedFilter = .All
+        case 1: viewModel.selectedFilter = .Past
+        case 2: viewModel.selectedFilter = .Future
+        default: break
+        }
+        viewModel.filterEvents()
     }
     
     // MARK: - Private Methods
@@ -77,30 +68,18 @@ class HomeViewController: UIViewController {
                 switch status {
                 case .success:
                     self.tableView.reloadData()
-                    
+                
                 case .failure(let errorMessage):
                     Popups.displayFailure(message: errorMessage) { [weak self] popup in
                         self?.present(popup, animated: true)
                     }
                 }
-            }.store(in: &cancellables)
-    }
-    
-    private func setupCategoryCollectionView() {
-        categoryCollectionView.delegate = self
-        categoryCollectionView.dataSource = self
-        
-        categoryCollectionView.register(
-            UINib(
-                nibName: FilterTagCollectionViewCell.identifier,
-                bundle: nil
-            ),
-            forCellWithReuseIdentifier: FilterTagCollectionViewCell.identifier
-        )
+                
+            }.store(in: &cancellabels)
     }
     
     @objc func pullDownToFetchEvents() {
-        viewModel.fetchAllEvents()
+        viewModel.fetchEvents()
     }
     
     private func setupEventsTableView() {
@@ -124,7 +103,7 @@ class HomeViewController: UIViewController {
 
 // MARK: - TableView Delegate Methods
 
-extension HomeViewController: UITableViewDelegate {
+extension MyEventsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if viewModel.events.count == 0 {return}
         
@@ -138,9 +117,9 @@ extension HomeViewController: UITableViewDelegate {
     }
 }
 
-// MARK: - TableView Data Source Methods
+// MARK: - TableView Datasource Methods
 
-extension HomeViewController: UITableViewDataSource {
+extension MyEventsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.events.count == 0 ? 1 : viewModel.events.count
     }
@@ -181,55 +160,9 @@ extension HomeViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - CollectionView Delegate Methods
-
-extension HomeViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedCategory = viewModel.categoriesList[indexPath.row]
-        viewModel.selectedCategory = selectedCategory
-        categoryCollectionView.reloadData()
-        
-        if selectedCategory == EventCategoryFilter.All {
-            viewModel.fetchAllEvents()
-        } else {
-            viewModel.filterEventsByCategory()
-        }
-    }
-}
-
-// MARK: - CollectionView Data Source Methods
-
-extension HomeViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.categoriesList.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: FilterTagCollectionViewCell.identifier,
-            for: indexPath) as? FilterTagCollectionViewCell {
-            
-            let selectedCategoryIndex = viewModel.categoriesList.firstIndex(of: viewModel.selectedCategory)
-            
-            if selectedCategoryIndex == indexPath.row {
-                cell.filterLabel.textColor = UIColor(named: K.ColorConstants.BlackPrimary.rawValue)
-                cell.filterLabel.font = .systemFont(ofSize: 13, weight: .heavy)
-            } else {
-                cell.filterLabel.textColor = UIColor(named: K.ColorConstants.WhitePrimary.rawValue)
-                cell.filterLabel.font = .systemFont(ofSize: 13, weight: .semibold)
-            }
-            
-            cell.filterLabel.text = viewModel.categoriesList[indexPath.row].rawValue
-            return cell
-        }
-        return UICollectionViewCell()
-    }
-}
-
-
 // MARK: - Searchbar Delegate Methods
 
-extension HomeViewController: UISearchBarDelegate {
+extension MyEventsViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.filterEventsContaining(titleOrLocation: searchText)
     }
@@ -247,6 +180,6 @@ extension HomeViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
         searchBar.text = ""
-        viewModel.fetchAllEvents()
+        viewModel.fetchEvents()
     }
 }

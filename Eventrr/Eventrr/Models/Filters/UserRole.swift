@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum UserRole: String, CaseIterable, Decodable {
+enum UserRole: String, CaseIterable, Codable {
     case Admin, Attendee
     
     init?(rawValue: String) {

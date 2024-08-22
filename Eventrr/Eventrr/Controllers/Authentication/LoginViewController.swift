@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import Combine
 
 class LoginViewController: UIViewController {
     
@@ -24,16 +25,24 @@ class LoginViewController: UIViewController {
     // MARK: - Private Properties
     
     private let viewModel = LoginViewModel()
+    private let spinner = Popups.loadingPopup()
+    private var cancellables: Set<AnyCancellable> = []
+    private var presentingForFirstTime = true
     
     // MARK: - Life Cycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupUserInterface()
+        setupSubscriptions()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        alreadyLoggedInNavigation()
+        if presentingForFirstTime {
+            presentingForFirstTime = false
+            viewModel.checkUserLoggedInStatus()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -49,14 +58,14 @@ class LoginViewController: UIViewController {
         emailField.resignFirstResponder()
         passwordField.resignFirstResponder()
         
-        if let errorMessage = Utility.validateEmail(email) {
+        if let errorMessage = ValidationUtility.validateEmail(email) {
             emailErrorLabel.text = errorMessage
             emailErrorLabel.isHidden = false
         } else {
             emailErrorLabel.isHidden = true
         }
         
-        if let errorMessage = Utility.validatePassword(password) {
+        if let errorMessage = ValidationUtility.validatePassword(password) {
             passwordErrorLabel.text = errorMessage
             passwordErrorLabel.isHidden = false
         } else {
@@ -64,7 +73,9 @@ class LoginViewController: UIViewController {
         }
         
         guard viewModel.validateForm(emailErrorLabel, passwordErrorLabel) == true else {return}
-        loginUser(email: email, password: password)
+        
+        present(spinner, animated: true)
+        viewModel.loginUser(email: email, password: password)
     }
     
     @IBAction func forgotPassswordButtonPressed(_ sender: UIButton) {
@@ -74,7 +85,7 @@ class LoginViewController: UIViewController {
         ) as! ForgotPasswordViewController
         
         if let email = emailField.text {
-            viewController.userEmail = email
+            viewController.viewModel.userEmail = email
         }
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -90,78 +101,76 @@ class LoginViewController: UIViewController {
     
     // MARK: - Private Methods
     
-    private func alreadyLoggedInNavigation() {
-        Task {
-            if await viewModel.checkUserLoggedInStatus() {
-                let storyboard = UIStoryboard(
-                    name: K.EventsStoryboardIdentifiers.eventsBundle,
-                    bundle: nil
-                )
-                let viewController = storyboard.instantiateViewController(
-                    withIdentifier: K.EventsStoryboardIdentifiers.mainTabViewController
-                )
-                navigationController?.pushViewController(viewController, animated: true)
+    private func setupSubscriptions() {
+        viewModel.$isUserAlreadyLoggedIn
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (status: IsUserAlreadyLoggedIn?) in
+                guard let status else {return}
+                guard let self else {return}
+                
+                switch status {
+                case .loggedIn:
+                    self.viewModel.validateUserRequiredInformation()
+                case .failure(let errorMessage):
+                    Popups.displayFailure(
+                        title: K.StringMessages.loginFailurePopupTitle,
+                        message: errorMessage) { [weak self] popup in
+                            self?.present(popup, animated: true)
+                        }
+                }
+                
             }
-        }
-    }
-    
-    private func loginUser(email: String, password: String) {
-        let spinner = Popups.loadingPopup()
-        present(spinner, animated: true)
+            .store(in: &cancellables)
         
-        Task {
-            do {
-                let _  = try await viewModel.loginUser(email: email, password: password)
-                spinner.dismiss(animated: true)
-                showNextViewController()
-            } catch {
-                spinner.dismiss(animated: true)
+        viewModel.$loginStatus
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (status: LoginStatus?) in
+                guard let status else {return}
+                guard let self else {return}
                 
-                print("[LoginViewController] - Error: \n\(error)]")
-                guard let parsedError = FirebaseService.shared.parseLoginError(error as NSError) else {return}
+                self.spinner.dismiss(animated: true)
                 
-                Popups.displayFailure(
-                    title: K.StringMessages.loginFailurePopupTitle,
-                    message: parsedError.message) {[weak self] popup in
+                switch status {
+                case .success:
+                    self.viewModel.validateUserRequiredInformation()
+                    
+                case .failure(let errorMessage):
+                    Popups.displayFailure(
+                        title: K.StringMessages.loginFailurePopupTitle,
+                        message: errorMessage) { [weak self] popup in
+                            self?.present(popup, animated: true)
+                        }
+                }
+            }.store(in: &cancellables)
+        
+        viewModel.$userInformationStatus
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (status: UserInformationStatus?) in
+                guard let status else {return}
+                guard let self else {return}
+                
+                self.spinner.dismiss(animated: true)
+                
+                switch status {
+                case .saved:
+                    let storyboard = UIStoryboard(name: K.EventsStoryboardIdentifiers.eventsBundle, bundle: nil)
+                    let viewController = storyboard.instantiateViewController(withIdentifier: K.EventsStoryboardIdentifiers.mainTabViewController)
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                    
+                case .notSaved:
+                    let storyboard = UIStoryboard(name: K.MainStoryboardIdentifiers.mainBundle, bundle: nil)
+                    let viewController = storyboard.instantiateViewController(withIdentifier: NameAndRoleViewController.identifier)
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                    
+                case .failure(let errorMessage):
+                    Popups.displayFailure(
+                        title: K.StringMessages.loginFailurePopupTitle,
+                        message: errorMessage
+                    ) { [weak self] popup in
                         self?.present(popup, animated: true)
                     }
-            }
-        }
-    }
-    
-    private func showNextViewController() {
-        Task {
-            do {
-                /*
-                 Checking if the Users collection contains a record
-                 containing authenticated user's required information
-                 */
-                let validityStatus = try await viewModel.validateUserRequiredInformation()
-                
-                let storyboard = validityStatus ? UIStoryboard(
-                    name: K.EventsStoryboardIdentifiers.eventsBundle,
-                    bundle: nil
-                ) : UIStoryboard(
-                    name: K.MainStoryboardIdentifiers.mainBundle,
-                    bundle: nil
-                )
-                
-                let viewController = validityStatus ? storyboard.instantiateViewController(
-                    withIdentifier: K.EventsStoryboardIdentifiers.mainTabViewController
-                ) : storyboard.instantiateViewController(
-                    withIdentifier: NameAndRoleViewController.identifier
-                )
-                
-                navigationController?.pushViewController(viewController, animated: true)
-                
-            } catch {
-                Popups.displayFailure(
-                    title: K.StringMessages.errorTitle,
-                    message: K.StringMessages.somethingWentWrong) {[weak self] popup in
-                        self?.present(popup, animated: true)
-                    }
-            }
-        }
+                }
+            }.store(in: &cancellables)
     }
     
     @objc private func dismissKeyboard() {

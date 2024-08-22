@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class CreateEventViewController: UIViewController {
     
@@ -37,7 +38,12 @@ class CreateEventViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let viewModel = CreateEventViewModel()
+    private var cancellables: Set<AnyCancellable> = []
+    private let spinner = Popups.loadingPopup()
+    
+    // MARK: - Public Properties
+    
+    public let viewModel = CreateEventViewModel()
     
     // MARK: - Initializers
     
@@ -48,6 +54,11 @@ class CreateEventViewController: UIViewController {
         categoryPicker.dataSource = self
         
         setupInterface()
+        setupSubscriptions()
+        
+        if let event = viewModel.eventToEdit {
+            initEditEventDetailsUI(with: event)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,9 +85,9 @@ class CreateEventViewController: UIViewController {
     }
     
     @IBAction func createButtonPressed(_ sender: UIButton) {
-        let titles = [K.PopupActionTitle.create,
-                      K.PopupActionTitle.saveAsDraft,
-                      K.PopupActionTitle.continueEditing]
+        let titles = [viewModel.eventToEdit == nil ? K.ButtonAndPopupActionTitle.create : K.ButtonAndPopupActionTitle.update,
+                      K.ButtonAndPopupActionTitle.saveAsDraft,
+                      K.ButtonAndPopupActionTitle.continueEditing]
         
         let styles = [UIAlertAction.Style.default,
                       UIAlertAction.Style.default,
@@ -84,10 +95,10 @@ class CreateEventViewController: UIViewController {
         
         var actions: [(UIAlertController) -> ()] = []
         
-        /* Handler for "Create" */
+        /* Handler for "Create" or "Update */
         actions.append {
             [weak self] _ in
-            self?.createEvent()
+            self?.createOrUpdateEvent()
         }
         
         /* Handler for "Save as Draft" */
@@ -111,9 +122,9 @@ class CreateEventViewController: UIViewController {
     }
     
     @IBAction func discardButtonPressed(_ sender: UIButton) {
-        let titles = [K.PopupActionTitle.discard,
-                      K.PopupActionTitle.saveAsDraft,
-                      K.PopupActionTitle.continueEditing]
+        let titles = [K.ButtonAndPopupActionTitle.discard,
+                      K.ButtonAndPopupActionTitle.saveAsDraft,
+                      K.ButtonAndPopupActionTitle.continueEditing]
         
         let styles = [UIAlertAction.Style.destructive,
                       UIAlertAction.Style.default,
@@ -149,14 +160,63 @@ class CreateEventViewController: UIViewController {
     
     // MARK: - Private Methods
     
-    private func createEvent() {
+    private func setupSubscriptions() {
+        viewModel.$eventCreateAndUpdateStatus
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (status: EventCreateAndUpdateStatus?) in
+                guard let status, let self else {return}
+                
+                self.spinner.dismiss(animated: true)
+                
+                switch status {
+                case .success:
+                    self.navigationController?.dismiss(animated: true)
+                
+                case .failure(let errorMessage):
+                    Popups.displayFailure(message: errorMessage) { [weak self] popup in
+                        self?.present(popup, animated: true)
+                    }
+                }
+            }.store(in: &cancellables)
+        
+    }
+    
+    private func initEditEventDetailsUI(with event: EventModel) {
+        titleTextField.text = event.title
+        
+        if let categoryIndex = EventCategory.allCases.firstIndex(of: EventCategory(rawValue: event.category)!) {
+            categoryPicker.selectRow(categoryIndex, inComponent: 0, animated: false)
+        }
+        if let date = FormatUtility.convertStringToDate(dateString: event.date) {
+            datePicker.date = date
+        }
+        if let date = FormatUtility.convertStringToDate(dateString: event.fromTime) {
+            fromTimePicker.date = date
+        }
+        if let date = FormatUtility.convertStringToDate(dateString: event.toTime) {
+            toTimePicker.date = date
+        }
+        
+        locationLabel.text = event.locationName
+        descriptionTextView.text = event.description
+        
+        viewModel.selectedEventCategory = EventCategory(rawValue: event.category)!
+        
+        guard let latitude = Double(event.latitude), let longitude = Double(event.longitude) else {return}
+        
+        let locationModel = LocationModel(name: event.locationName, latitude: latitude, longitude: longitude)
+        viewModel.selectedLocation = locationModel
+    }
+    
+    private func createOrUpdateEvent() {
         validateIndividualFields()
         guard isEventFormValid() == true else {return}
         
-        guard let ownerId = UserService.shared?.user.id else {return}
-        guard let ownerName = UserService.shared?.user.name else {return}
+        guard let ownerId = UserService.shared?.user.id, let ownerName = UserService.shared?.user.name else {return}
         
-        let eventModel = EventModel(
+        viewModel.event = EventModel(
+            id: viewModel.eventToEdit?.id ?? nil,
+            
             title: titleTextField.text!,
             category: viewModel.selectedEventCategory.rawValue,
             date: datePicker.date.description,
@@ -170,25 +230,12 @@ class CreateEventViewController: UIViewController {
             ownerName: ownerName
         )
         
-        Task {
-            let spinner = Popups.loadingPopup()
-            present(spinner, animated: true)
-            
-            do {
-                try await viewModel.saveEventToFirebase(event: eventModel)
-                spinner.dismiss(animated: true)
-                self.navigationController?.dismiss(animated: true)
-            } catch {
-                spinner.dismiss(animated: true)
-                print("[\(CreateEventViewController.identifier)] - Error: \n\(error)")
-                
-                guard let parsedError = FirebaseService.shared.parseNetworkError(error as NSError) else  {return}
-                
-                Popups.displayFailure(message: parsedError.message) {[weak self] popup in
-                    self?.present(popup, animated: true)
-                }
-                self.navigationController?.dismiss(animated: true)
-            }
+        present(spinner, animated: true)
+        
+        if let _ = viewModel.eventToEdit {
+            viewModel.updateEvent()
+        } else {
+            viewModel.createEvent()
         }
     }
     
@@ -198,7 +245,7 @@ class CreateEventViewController: UIViewController {
     
     private func validateIndividualFields() {
         /* Title Validation */
-        if let errorMessage = Utility.validateTexualFieldContainsText(titleTextField.text) {
+        if let errorMessage = ValidationUtility.validateTexualFieldContainsText(titleTextField.text) {
             titleErrorLabel.text = errorMessage
             titleErrorLabel.isHidden = false
         } else {
@@ -229,7 +276,7 @@ class CreateEventViewController: UIViewController {
         }
         
         /* Description Validation */
-        if let errorMessage = Utility.validateTexualFieldContainsText(descriptionTextView.text) {
+        if let errorMessage = ValidationUtility.validateTexualFieldContainsText(descriptionTextView.text) {
             descriptionErrorLabel.text = errorMessage
             descriptionErrorLabel.isHidden = false
         } else {
@@ -277,6 +324,17 @@ class CreateEventViewController: UIViewController {
         discardButton.layer.cornerRadius = K.UI.defaultPrimaryCornerRadius
         
         guard let accentPrimaryColor = UIColor(named: K.ColorConstants.AccentPrimary.rawValue)?.cgColor else {return}
+        guard let backgroundPrimaryColor = UIColor(named: K.ColorConstants.WhitePrimary.rawValue)?.cgColor else {return}
+        
+        let buttonTitle = viewModel.eventToEdit == nil ? K.ButtonAndPopupActionTitle.create.uppercased() : K.ButtonAndPopupActionTitle.update.uppercased()
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 20, weight: .semibold),
+            .foregroundColor: backgroundPrimaryColor,
+            .backgroundColor: accentPrimaryColor
+        ]
+        let attributedTitle = NSAttributedString(string: buttonTitle, attributes: attributes)
+        createButton.setAttributedTitle(attributedTitle, for: .normal)
         
         categoryPicker.layer.borderColor = accentPrimaryColor
         datePicker.layer.borderColor = accentPrimaryColor

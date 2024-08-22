@@ -16,7 +16,7 @@ struct UserProfileView: View {
     @State private var showAlert = false
     @State private var alertMessage = ""
     
-    private let viewModel = ProfileViewModel()
+    private let viewModel = UserProfileViewModel()
     
     var body: some View {
         ZStack {
@@ -116,10 +116,12 @@ struct UserProfileView: View {
                         isShowingEditProfile.toggle()
                     }) {
                         Text("Edit Profile")
+                            .font(.system(size: 16))
+                            .fontWeight(.medium)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(SwiftUIConstants.secondaryAccentColor)
-                            .foregroundColor(SwiftUIConstants.primaryAccentColor)
+                            .background(SwiftUIConstants.primaryAccentColor)
+                            .foregroundColor(SwiftUIConstants.primaryBackgroundColor)
                             .cornerRadius(SwiftUIConstants.buttonCornerRadius)
                     }
                     
@@ -127,10 +129,12 @@ struct UserProfileView: View {
                         isShowingChangePassword.toggle()
                     }) {
                         Text("Change Password")
+                            .font(.system(size: 16))
+                            .fontWeight(.medium)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(SwiftUIConstants.secondaryAccentColor)
-                            .foregroundColor(SwiftUIConstants.primaryAccentColor)
+                            .background(SwiftUIConstants.primaryAccentColor)
+                            .foregroundColor(SwiftUIConstants.primaryBackgroundColor)
                             .cornerRadius(SwiftUIConstants.buttonCornerRadius)
                     }
                 }
@@ -146,8 +150,8 @@ struct UserProfileView: View {
                         .padding()
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity)
-                        .background(SwiftUIConstants.secondaryAccentColor)
-                        .foregroundColor(SwiftUIConstants.redAccentColor)
+                        .background(SwiftUIConstants.redAccentColor)
+                        .foregroundColor(SwiftUIConstants.primaryBackgroundColor)
                         .cornerRadius(SwiftUIConstants.buttonCornerRadius)
                 }
                 
@@ -176,13 +180,5 @@ struct UserProfileView: View {
     }
 }
 
-struct NavigationControllerKey: EnvironmentKey {
-    static let defaultValue: UINavigationController? = nil
-}
 
-extension EnvironmentValues {
-    var navigationController: UINavigationController? {
-        get { self[NavigationControllerKey.self] }
-        set { self[NavigationControllerKey.self] = newValue }
-    }
-}
+

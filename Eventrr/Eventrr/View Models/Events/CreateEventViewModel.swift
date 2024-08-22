@@ -7,27 +7,81 @@
 
 import Foundation
 import UIKit
+import FirebaseFirestore
 
 final class CreateEventViewModel {
     
+    static let identifier = String(describing: CreateEventViewModel.self)
+    
+    // MARK: - Private Properties
+    
+    private let userService: UserServiceProtocol
+    private let databaseService: FirebaseService
+    
     // MARK: - Public Properties
     
+    @Published public var eventCreateAndUpdateStatus: EventCreateAndUpdateStatus?
+    @Published public var event: EventModel?
+    
     public let eventCategories = EventCategory.allCases
+    
+    public var eventToEdit: EventModel?
     public var selectedEventCategory: EventCategory = EventCategory.allCases.first!
     public var selectedLocation: LocationModel?
     
-    // MARK: - Data Storage Methods
+    // MARK: - Initializers
     
-    public func saveEventToFirebase(event: EventModel) async throws {
-        guard let eventData = event.toDictionary() else {return}
-        try await FirebaseService.shared.save(data: eventData, into: DBCollections.Events.rawValue)
+    init(userService: UserServiceProtocol = UserService.shared!,
+         databaseService: FirebaseService = FirebaseService.shared) {
+        self.userService = userService
+        self.databaseService = databaseService
     }
     
-    public func saveEventToLocalStorage(event: EventModel) {}
+    // MARK: - Public Methods
     
-    public func saveEventDraftToLocalStorage(event: DraftEventModel) {}
+    public func createEvent() {
+        guard let event, let encodedEvent = try? Firestore.Encoder().encode(event) else {
+            eventCreateAndUpdateStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+            return
+        }
+        
+        Task {
+            do {
+                let _ = try await databaseService.create(data: encodedEvent, table: DatabaseTables.Events.rawValue)
+                eventCreateAndUpdateStatus = .success
+            } catch {
+                print("[\(CreateEventViewModel.identifier)] - Error: \n\(error)")
+                
+                if let parsedError = FirebaseService.shared.parseNetworkError(error as NSError) {
+                    eventCreateAndUpdateStatus = .failure(errorMessage: parsedError.message)
+                } else {
+                    eventCreateAndUpdateStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+                }
+            }
+        }
+    }
     
-    // MARK: - Utility Methods
+    public func updateEvent() {
+        guard let event, let id = event.id, let encodedEvent = try? Firestore.Encoder().encode(event) else {
+            eventCreateAndUpdateStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+            return
+        }
+        
+        Task {
+            do {
+                try await databaseService.update(data: encodedEvent, recordId: id, table: DatabaseTables.Events.rawValue)
+                eventCreateAndUpdateStatus = .success
+            } catch {
+                print("[\(CreateEventViewModel.identifier)] - Error: \n\(error)")
+                
+                if let parsedError = FirebaseService.shared.parseNetworkError(error as NSError) {
+                    eventCreateAndUpdateStatus = .failure(errorMessage: parsedError.message)
+                } else {
+                    eventCreateAndUpdateStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+                }
+            }
+        }
+    }
     
     public func validateDateAndTime(
         selectedDate: Date,
@@ -68,8 +122,10 @@ final class CreateEventViewModel {
             if fromDateAndTime >= toDateAndTime {
                 return K.StringMessages.startTimeMustPrecedeEndTime
             }
-            
             return nil
         }
 }
 
+enum EventCreateAndUpdateStatus {
+    case success, failure(errorMessage: String)
+}

@@ -204,7 +204,7 @@
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="laN-qd-LEq">
                                                                 <rect key="frame" x="0.0" y="37.333333333333314" width="314" height="45"/>
-                                                                <color key="backgroundColor" name="AccentSecondary"/>
+                                                                <color key="backgroundColor" name="AccentPrimary"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="45" id="fsq-mm-xG8"/>
                                                                 </constraints>
@@ -212,8 +212,8 @@
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="LOGIN" cornerStyle="capsule">
                                                                     <imageReference key="image" image="arrow.right" catalog="system" symbolScale="medium"/>
-                                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="25"/>
-                                                                    <color key="baseForegroundColor" name="AccentPrimary"/>
+                                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                                    <color key="baseForegroundColor" name="WhitePrimary"/>
                                                                 </buttonConfiguration>
                                                                 <connections>
                                                                     <action selector="loginButtonPressed:" destination="mBN-8O-guh" eventType="touchUpInside" id="0Nv-N4-dnh"/>
@@ -467,7 +467,7 @@
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jC3-JD-S7x">
                                                         <rect key="frame" x="0.0" y="394" width="314" height="45"/>
-                                                        <color key="backgroundColor" name="AccentSecondary"/>
+                                                        <color key="backgroundColor" name="AccentPrimary"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="45" id="zpj-yd-HpT"/>
                                                         </constraints>
@@ -475,8 +475,8 @@
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="SIGNUP" cornerStyle="capsule">
                                                             <imageReference key="image" image="arrow.right" catalog="system" symbolScale="medium"/>
-                                                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="25"/>
-                                                            <color key="baseForegroundColor" name="AccentPrimary"/>
+                                                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                            <color key="baseForegroundColor" name="WhitePrimary"/>
                                                         </buttonConfiguration>
                                                         <connections>
                                                             <action selector="signupButtonPressed:" destination="6Qp-LW-wXq" eventType="touchUpInside" id="E4z-GU-RrK"/>
@@ -597,6 +597,7 @@
                                                                     <constraint firstAttribute="width" constant="314" id="8nK-CG-fnS"/>
                                                                     <constraint firstAttribute="height" constant="45" id="gp1-4C-xtT"/>
                                                                 </constraints>
+                                                                <color key="textColor" name="BlackPrimary"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" enablesReturnKeyAutomatically="YES"/>
                                                                 <userDefinedRuntimeAttributes>
@@ -660,7 +661,7 @@
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pGp-6w-lWI">
                                                 <rect key="frame" x="0.0" y="426.33333333333337" width="320" height="45"/>
-                                                <color key="backgroundColor" name="AccentSecondary"/>
+                                                <color key="backgroundColor" name="AccentPrimary"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="Eiv-UV-Yex"/>
                                                 </constraints>
@@ -668,8 +669,8 @@
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="SAVE" cornerStyle="capsule">
                                                     <imageReference key="image" image="arrow.right" catalog="system" symbolScale="medium"/>
-                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="25"/>
-                                                    <color key="baseForegroundColor" name="AccentPrimary"/>
+                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                    <color key="baseForegroundColor" name="WhitePrimary"/>
                                                 </buttonConfiguration>
                                                 <connections>
                                                     <action selector="saveButtonPressed:" destination="vf3-Ki-BSN" eventType="touchUpInside" id="Z2M-de-8kH"/>
@@ -766,7 +767,7 @@
                                                             <constraint firstAttribute="height" constant="45" id="3Dw-Ph-y2h"/>
                                                             <constraint firstAttribute="width" constant="314" id="kzi-BF-O4z"/>
                                                         </constraints>
-                                                        <color key="textColor" name="AccentSecondary"/>
+                                                        <color key="textColor" name="BlackPrimary"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress"/>
                                                         <userDefinedRuntimeAttributes>
@@ -785,15 +786,15 @@
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cpF-p5-Xs7">
                                                 <rect key="frame" x="0.0" y="196.66666666666663" width="314" height="45"/>
-                                                <color key="backgroundColor" name="AccentSecondary"/>
+                                                <color key="backgroundColor" name="AccentPrimary"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="rRI-5r-rOX"/>
                                                 </constraints>
                                                 <color key="tintColor" name="BlackPrimary"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="SEND RESET LINK" cornerStyle="capsule">
-                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="25"/>
-                                                    <color key="baseForegroundColor" name="AccentPrimary"/>
+                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                    <color key="baseForegroundColor" name="WhitePrimary"/>
                                                 </buttonConfiguration>
                                                 <connections>
                                                     <action selector="sendResetLinkButtonPressed:" destination="DOo-R4-Q8r" eventType="touchUpInside" id="lcv-v6-UQq"/>

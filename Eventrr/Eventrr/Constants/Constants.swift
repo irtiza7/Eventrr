@@ -9,7 +9,7 @@ import Foundation
 
 struct K {
     enum ColorConstants: String {
-        case WhitePrimary, BlackPrimary, AccentPrimary, AccentSecondary, AccentTertiary, AccentRed
+        case WhitePrimary, BlackPrimary, AccentPrimary, AccentSecondary, AccentTertiary, AccentRed, AccentOrange
     }
     
     struct StringMessages {
@@ -36,6 +36,10 @@ struct K {
         static let startTimeOneHourAfterCurrentTime = "Start time must at least be 1 hour from now."
         static let endTimeBeforeDayEndTime = "End time must be before 11:59 PM."
         static let startTimeMustPrecedeEndTime = "Start time must be before end time."
+        
+        static let eventDeletionConfirmationMessage = "Are you sure you want to delete this event?"
+        static let eventLeaveConfirmationMessage = "Are your sure you want to leave this event?"
+        static let eventJoinConfirmationMessage = "Are your sure you want to join this event?"
         
         static let errorPopupActionButtonTitle = "Retry"
         static let successPopActionButtonTitle = "Okay"
@@ -64,8 +68,14 @@ struct K {
         static let defaultSecondaryBorderWidth: CGFloat = 0.7
     }
     
-    struct PopupActionTitle {
+    struct ButtonAndPopupActionTitle {
         static let create = "Create"
+        static let update = "Update"
+        static let delete = "Delete"
+        static let cancel = "Cancel"
+        static let leave = "Leave"
+        static let join = "Join"
+        static let edit = "Edit"
         static let saveAsDraft = "Save as Draft"
         static let continueEditing = "Continue Editing"
         static let discard = "Discard"

@@ -7,8 +7,9 @@
 
 import Foundation
 
-struct UserModel: Decodable {
-    let id: String
+struct UserModel: Codable {
+    let id: String?
+    let authId: String
     let email: String
     let name: String?
     let role: UserRole?

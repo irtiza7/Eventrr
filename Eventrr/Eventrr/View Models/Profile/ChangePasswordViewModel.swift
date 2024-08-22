@@ -67,15 +67,15 @@ class ChangePasswordViewModel: ObservableObject {
         
         guard let user else { throw AuthError.userNotAuthenticated }
         
-        if let errorMessage = Utility.validateEmail(userEmail) { return errorMessage }
+        if let errorMessage = ValidationUtility.validateEmail(userEmail) { return errorMessage }
         if userEmail != user.email { return "Entered email doesn't match with account email." }
         
-        if let _ = Utility.validatePassword(currentPassword) { return "Enter a valid current password." }
-        if let _ = Utility.validatePassword(newPassword) { return "Enter a valid new password." }
-        if let _ = Utility.validatePassword(confirmPassword) { return "Enter a valid confirm password." }
+        if let _ = ValidationUtility.validatePassword(currentPassword) { return "Enter a valid current password." }
+        if let _ = ValidationUtility.validatePassword(newPassword) { return "Enter a valid new password." }
+        if let _ = ValidationUtility.validatePassword(confirmPassword) { return "Enter a valid confirm password." }
         if currentPassword == newPassword { return "New password is same as old password." }
         
-        if let errorMessage = Utility.validatePasswordAndConfirmPassword(
+        if let errorMessage = ValidationUtility.validatePasswordAndConfirmPassword(
             newPassword,
             confirmPassword
         ) { return errorMessage }

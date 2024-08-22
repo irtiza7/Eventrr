@@ -13,8 +13,6 @@ final class FirebaseService {
     
     static let shared = FirebaseService()
     
-    private let db = Firestore.firestore()
-    
     private init() {}
     
     // MARK: - Auth Network Calls
@@ -40,7 +38,10 @@ final class FirebaseService {
     public func sendPasswordResetEmail(email: String) async throws {
         return try await withCheckedThrowingContinuation { continuation in
             Auth.auth().sendPasswordReset(withEmail: email) { error in
-                if let error { continuation.resume(throwing: error) }
+                if let error { 
+                    continuation.resume(throwing: error)
+                    return
+                }
                 continuation.resume()
             }
         }
@@ -82,25 +83,26 @@ final class FirebaseService {
     
     // MARK: - Data Network Calls
     
-    public func saveUser(data: [String: String], into collection: String) async throws {
-        return try await withCheckedThrowingContinuation() { continuation in
-            db.collection(collection).addDocument(data: data) { error in
-                if let error {
-                    continuation.resume(throwing: error)
-                    return
-                }
-                continuation.resume()
-            }
-        }
-    }
-    
-    public func save(data: [String: String], into collection: String) async throws {
-        return try await withCheckedThrowingContinuation() { continuation in
-            let docRef = db.collection(collection).document()
-            var dataCopy = data
-            dataCopy[DBCollectionFields.Users.id.rawValue] = docRef.documentID
+    public func create(data: [String: Any], table: String) async throws -> String {
+        return try await withCheckedThrowingContinuation { continuation in
+            let docRef = Firestore.firestore().collection(table).document()
             
-            db.collection(collection).addDocument(data: dataCopy) { error in
+            var dataCopy = data
+            dataCopy[DatabaseTableColumns.Users.id.rawValue] = docRef.documentID
+            
+            docRef.setData(dataCopy) { error in
+                if let error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                continuation.resume(returning: docRef.documentID)
+            }
+        }
+    }
+    
+    public func create(data: [String: Any], tableId: String, table: String) async throws {
+        return try await withCheckedThrowingContinuation { continuation in
+            Firestore.firestore().collection(table).document(tableId).setData(data) { error in
                 if let error {
                     continuation.resume(throwing: error)
                     return
@@ -110,9 +112,10 @@ final class FirebaseService {
         }
     }
     
-    public func updateFields(data: [String: String], inDocument documentID: String, into collection:  String) async throws {
-        return try await withCheckedThrowingContinuation() {continuation in
-            let docRef = db.collection(collection).document(documentID)
+    public func update(data: [String: Any], recordId: String, table:  String) async throws {
+        return try await withCheckedThrowingContinuation {continuation in
+            let docRef = Firestore.firestore().collection(table).document(recordId)
+            
             docRef.updateData(data) { error in
                 if let error {
                     continuation.resume(throwing: error)
@@ -123,61 +126,95 @@ final class FirebaseService {
         }
     }
     
-    // TODO: - Update UserModel; Define authId and use save() to automatically store document id
-    // TODO: - Update updateUserDocument() logic to use single API call
-    
-    public func updateUserDocument(data: [String: Any], collection: String, authID: String) async throws {
+    public func addToArrayField(
+        elementToAdd: [String: Any],
+        arrayFieldName: String,
+        recordId: String,
+        table: String
+    ) async throws {
         return try await withCheckedThrowingContinuation { continuation in
-            let query = db.collection(collection).whereField(DBCollectionFields.Users.id.rawValue, isEqualTo: authID)
-            
-            query.getDocuments { snapshot, error in
-                if let error = error {
+            let docRef = Firestore.firestore().collection(table).document(recordId)
+            docRef.updateData([arrayFieldName: FieldValue.arrayUnion([elementToAdd])]) { error in
+                if let error {
                     continuation.resume(throwing: error)
                     return
                 }
-                
-                guard let document = snapshot?.documents.first else {
-                    continuation.resume(throwing: NSError(domain: "Firestore", code: 404, userInfo: [NSLocalizedDescriptionKey: "No document found with authID \(authID)"]))
-                    return
-                }
-                
-                let documentRef = document.reference
-                documentRef.updateData(data) { error in
-                    if let error = error {
-                        continuation.resume(throwing: error)
-                        return
-                    }
-                    continuation.resume()
-                }
+                continuation.resume()
             }
         }
     }
     
-    public func fetchAllData(from collection: String) async throws -> QuerySnapshot {
-        return try await db.collection(collection)
-            .order(by: DBCollectionFields.Events.date.rawValue, descending: true)
+    public func deleteFromArrayField(
+        elementToAdd: [String: Any],
+        arrayFieldName: String,
+        recordId: String,
+        table: String
+    ) async throws {
+        return try await withCheckedThrowingContinuation { continuation in
+            let docRef = Firestore.firestore().collection(table).document(recordId)
+            docRef.updateData([arrayFieldName: FieldValue.arrayRemove([elementToAdd])]) { error in
+                if let error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                continuation.resume()
+            }
+        }
+    }
+    
+    public func delete(recordId: String, table: String) async throws {
+        return try await withCheckedThrowingContinuation { continuation in
+            Firestore.firestore().collection(table).document(recordId).delete() { error in
+                if let error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                continuation.resume()
+            }
+        }
+    }
+    
+    public func fetchAgainstArrayField(
+        containingData: [String: Any],
+        arrayFieldName: String,
+        table: String
+    ) async throws -> QuerySnapshot {
+        let query = Firestore.firestore().collection(table).whereField(arrayFieldName, arrayContains: containingData)
+        return try await query.getDocuments()
+    }
+    
+    public func fetchAllData(table: String) async throws -> QuerySnapshot {
+        return try await Firestore.firestore().collection(table)
+            .order(by: DatabaseTableColumns.Events.date.rawValue, descending: false)
             .getDocuments()
     }
     
-    public func fetchDataAgainstId(_ id: String, from collection: String) async throws -> QuerySnapshot {
-        return try await db.collection(collection)
-            .whereField(DBCollectionFields.Users.id.rawValue, isEqualTo: id)
+    public func fetchDataAgainstId(_ id: String, table: String) async throws -> QuerySnapshot {
+        return try await Firestore.firestore().collection(table)
+            .whereField(DatabaseTableColumns.Users.id.rawValue, isEqualTo: id)
             .getDocuments()
     }
     
-    public func fetchDataContaining(queryString: String, in document: String, from collection: String) async throws -> QuerySnapshot {
-        return try await db.collection(collection)
-            .whereField(document, isGreaterThanOrEqualTo: queryString)
+    public func fetchDataMatching(value: String, column: String, table: String) async throws -> QuerySnapshot {
+        return try await Firestore.firestore().collection(table)
+            .whereField(column, isGreaterThanOrEqualTo: value)
             .getDocuments()
     }
     
-    public func fetchDataAgainst(queryString: String, in document: String, from collection: String) async throws -> QuerySnapshot {
-        return try await db.collection(collection)
-            .whereField(document, isEqualTo: queryString)
+    public func fetchDataAgainst(value: String, column: String, table: String) async throws -> QuerySnapshot {
+        return try await Firestore.firestore().collection(table)
+            .whereField(column, isEqualTo: value)
             .getDocuments()
     }
     
     // MARK: - Error Handling
+    
+    public func parseCredentialsNoLongerValiedError(_ error: NSError) -> (message: String, code: Int)? {
+        if error.code == 17021 {
+            return (message: "Credentials updated, please login agaion.", code: error.code)
+        }
+        return nil
+    }
     
     public func parseNetworkError(_ error: NSError) -> (message: String, code: Int)? {
         if error.code == 1009 || error.code == -1009 || error.code == 17020 {
@@ -192,7 +229,7 @@ final class FirebaseService {
         }
         
         if error.code == 17004 {
-            return ("You have entered old credentials, try again.", 17004)
+            return ("You have entered invalid or old credentials, try again.", 17004)
         }
         
         if let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError {

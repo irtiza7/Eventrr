@@ -78,8 +78,8 @@ class SetEventLocationViewController: UIViewController {
         
         currentLocationButton.layer.cornerRadius = K.UI.defaultPrimaryCornerRadius
         
-        selectLocationButton.layer.borderColor = UIColor(named: K.ColorConstants.AccentTertiary.rawValue)?.cgColor
-        selectLocationButton.layer.borderWidth = K.UI.defaultPrimaryBorderWidth
+//        selectLocationButton.layer.borderColor = UIColor(named: K.ColorConstants.AccentTertiary.rawValue)?.cgColor
+//        selectLocationButton.layer.borderWidth = K.UI.defaultPrimaryBorderWidth
         selectLocationButton.layer.cornerRadius = K.UI.defaultPrimaryCornerRadius
     }
     
