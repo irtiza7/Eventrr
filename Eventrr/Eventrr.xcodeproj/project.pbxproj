@@ -10,6 +10,11 @@
 		4CCEA9C762D8DF9570210ECE /* Pods_EventrrTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8870DB42EDC71B99E755DD07 /* Pods_EventrrTests.framework */; };
 		814019D18FA5DA93E38AFC50 /* Pods_Eventrr_EventrrUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A931C3C419693C37B766EEB /* Pods_Eventrr_EventrrUITests.framework */; };
 		D72230B72C654A9C0069E3E9 /* FirebaseModelConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72230B62C654A9C0069E3E9 /* FirebaseModelConstants.swift */; };
+		D724583B2C77760400E93EB2 /* EventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724583A2C77760400E93EB2 /* EventDetailsViewController.swift */; };
+		D724583D2C7777FA00E93EB2 /* EventDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724583C2C7777FA00E93EB2 /* EventDetailsViewModel.swift */; };
+		D72B2F342C7AB713009094A1 /* MyEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72B2F332C7AB713009094A1 /* MyEventsViewController.swift */; };
+		D72B2F382C7AB812009094A1 /* MyEventsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72B2F372C7AB811009094A1 /* MyEventsViewModel.swift */; };
+		D72B2F3A2C7AC011009094A1 /* MyEventFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72B2F392C7AC011009094A1 /* MyEventFilter.swift */; };
 		D72DA08A2C6118AE0091D390 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DA0892C6118AE0091D390 /* UserModel.swift */; };
 		D72DA08C2C612D4F0091D390 /* NameAndRoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DA08B2C612D4F0091D390 /* NameAndRoleViewController.swift */; };
 		D72DA08E2C612D670091D390 /* NameAndRoleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DA08D2C612D670091D390 /* NameAndRoleViewModel.swift */; };
@@ -28,22 +33,27 @@
 		D76D67F32C5C338000F0B944 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76D67F22C5C337F00F0B944 /* SignupViewController.swift */; };
 		D76EF35C2C605F7C00E5889B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76EF35B2C605F7C00E5889B /* LoginViewModel.swift */; };
 		D76EF35E2C60611200E5889B /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76EF35D2C60611200E5889B /* SignupViewModel.swift */; };
-		D779EB202C74F934003B9170 /* EventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D779EB1F2C74F934003B9170 /* EventDetailsView.swift */; };
 		D779EB222C753424003B9170 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D779EB212C753424003B9170 /* UserProfileView.swift */; };
 		D783FD6C2C625FF10021F6CD /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D783FD6B2C625FF10021F6CD /* Constants.swift */; };
-		D78E9D102C738CD200BC7875 /* DraftEventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78E9D0F2C738CD200BC7875 /* DraftEventModel.swift */; };
 		D78E9D122C738E0200BC7875 /* Events.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D78E9D112C738E0200BC7875 /* Events.storyboard */; };
+		D79012E82C7DFFF100B1EFAF /* NoEventTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D79012E72C7DFFF100B1EFAF /* NoEventTableViewCell.xib */; };
+		D79012E92C7DFFF100B1EFAF /* NoEventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79012E62C7DFFF100B1EFAF /* NoEventTableViewCell.swift */; };
+		D79589A22C779D2700776B9A /* FormatUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79589A12C779D2700776B9A /* FormatUtility.swift */; };
 		D79C11932C5D86A90090BCC3 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79C11922C5D86A90090BCC3 /* ForgotPasswordViewController.swift */; };
 		D79E40DF2C76253000306CB5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79E40DE2C76253000306CB5 /* ProfileViewController.swift */; };
-		D79E40E12C7629E100306CB5 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79E40E02C7629E100306CB5 /* ProfileViewModel.swift */; };
+		D79E40E12C7629E100306CB5 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79E40E02C7629E100306CB5 /* UserProfileViewModel.swift */; };
 		D79E40E32C7640C000306CB5 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79E40E22C7640C000306CB5 /* EditProfileView.swift */; };
 		D79E40E52C7642B000306CB5 /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79E40E42C7642B000306CB5 /* ChangePasswordView.swift */; };
 		D7A85ECC2C76951800190FE0 /* ChangePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A85ECB2C76951800190FE0 /* ChangePasswordViewModel.swift */; };
 		D7A85ECF2C769CA800190FE0 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A85ECE2C769CA800190FE0 /* AuthError.swift */; };
-		D7B1829F2C73AA3F00FFF764 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B1829E2C73AA3F00FFF764 /* Utility.swift */; };
+		D7A85ED42C76B32400190FE0 /* EnvironmentValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A85ED32C76B32400190FE0 /* EnvironmentValues+Extension.swift */; };
+		D7B1829F2C73AA3F00FFF764 /* ValidationUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B1829E2C73AA3F00FFF764 /* ValidationUtility.swift */; };
 		D7B182A22C73BF7A00FFF764 /* FilterTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B182A02C73BF7A00FFF764 /* FilterTagCollectionViewCell.swift */; };
 		D7B182A32C73BF7A00FFF764 /* FilterTagCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7B182A12C73BF7A00FFF764 /* FilterTagCollectionViewCell.xib */; };
 		D7BAA60E2C6B9ADA004F608E /* SetEventLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BAA60D2C6B9ADA004F608E /* SetEventLocationViewController.swift */; };
+		D7C015AE2C7CBB40007B0F84 /* EventAttendee.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C015AD2C7CBB40007B0F84 /* EventAttendee.swift */; };
+		D7C015B02C7CBCA7007B0F84 /* UserEventsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C015AF2C7CBCA7007B0F84 /* UserEventsService.swift */; };
+		D7CA65462C7D3A1E0050802F /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CA65452C7D3A1E0050802F /* ForgotPasswordViewModel.swift */; };
 		D7D3F7702C59611600B05D28 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3F76F2C59611600B05D28 /* AppDelegate.swift */; };
 		D7D3F7722C59611600B05D28 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3F7712C59611600B05D28 /* SceneDelegate.swift */; };
 		D7D3F7742C59611600B05D28 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3F7732C59611600B05D28 /* LaunchScreenViewController.swift */; };
@@ -89,6 +99,11 @@
 		A9A7000574C73307D6559008 /* Pods_Eventrr.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Eventrr.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D46A6F822E29ED181B3647FD /* Pods-EventrrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EventrrTests.release.xcconfig"; path = "Target Support Files/Pods-EventrrTests/Pods-EventrrTests.release.xcconfig"; sourceTree = "<group>"; };
 		D72230B62C654A9C0069E3E9 /* FirebaseModelConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseModelConstants.swift; sourceTree = "<group>"; };
+		D724583A2C77760400E93EB2 /* EventDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsViewController.swift; sourceTree = "<group>"; };
+		D724583C2C7777FA00E93EB2 /* EventDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsViewModel.swift; sourceTree = "<group>"; };
+		D72B2F332C7AB713009094A1 /* MyEventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventsViewController.swift; sourceTree = "<group>"; };
+		D72B2F372C7AB811009094A1 /* MyEventsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventsViewModel.swift; sourceTree = "<group>"; };
+		D72B2F392C7AC011009094A1 /* MyEventFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventFilter.swift; sourceTree = "<group>"; };
 		D72DA0892C6118AE0091D390 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		D72DA08B2C612D4F0091D390 /* NameAndRoleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameAndRoleViewController.swift; sourceTree = "<group>"; };
 		D72DA08D2C612D670091D390 /* NameAndRoleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameAndRoleViewModel.swift; sourceTree = "<group>"; };
@@ -107,22 +122,27 @@
 		D76D67F22C5C337F00F0B944 /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		D76EF35B2C605F7C00E5889B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		D76EF35D2C60611200E5889B /* SignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
-		D779EB1F2C74F934003B9170 /* EventDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsView.swift; sourceTree = "<group>"; };
 		D779EB212C753424003B9170 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		D783FD6B2C625FF10021F6CD /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		D78E9D0F2C738CD200BC7875 /* DraftEventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftEventModel.swift; sourceTree = "<group>"; };
 		D78E9D112C738E0200BC7875 /* Events.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Events.storyboard; sourceTree = "<group>"; };
+		D79012E62C7DFFF100B1EFAF /* NoEventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoEventTableViewCell.swift; sourceTree = "<group>"; };
+		D79012E72C7DFFF100B1EFAF /* NoEventTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoEventTableViewCell.xib; sourceTree = "<group>"; };
+		D79589A12C779D2700776B9A /* FormatUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatUtility.swift; sourceTree = "<group>"; };
 		D79C11922C5D86A90090BCC3 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		D79E40DE2C76253000306CB5 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		D79E40E02C7629E100306CB5 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		D79E40E02C7629E100306CB5 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
 		D79E40E22C7640C000306CB5 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		D79E40E42C7642B000306CB5 /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		D7A85ECB2C76951800190FE0 /* ChangePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModel.swift; sourceTree = "<group>"; };
 		D7A85ECE2C769CA800190FE0 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
-		D7B1829E2C73AA3F00FFF764 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		D7A85ED32C76B32400190FE0 /* EnvironmentValues+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extension.swift"; sourceTree = "<group>"; };
+		D7B1829E2C73AA3F00FFF764 /* ValidationUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationUtility.swift; sourceTree = "<group>"; };
 		D7B182A02C73BF7A00FFF764 /* FilterTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTagCollectionViewCell.swift; sourceTree = "<group>"; };
 		D7B182A12C73BF7A00FFF764 /* FilterTagCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterTagCollectionViewCell.xib; sourceTree = "<group>"; };
 		D7BAA60D2C6B9ADA004F608E /* SetEventLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetEventLocationViewController.swift; sourceTree = "<group>"; };
+		D7C015AD2C7CBB40007B0F84 /* EventAttendee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAttendee.swift; sourceTree = "<group>"; };
+		D7C015AF2C7CBCA7007B0F84 /* UserEventsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEventsService.swift; sourceTree = "<group>"; };
+		D7CA65452C7D3A1E0050802F /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
 		D7D3F76C2C59611600B05D28 /* Eventrr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Eventrr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D3F76F2C59611600B05D28 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D7D3F7712C59611600B05D28 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -196,12 +216,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D72B2F352C7AB7C1009094A1 /* UserProfile */ = {
+			isa = PBXGroup;
+			children = (
+				D779EB1E2C74F90F003B9170 /* SwiftUI Views */,
+			);
+			path = UserProfile;
+			sourceTree = "<group>";
+		};
 		D73932C32C6683A80065597A /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
 				D76EF35B2C605F7C00E5889B /* LoginViewModel.swift */,
 				D76EF35D2C60611200E5889B /* SignupViewModel.swift */,
 				D72DA08D2C612D670091D390 /* NameAndRoleViewModel.swift */,
+				D7CA65452C7D3A1E0050802F /* ForgotPasswordViewModel.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -211,6 +240,8 @@
 			children = (
 				D73932B92C665F320065597A /* HomeViewModel.swift */,
 				D73932C72C66841C0065597A /* CreateEventViewModel.swift */,
+				D724583C2C7777FA00E93EB2 /* EventDetailsViewModel.swift */,
+				D72B2F372C7AB811009094A1 /* MyEventsViewModel.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -234,6 +265,8 @@
 				D73932BD2C66832F0065597A /* CreateEventViewController.swift */,
 				D7BAA60D2C6B9ADA004F608E /* SetEventLocationViewController.swift */,
 				D79E40DE2C76253000306CB5 /* ProfileViewController.swift */,
+				D724583A2C77760400E93EB2 /* EventDetailsViewController.swift */,
+				D72B2F332C7AB713009094A1 /* MyEventsViewController.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -241,10 +274,7 @@
 		D74E34F22C7356B5001BD75E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				D74E34F32C7356FA001BD75E /* EventTableViewCell.swift */,
-				D74E34F42C7356FA001BD75E /* EventTableViewCell.xib */,
-				D7B182A02C73BF7A00FFF764 /* FilterTagCollectionViewCell.swift */,
-				D7B182A12C73BF7A00FFF764 /* FilterTagCollectionViewCell.xib */,
+				D7A85ED02C76B29E00190FE0 /* Custom Cells */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -280,7 +310,7 @@
 		D779EB1E2C74F90F003B9170 /* SwiftUI Views */ = {
 			isa = PBXGroup;
 			children = (
-				D779EB1F2C74F934003B9170 /* EventDetailsView.swift */,
+				D7A85EC92C7689EE00190FE0 /* Profile */,
 			);
 			path = "SwiftUI Views";
 			sourceTree = "<group>";
@@ -290,20 +320,37 @@
 			children = (
 				D73932C52C6683E60065597A /* Authentication */,
 				D73932C62C6683F90065597A /* Events */,
-				D7A85EC92C7689EE00190FE0 /* Profile */,
+				D72B2F352C7AB7C1009094A1 /* UserProfile */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		D79C118B2C5D702B0090BCC3 /* Models */ = {
+		D79012EA2C7E3AFF00B1EFAF /* Data */ = {
 			isa = PBXGroup;
 			children = (
 				D72DA0892C6118AE0091D390 /* UserModel.swift */,
 				D73932BB2C665F770065597A /* EventModel.swift */,
 				D74E55EC2C6C1E03002E2936 /* LocationModel.swift */,
+				D7C015AD2C7CBB40007B0F84 /* EventAttendee.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		D79012EB2C7E3B0500B1EFAF /* Filters */ = {
+			isa = PBXGroup;
+			children = (
 				D7DC57692C6A8564007C72D4 /* UserRole.swift */,
+				D72B2F392C7AC011009094A1 /* MyEventFilter.swift */,
 				D7594DE82C6FA7A500A682DF /* EventCategory.swift */,
-				D78E9D0F2C738CD200BC7875 /* DraftEventModel.swift */,
+			);
+			path = Filters;
+			sourceTree = "<group>";
+		};
+		D79C118B2C5D702B0090BCC3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D79012EB2C7E3B0500B1EFAF /* Filters */,
+				D79012EA2C7E3AFF00B1EFAF /* Data */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -321,7 +368,7 @@
 		D7A85ECA2C768A3900190FE0 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				D79E40E02C7629E100306CB5 /* ProfileViewModel.swift */,
+				D79E40E02C7629E100306CB5 /* UserProfileViewModel.swift */,
 				D7FF40C62C766BCA00A31421 /* EditProfileViewModel.swift */,
 				D7A85ECB2C76951800190FE0 /* ChangePasswordViewModel.swift */,
 			);
@@ -336,10 +383,32 @@
 			path = CustomErrors;
 			sourceTree = "<group>";
 		};
+		D7A85ED02C76B29E00190FE0 /* Custom Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D74E34F32C7356FA001BD75E /* EventTableViewCell.swift */,
+				D74E34F42C7356FA001BD75E /* EventTableViewCell.xib */,
+				D7B182A02C73BF7A00FFF764 /* FilterTagCollectionViewCell.swift */,
+				D7B182A12C73BF7A00FFF764 /* FilterTagCollectionViewCell.xib */,
+				D79012E62C7DFFF100B1EFAF /* NoEventTableViewCell.swift */,
+				D79012E72C7DFFF100B1EFAF /* NoEventTableViewCell.xib */,
+			);
+			path = "Custom Cells";
+			sourceTree = "<group>";
+		};
+		D7A85ED22C76B2F100190FE0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D7A85ED32C76B32400190FE0 /* EnvironmentValues+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		D7B1829D2C73AA2900FFF764 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				D7B1829E2C73AA3F00FFF764 /* Utility.swift */,
+				D7B1829E2C73AA3F00FFF764 /* ValidationUtility.swift */,
+				D79589A12C779D2700776B9A /* FormatUtility.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -369,9 +438,9 @@
 		D7D3F76E2C59611600B05D28 /* Eventrr */ = {
 			isa = PBXGroup;
 			children = (
+				D7A85ED22C76B2F100190FE0 /* Extensions */,
 				D7A85ECD2C769C9100190FE0 /* CustomErrors */,
 				D7B1829D2C73AA2900FFF764 /* Utilities */,
-				D779EB1E2C74F90F003B9170 /* SwiftUI Views */,
 				D74E34F22C7356B5001BD75E /* Views */,
 				D755D4832C6056E4006E21FC /* Constants */,
 				D755D4802C60520B006E21FC /* View Models */,
@@ -414,6 +483,7 @@
 				D7D3F7A02C596AFE00B05D28 /* FirebaseService.swift */,
 				D755D4812C605223006E21FC /* Popups.swift */,
 				D7DC576B2C6A8D0D007C72D4 /* UserService.swift */,
+				D7C015AF2C7CBCA7007B0F84 /* UserEventsService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -530,6 +600,7 @@
 				D7D3F77C2C59611800B05D28 /* LaunchScreen.storyboard in Resources */,
 				D7D3F7A32C596C2800B05D28 /* GoogleService-Info.plist in Resources */,
 				D7B182A32C73BF7A00FFF764 /* FilterTagCollectionViewCell.xib in Resources */,
+				D79012E82C7DFFF100B1EFAF /* NoEventTableViewCell.xib in Resources */,
 				D7D3F7792C59611800B05D28 /* Assets.xcassets in Resources */,
 				D7D3F7772C59611600B05D28 /* Main.storyboard in Resources */,
 				D74E34F62C7356FA001BD75E /* EventTableViewCell.xib in Resources */,
@@ -662,10 +733,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D79E40E32C7640C000306CB5 /* EditProfileView.swift in Sources */,
+				D7C015AE2C7CBB40007B0F84 /* EventAttendee.swift in Sources */,
 				D72230B72C654A9C0069E3E9 /* FirebaseModelConstants.swift in Sources */,
 				D7DC576C2C6A8D0D007C72D4 /* UserService.swift in Sources */,
+				D7A85ED42C76B32400190FE0 /* EnvironmentValues+Extension.swift in Sources */,
 				D73932B82C6659B30065597A /* HomeViewController.swift in Sources */,
 				D76D67F12C5C02D800F0B944 /* UITextFieldDesignable.swift in Sources */,
+				D79012E92C7DFFF100B1EFAF /* NoEventTableViewCell.swift in Sources */,
 				D74E34F52C7356FA001BD75E /* EventTableViewCell.swift in Sources */,
 				D74E55ED2C6C1E03002E2936 /* LocationModel.swift in Sources */,
 				D7FF40C92C76778900A31421 /* SwiftUIContants.swift in Sources */,
@@ -679,28 +753,34 @@
 				D73932BE2C66832F0065597A /* CreateEventViewController.swift in Sources */,
 				D76D67F32C5C338000F0B944 /* SignupViewController.swift in Sources */,
 				D7A85ECC2C76951800190FE0 /* ChangePasswordViewModel.swift in Sources */,
-				D78E9D102C738CD200BC7875 /* DraftEventModel.swift in Sources */,
+				D72B2F3A2C7AC011009094A1 /* MyEventFilter.swift in Sources */,
 				D7B182A22C73BF7A00FFF764 /* FilterTagCollectionViewCell.swift in Sources */,
 				D72DA08E2C612D670091D390 /* NameAndRoleViewModel.swift in Sources */,
+				D7CA65462C7D3A1E0050802F /* ForgotPasswordViewModel.swift in Sources */,
 				D7D3F7742C59611600B05D28 /* LaunchScreenViewController.swift in Sources */,
 				D76EF35E2C60611200E5889B /* SignupViewModel.swift in Sources */,
 				D7D3F7702C59611600B05D28 /* AppDelegate.swift in Sources */,
+				D72B2F382C7AB812009094A1 /* MyEventsViewModel.swift in Sources */,
 				D76EF35C2C605F7C00E5889B /* LoginViewModel.swift in Sources */,
 				D7FF40C72C766BCA00A31421 /* EditProfileViewModel.swift in Sources */,
-				D7B1829F2C73AA3F00FFF764 /* Utility.swift in Sources */,
+				D79589A22C779D2700776B9A /* FormatUtility.swift in Sources */,
+				D7B1829F2C73AA3F00FFF764 /* ValidationUtility.swift in Sources */,
 				D7BAA60E2C6B9ADA004F608E /* SetEventLocationViewController.swift in Sources */,
-				D779EB202C74F934003B9170 /* EventDetailsView.swift in Sources */,
+				D72B2F342C7AB713009094A1 /* MyEventsViewController.swift in Sources */,
 				D7D3F7A12C596AFE00B05D28 /* FirebaseService.swift in Sources */,
 				D755D4822C605223006E21FC /* Popups.swift in Sources */,
 				D7DC576A2C6A8564007C72D4 /* UserRole.swift in Sources */,
 				D73932BC2C665F770065597A /* EventModel.swift in Sources */,
+				D7C015B02C7CBCA7007B0F84 /* UserEventsService.swift in Sources */,
 				D779EB222C753424003B9170 /* UserProfileView.swift in Sources */,
 				D72DA08A2C6118AE0091D390 /* UserModel.swift in Sources */,
+				D724583B2C77760400E93EB2 /* EventDetailsViewController.swift in Sources */,
 				D79E40E52C7642B000306CB5 /* ChangePasswordView.swift in Sources */,
-				D79E40E12C7629E100306CB5 /* ProfileViewModel.swift in Sources */,
+				D79E40E12C7629E100306CB5 /* UserProfileViewModel.swift in Sources */,
 				D7D3F7722C59611600B05D28 /* SceneDelegate.swift in Sources */,
 				D72DA08C2C612D4F0091D390 /* NameAndRoleViewController.swift in Sources */,
 				D783FD6C2C625FF10021F6CD /* Constants.swift in Sources */,
+				D724583D2C7777FA00E93EB2 /* EventDetailsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

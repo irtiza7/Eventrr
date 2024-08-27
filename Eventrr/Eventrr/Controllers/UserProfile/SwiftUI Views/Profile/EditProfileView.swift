@@ -84,8 +84,8 @@ struct EditProfileView: View {
                         .padding()
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity)
-                        .background(SwiftUIConstants.secondaryAccentColor)
-                        .foregroundColor(SwiftUIConstants.primaryAccentColor)
+                        .background(SwiftUIConstants.primaryAccentColor)
+                        .foregroundColor(SwiftUIConstants.primaryBackgroundColor)
                         .cornerRadius(SwiftUIConstants.buttonCornerRadius)
                 }
                 .padding(.top, 20)

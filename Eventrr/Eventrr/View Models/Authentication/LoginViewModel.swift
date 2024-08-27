@@ -11,67 +11,111 @@ import FirebaseFirestore
 
 class LoginViewModel {
     
+    static let identifier = String(describing: LoginViewModel.self)
+    
+    // MARK: - Public Properties
+    
+    @Published public var loginStatus: LoginStatus?
+    @Published public var userInformationStatus: UserInformationStatus?
+    @Published public var isUserAlreadyLoggedIn: IsUserAlreadyLoggedIn?
+    
+    init() {}
+    
     // MARK: - Private Methods
     
-    private func initializeUserService(document: QueryDocumentSnapshot) {
+    private func initializeUserService(document: QueryDocumentSnapshot, authId: String, email: String) {
         let data = document.data()
-        let name = data[DBCollectionFields.Users.name.rawValue] as! String
-        let role = data[DBCollectionFields.Users.type.rawValue] as! String
         
-        UserService.createInstance(name: name, role: role)
+        guard let id = data[DatabaseTableColumns.Users.id.rawValue] as? String,
+              let name = data[DatabaseTableColumns.Users.name.rawValue] as? String,
+              let role = UserRole(rawValue: data[DatabaseTableColumns.Users.type.rawValue] as? String ?? "") else {return}
+        
+        let userModel = UserModel(id: id, authId: authId, email: email, name: name, role: role)
+        UserService.createInstance(userModel: userModel)
     }
     
-    // MARK: - Public Methods
-    
-    public func checkUserLoggedInStatus() async -> Bool {
-        /*
-         Firebase sets currentUser property to nil if user is dileberaty
-         or automatically logged out
-         Non nil value means user is logged in
-         */
-        guard let user = Auth.auth().currentUser else {return false}
-        let userId = user.uid
-        
-        do {
-            let querySnapshot = try await FirebaseService.shared.fetchDataAgainstId(userId, from: DBCollections.Users.rawValue)
-            let document = querySnapshot.documents.first(where: {
-                let data = $0.data()
-                return (data[DBCollectionFields.Users.id.rawValue] as? String) == userId
-            })
-            if let document {
-                initializeUserService(document: document)
-            }
-        } catch {
-            print("[\(String(describing: LoginViewModel.self))] - Error: \n\(error)")
-        }
-        return true
-    }
-    
-    public func loginUser(email: String, password: String) async throws -> AuthDataResult {
-        return try await FirebaseService.shared.login(email: email, password: password)
-    }
-    
-    public func validateUserRequiredInformation() async throws -> Bool {
-        guard let user = Auth.auth().currentUser else {return false}
-        let userId = user.uid
-        
-        let querySnapshot = try await FirebaseService.shared.fetchDataAgainstId(
-            userId,
-            from: DBCollections.Users.rawValue
+    private func fetchUserInformation(authId: String) async throws -> QueryDocumentSnapshot? {
+        let querySnapshot = try await FirebaseService.shared.fetchDataAgainst(
+            value: authId,
+            column: DatabaseTableColumns.Users.authId.rawValue,
+            table: DatabaseTables.Users.rawValue
         )
         let document = querySnapshot.documents.first(where: {
             let data = $0.data()
-            return (data[DBCollectionFields.Users.id.rawValue] as? String) == userId
+            return (data[DatabaseTableColumns.Users.authId.rawValue] as? String) == authId
         })
+        return document
+    }
+    
+    
+    // MARK: - Public Methods
+    
+    public func checkUserLoggedInStatus() {
+        /*
+         Have to reload current user object in case the user was logged in already
+         but the password was updated
+         */
+        Auth.auth().currentUser?.reload { error in
+            if let error {
+                print("[\(LoginViewModel.identifier)] - Error: \n\(error)]")
+                
+                guard let error = FirebaseService.shared.parseCredentialsNoLongerValiedError(error as NSError) else {return}
+                self.isUserAlreadyLoggedIn = .failure(errorMessage: error.message)
+                
+                return
+            }
+            self.isUserAlreadyLoggedIn = .loggedIn
+        }
+    }
+    
+    public func loginUser(email: String, password: String) {
+        Task {
+            do {
+                let _ = try await FirebaseService.shared.login(email: email, password: password)
+                loginStatus = .success
+            } catch {
+                print("[\(LoginViewModel.identifier)] - Error: \n\(error)]")
+                
+                guard let parsedError = FirebaseService.shared.parseLoginError(error as NSError) else {return}
+                loginStatus = .failure(errorMessage: parsedError.message)
+            }
+        }
+    }
+    
+    public func validateUserRequiredInformation() {
+        guard let user = Auth.auth().currentUser, let email = user.email else {
+            userInformationStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+            return
+        }
+        let authId = user.uid
         
-        /* Invalidate if no record of user's information exists */
-        guard let document else {return false}
-        
-        initializeUserService(document: document)
-        return true
+        Task {
+            do {
+                guard let document = try await fetchUserInformation(authId: authId) else {
+                    userInformationStatus = .notSaved
+                    return
+                }
+                userInformationStatus = .saved
+                initializeUserService(document: document, authId: authId, email: email)
+            } catch {
+                userInformationStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+            }
+        }
     }
     
     public func validateForm(_ emailErrorLabel: UILabel, _ passwordLabel: UILabel) -> Bool {
         emailErrorLabel.isHidden && passwordLabel.isHidden
     }
+}
+
+enum LoginStatus {
+    case success, failure(errorMessage: String)
+}
+
+enum UserInformationStatus {
+    case saved, notSaved, failure(errorMessage: String)
+}
+
+enum IsUserAlreadyLoggedIn {
+    case loggedIn, failure(errorMessage: String)
 }

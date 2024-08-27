@@ -7,18 +7,23 @@
 
 import Foundation
 
-enum DBCollections: String {
-    case Users, Events
+enum DatabaseTables: String {
+    case Users, Events, EventAttendees
 }
 
-struct DBCollectionFields {
+struct DatabaseTableColumns {
     enum Users: String {
-        case id, email, name, type
+        case id, authId, email, name, type
     }
     
     enum Events: String {
         case id, title, category, date, fromTime, toTime, description
         case locationName, latitude, longitude
         case ownerName, ownerId
+        case attendees
+    }
+    
+    enum EventAttendees: String {
+        case attendeeId
     }
 }

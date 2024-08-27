@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import FirebaseAuth
+import Combine
 
 class SignupViewController: UIViewController {
     
@@ -29,15 +29,18 @@ class SignupViewController: UIViewController {
     // MARK: - Private Properties
     
     private let viewModel = SignupViewModel()
+    private let spinner = Popups.loadingPopup()
+    private var cancellables: Set<AnyCancellable> = []
     
     // MARK: - Life Cycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUserInterface()
+        setupSubscriptions()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = true
     }
     
@@ -52,29 +55,31 @@ class SignupViewController: UIViewController {
         passwordField.resignFirstResponder()
         confirmPasswordField.resignFirstResponder()
         
-        if let errorMessage = Utility.validateEmail(email) {
+        if let errorMessage = ValidationUtility.validateEmail(email) {
             emailErrorLabel.text = errorMessage
             emailErrorLabel.isHidden = false
         } else {
             emailErrorLabel.isHidden = true
         }
         
-        if let errorMessage = Utility.validatePassword(password) {
+        if let errorMessage = ValidationUtility.validatePassword(password) {
             passwordErrorLabel.text = errorMessage
             passwordErrorLabel.isHidden = false
         } else {
             passwordErrorLabel.isHidden = true
         }
         
-        if let errorMessage = Utility.validatePasswordAndConfirmPassword(password, confirmPassword) {
+        if let errorMessage = ValidationUtility.validatePasswordAndConfirmPassword(password, confirmPassword) {
             confirmPasswordErrorLabel.text = errorMessage
             confirmPasswordErrorLabel.isHidden = false
         } else {
             confirmPasswordErrorLabel.isHidden = true
         }
         
-        guard viewModel.validateForm(emailErrorLabel, passwordErrorLabel, confirmPasswordErrorLabel) == true else {return}
-        signupUser(email: email, password: password)
+        if viewModel.validateForm(emailErrorLabel, passwordErrorLabel, confirmPasswordErrorLabel) {
+            present(spinner, animated: true)
+            viewModel.signupUser(email: email, password: password)
+        }
     }
     
     @IBAction func loginButtonPressed(_ sender: UIButton) {
@@ -83,31 +88,30 @@ class SignupViewController: UIViewController {
     
     // MARK: - Private Methods
     
-    private func signupUser(email: String, password: String) {
-        let spinner = Popups.loadingPopup()
-        present(spinner, animated: true)
-        
-        Task {
-            do {
-                let _ = try await viewModel.signupUser(email: email, password: password)
-                spinner.dismiss(animated: true)
+    private func setupSubscriptions() {
+        viewModel.$signupStatus
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (status: SignupStatus?) in
+                guard let status, let self else {return}
+                self.spinner.dismiss(animated: true)
                 
-                let storyboard = UIStoryboard(name: K.MainStoryboardIdentifiers.mainBundle, bundle: nil)
-                let viewController = storyboard.instantiateViewController(withIdentifier: NameAndRoleViewController.identifier)
-                
-                navigationController?.pushViewController(viewController, animated: true)
-            } catch {
-                spinner.dismiss(animated: true)
-                
-                print("[\(SignupViewController.identifier)] - Error: \n\(error)]")
-                guard let parsedError = FirebaseService.shared.parseSignupError(error as NSError) else {return}
-                
-                Popups.displayFailure(title: K.StringMessages.signupFailurePopupTitle, message: parsedError.message) {
-                    [weak self] popup in
-                    self?.present(popup, animated: true)
+                switch status {
+                case .success:
+                    let storyboard = UIStoryboard(name: K.MainStoryboardIdentifiers.mainBundle, bundle: nil)
+                    let viewController = storyboard.instantiateViewController(withIdentifier: NameAndRoleViewController.identifier)
+                    navigationController?.pushViewController(viewController, animated: true)
+                    
+                case .failure(let errorMessage):
+                    Popups.displayFailure(
+                        title: K.StringMessages.signupFailurePopupTitle,
+                        message: errorMessage
+                    ) {
+                        [weak self] popup in
+                        self?.present(popup, animated: true)
+                    }
                 }
-            }
-        }
+                
+            }.store(in: &cancellables)
     }
     
     @objc private func dismissKeyboard() {

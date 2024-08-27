@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Utility {
+struct ValidationUtility {
     static func validateEmail(_ value: String) -> String? {
         if value.count == 0 { return K.StringMessages.requiredFieldString }
         
@@ -40,29 +40,4 @@ struct Utility {
         }
         return nil
     }
-    
-    static func formatDateAndTime(
-        dateString: String,
-        fromTimeString: String,
-        toTimeString: String) -> (dateFormatted: String, timeFormatted: String) {
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-            
-            guard let date = dateFormatter.date(from: dateString),
-                  let fromTime = dateFormatter.date(from: fromTimeString),
-                  let toTime = dateFormatter.date(from: toTimeString) else {
-                return ("Invalid Date", "Invalid Time")
-            }
-            
-            dateFormatter.dateFormat = "E d MMM"
-            let dateFormatted = dateFormatter.string(from: date)
-            
-            dateFormatter.dateFormat = "h:mm a"
-            let fromTimeFormatted = dateFormatter.string(from: fromTime)
-            let toTimeFormatted = dateFormatter.string(from: toTime)
-            let timeFormatted = "\(fromTimeFormatted) - \(toTimeFormatted)"
-            
-            return (dateFormatted, timeFormatted)
-        }
 }

@@ -9,54 +9,94 @@ import Foundation
 
 class HomeViewModel {
     
+    static let identifier = String(describing: HomeViewModel.self)
+    
+    // MARK: - Private Properties
+    
+    private let userService: UserServiceProtocol
+    private let databaseService: FirebaseService
+    private var cachedEvents: [EventModel] = []
+//    private var eventAttendeesMapping: [String: UserEvent] = [:]
+    
     // MARK: - Public Properties
     
-    public var eventsList: [EventModel] = []
+    @Published public var eventsFetchAndFilterStatus: EventsFetchAndFilterStatus?
+    public var events: [EventModel] = []
     public let categoriesList: [EventCategoryFilter] = EventCategoryFilter.allCases
+    public var selectedCategory: EventCategoryFilter = .All
+    
+    // MARK: - Initializers
+    
+    init(userService: UserServiceProtocol = UserService.shared!,
+         databaseService: FirebaseService = FirebaseService.shared) {
+        self.userService = userService
+        self.databaseService = databaseService
+    }
+    
+    // MARK: - Pricate Methods
+    
+    private func applySelectedCategoryToSearchedEvents(_ searchedEvents: [EventModel]) {
+        if selectedCategory == .All {
+            events = searchedEvents
+        } else {
+            events = searchedEvents.filter { event in event.category == selectedCategory.rawValue }
+        }
+        eventsFetchAndFilterStatus = .success
+    }
+    
+    private func fetchEventAttendees() {
+        
+    }
     
     // MARK: - Public Methods
     
-    public func fetchAllEvents() async throws {
-        let snapshot = try await FirebaseService.shared.fetchAllData(from: DBCollections.Events.rawValue)
-        let documents = snapshot.documents
-        
-        eventsList = []
-        for document in documents {
-            let jsonData = try JSONSerialization.data(withJSONObject: document.data(), options: [])
-            let event = try JSONDecoder().decode(EventModel.self, from: jsonData)
-            eventsList.append(event)
+    public func fetchAllEvents() {
+        Task {
+            do {
+                let querySnapshot = try await databaseService.fetchAllData(
+                    table: DatabaseTables.Events.rawValue
+                )
+                let documents = querySnapshot.documents
+                
+                var fetchedEvents: [EventModel] = []
+                for document in documents {
+                    let decodedEvent = try document.data(as: EventModel.self)
+                    fetchedEvents.append(decodedEvent)
+                }
+                cachedEvents = fetchedEvents
+                filterEventsByCategory()
+            } catch {
+                print("[\(HomeViewModel.identifier)] - Error \n\(error)")
+                eventsFetchAndFilterStatus = .failure(errorMessage: K.StringMessages.eventsFetchError)
+            }
         }
     }
     
-    public func fetchEventsAgainstTitle(_ queryString: String) async throws {
-        let snapshot = try await FirebaseService.shared.fetchDataContaining(
-            queryString: queryString,
-            in: DBCollectionFields.Events.title.rawValue,
-            from: DBCollections.Events.rawValue
-        )
-        let documents = snapshot.documents
-        
-        eventsList = []
-        for document in documents {
-            let jsonData = try JSONSerialization.data(withJSONObject: document.data(), options: [])
-            let event = try JSONDecoder().decode(EventModel.self, from: jsonData)
-            eventsList.append(event)
+    public func filterEventsByCategory() {
+        if selectedCategory == .All {
+            events = cachedEvents
+        } else {
+            events = cachedEvents.filter { event in event.category == selectedCategory.rawValue }
         }
+        eventsFetchAndFilterStatus = .success
     }
     
-    public func fetchEventsAgainstCategory(_ category: String) async throws {
-        let snapshot = try await FirebaseService.shared.fetchDataAgainst(
-            queryString: category,
-            in: DBCollectionFields.Events.category.rawValue,
-            from: DBCollections.Events.rawValue
-        )
-        let documents = snapshot.documents
+    public func filterEventsContaining(titleOrLocation: String) {
+        var searchedEvents: [EventModel] = []
         
-        eventsList = []
-        for document in documents {
-            let jsonData = try JSONSerialization.data(withJSONObject: document.data(), options: [])
-            let event = try JSONDecoder().decode(EventModel.self, from: jsonData)
-            eventsList.append(event)
+        if titleOrLocation == "" {
+            searchedEvents = cachedEvents
+        } else {
+            searchedEvents = cachedEvents.filter { event in
+                let titleMatch = event.title.lowercased().contains(titleOrLocation.lowercased())
+                let locationMatch = event.locationName.lowercased().contains(titleOrLocation.lowercased())
+                return titleMatch || locationMatch
+            }
         }
+        applySelectedCategoryToSearchedEvents(searchedEvents)
     }
+}
+
+enum EventsFetchAndFilterStatus {
+    case success, failure(errorMessage: String)
 }
