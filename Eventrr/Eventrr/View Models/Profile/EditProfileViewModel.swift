@@ -63,6 +63,9 @@ class EditProfileViewModel: ObservableObject {
                 recordId: id,
                 table: DatabaseTables.Users.rawValue
             )
+            
+            try await FirebaseService.shared.updateOwnerNameInEvents(ownerId: id, newName: modifiedName)
+            
             try Auth.auth().signOut()
         } catch {
             print("[\(String(describing: EditProfileView.self))] - Error: \n\(error)")

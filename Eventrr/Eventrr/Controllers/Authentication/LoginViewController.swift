@@ -36,6 +36,9 @@ class LoginViewController: UIViewController {
         
         setupUserInterface()
         setupSubscriptions()
+        
+        NotificationService.createInstance()
+        RealmService.createInstance()
     }
     
     override func viewWillAppear(_ animated: Bool) {

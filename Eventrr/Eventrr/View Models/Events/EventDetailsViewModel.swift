@@ -41,7 +41,7 @@ class EventDetailsViewModel {
             return
         }
         
-        let eventAttendee = EventAttendee(attendeeId: attendeeId)
+        let eventAttendee = EventAttendeeModel(attendeeId: attendeeId)
         
         guard let encodedData = try? Firestore.Encoder().encode(eventAttendee) else {
             joinAndLeaveEventStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
@@ -56,7 +56,7 @@ class EventDetailsViewModel {
                     recordId: eventId,
                     table: DatabaseTables.Events.rawValue
                 )
-                joinAndLeaveEventStatus = .success
+                joinAndLeaveEventStatus = .joinSuccessful
             } catch {
                 print("[\(EventDetailsViewModel.identifier)] - Error: \n\(error)")
                 joinAndLeaveEventStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
@@ -70,7 +70,7 @@ class EventDetailsViewModel {
             return
         }
         
-        let eventAttendee = EventAttendee(attendeeId: attendeeId)
+        let eventAttendee = EventAttendeeModel(attendeeId: attendeeId)
         
         guard let encodedData = try? Firestore.Encoder().encode(eventAttendee) else {
             joinAndLeaveEventStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
@@ -80,12 +80,12 @@ class EventDetailsViewModel {
         Task {
             do {
                 try await databaseService.deleteFromArrayField(
-                    elementToAdd: encodedData,
+                    elementToDelete: encodedData,
                     arrayFieldName: DatabaseTableColumns.Events.attendees.rawValue,
                     recordId: eventId,
                     table: DatabaseTables.Events.rawValue
                 )
-                joinAndLeaveEventStatus = .success
+                joinAndLeaveEventStatus = .leaveSuccessful
             } catch {
                 print("[\(EventDetailsViewModel.identifier)] - Error: \n\(error)")
                 joinAndLeaveEventStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
@@ -115,5 +115,5 @@ enum DeleteStatus {
 }
 
 enum JoinAndLeaveEventStatus {
-    case success, failure(errorMessage: String)
+    case joinSuccessful, leaveSuccessful, failure(errorMessage: String)
 }

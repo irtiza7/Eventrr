@@ -15,6 +15,7 @@ struct EditProfileView: View {
     
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
+    @State private var showSpinner = false
     
     var body: some View {
         ZStack {
@@ -96,16 +97,30 @@ struct EditProfileView: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("Okay")))
             }
+            
+            if showSpinner {
+                ProgressView()
+                    .frame(width: 170, height: 50)
+                    .progressViewStyle(.circular)
+                    .tint(SwiftUIConstants.primaryAccentColor)
+                    .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
+                    .padding()
+                    .cornerRadius(SwiftUIConstants.fieldsCornerRadius)
+            }
         }
     }
     
     private func updateProfile() {
+        showSpinner = true
+        
         Task {
             if let errorMessage = await viewModel.updateProfile() {
                 alertMessage = errorMessage
                 showAlert = true
                 return
             }
+            showSpinner = false
+            
             UserService.shared = nil
             navigationController?.popToRootViewController(animated: true)
         }

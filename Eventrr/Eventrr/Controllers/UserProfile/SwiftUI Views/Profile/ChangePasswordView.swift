@@ -8,6 +8,7 @@ struct ChangePasswordView: View {
     
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
+    @State private var showSpinner = false
     
     var body: some View {
         ZStack {
@@ -121,10 +122,26 @@ struct ChangePasswordView: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("Okay")))
             }
+            
+            if showSpinner {
+                Color.black.opacity(0.1)
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    ProgressView()
+                        .frame(width: 170, height: 50)
+                        .progressViewStyle(.circular)
+                        .tint(SwiftUIConstants.primaryAccentColor)
+                        .scaleEffect(x: 1.5, y: 1.5, anchor: .center)
+                        .padding()
+                        .cornerRadius(SwiftUIConstants.fieldsCornerRadius)
+                }
+            }
         }
     }
     
     private func changePassword() {
+        showSpinner = true
         Task {
             do {
                 if let errorMessage = try viewModel.validateFields() {
@@ -145,8 +162,10 @@ struct ChangePasswordView: View {
                     return
                 }
                 
+                showSpinner = false
                 navigationController?.popToRootViewController(animated: true)
             } catch let error as AuthError {
+                showSpinner = false
                 if error == AuthError.userNotAuthenticated {
                     navigationController?.popToRootViewController(animated: true)
                 }

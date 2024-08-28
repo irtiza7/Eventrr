@@ -39,7 +39,7 @@ class EventDetailsViewController: UIViewController {
     // MARK: - Public Properties
     
     public let viewModel = EventDetailsViewModel()
-
+    
     // MARK: - Life Cycle Methods
     
     override func viewDidLoad() {
@@ -223,7 +223,7 @@ class EventDetailsViewController: UIViewController {
                 attendeeActionButton.setAttributedTitle(attributedTitle, for: .normal)
             }
         }
-
+        
         aboutEventTextView.isEditable = false
         aboutEventTextView.layer.cornerRadius = K.UI.defaultSecondardCornerRadius
         aboutEventTextView.layer.borderWidth = K.UI.defaultSecondaryBorderWidth
@@ -236,10 +236,11 @@ class EventDetailsViewController: UIViewController {
     
     private func initEventDetailsUI() {
         guard let event = viewModel.selectedEvent else {return}
-                
+        
         eventTitleLabel.text = event.title
         ownerLabel.text = "Created by \(event.ownerName)"
         categoryLabel.text = event.category
+        audienceLabel.text = "\(event.attendees.count) people attending"
         locationLabel.text = event.locationName
         aboutEventTextView.text = event.description
         
@@ -257,19 +258,17 @@ class EventDetailsViewController: UIViewController {
         viewModel.$deletionError
             .receive(on: DispatchQueue.main)
             .sink { [weak self] (deletionStatus: DeleteStatus?) in
-                DispatchQueue.main.async {
-                    guard let deletionStatus else {return}
-                    
-                    self?.spinner.dismiss(animated: true)
-                    
-                    switch deletionStatus {
-                    case .failure(let errorMessage):
-                        Popups.displayFailure(message: errorMessage) { [weak self] alertVC in
-                            self?.present(alertVC, animated: true)
-                        }
-                    case .success:
-                        self?.navigationController?.popViewController(animated: true)
+                guard let deletionStatus, let self else {return}
+                
+                self.spinner.dismiss(animated: true)
+                
+                switch deletionStatus {
+                case .failure(let errorMessage):
+                    Popups.displayFailure(message: errorMessage) { [weak self] alertVC in
+                        self?.present(alertVC, animated: true)
                     }
+                case .success:
+                    self.navigationController?.popViewController(animated: true)
                 }
             }.store(in: &cancellables)
         
@@ -281,7 +280,24 @@ class EventDetailsViewController: UIViewController {
                 self.spinner.dismiss(animated: true)
                 
                 switch status {
-                case .success:
+                case .joinSuccessful:
+                    if let notificationCenter = NotificationService.shared,
+                       let event = self.viewModel.selectedEvent {
+                        notificationCenter.scheduleEventNotification(
+                            eventId: event.id!,
+                            eventTitle: event.title,
+                            fromTime: event.fromTime
+                        )
+                    }
+                    self.navigationController?.popViewController(animated: true)
+                    
+                case .leaveSuccessful:
+                    if let notificationCenter = NotificationService.shared,
+                       let event = self.viewModel.selectedEvent {
+                        notificationCenter.cancelEventNotification(
+                            eventId: event.id!
+                        )
+                    }
                     self.navigationController?.popViewController(animated: true)
                     
                 case .failure(let errorMessage):
@@ -296,7 +312,7 @@ class EventDetailsViewController: UIViewController {
     private func openMapForPlace(lat: Double, long: Double, placeName: String = "") {
         let latitude: CLLocationDegrees = lat
         let longitude: CLLocationDegrees = long
-
+        
         let regionDistance: CLLocationDistance = 1000
         let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
