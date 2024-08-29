@@ -8,6 +8,7 @@ target 'Eventrr' do
   pod 'FirebaseCore'
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
+  pod 'RealmSwift'
 
   # Pods for Eventrr
 

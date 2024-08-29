@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import RealmSwift
 
 class MyEventsViewController: UIViewController {
     
@@ -68,7 +69,7 @@ class MyEventsViewController: UIViewController {
                 switch status {
                 case .success:
                     self.tableView.reloadData()
-                
+                    
                 case .failure(let errorMessage):
                     Popups.displayFailure(message: errorMessage) { [weak self] popup in
                         self?.present(popup, animated: true)
@@ -99,6 +100,12 @@ class MyEventsViewController: UIViewController {
         tableView.refreshControl?.tintColor = UIColor(named: K.ColorConstants.AccentPrimary.rawValue)
         tableView.refreshControl?.addTarget(self, action: #selector(pullDownToFetchEvents), for: .valueChanged)
     }
+    
+    private func convertRealmAttendeesToEventAttendees(_ realmAttendees: List<EventAttendeeRealmModel>) -> [EventAttendeeModel] {
+        return realmAttendees.map { realmAttendee in
+            EventAttendeeModel(attendeeId: realmAttendee.attendeeId)
+        }
+    }
 }
 
 // MARK: - TableView Delegate Methods
@@ -112,7 +119,26 @@ extension MyEventsViewController: UITableViewDelegate {
             withIdentifier: EventDetailsViewController.identifier
         ) as! EventDetailsViewController
         
-        viewController.viewModel.selectedEvent = viewModel.events[indexPath.row]
+        let eventRealmModel = viewModel.events[indexPath.row]
+        guard eventRealmModel.isInvalidated != true else {return}
+        
+        let eventModel = EventModel(
+            id: eventRealmModel.id,
+            title: eventRealmModel.title,
+            category: eventRealmModel.category,
+            date: FormatUtility.convertDateToString(date: eventRealmModel.date),
+            fromTime: FormatUtility.convertDateToString(date: eventRealmModel.fromTime),
+            toTime: FormatUtility.convertDateToString(date: eventRealmModel.toTime),
+            description: eventRealmModel.eventDescription,
+            locationName: eventRealmModel.locationName,
+            latitude: String(eventRealmModel.latitude),
+            longitude: String(eventRealmModel.longitude),
+            ownerId: eventRealmModel.ownerId,
+            ownerName: eventRealmModel.ownerName,
+            attendees: convertRealmAttendeesToEventAttendees(eventRealmModel.attendees)
+        )
+        
+        viewController.viewModel.selectedEvent = eventModel
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
@@ -148,10 +174,11 @@ extension MyEventsViewController: UITableViewDataSource {
             cell.categoryLabel.text = event.category
             
             let formattedDataAndTime = FormatUtility.formatDateAndTime(
-                dateString: event.date,
-                fromTimeString: event.fromTime,
-                toTimeString: event.toTime
+                dateString: FormatUtility.convertDateToString(date: event.date),
+                fromTimeString: FormatUtility.convertDateToString(date: event.fromTime),
+                toTimeString: FormatUtility.convertDateToString(date: event.toTime)
             )
+            
             cell.dateLabel.text = formattedDataAndTime.dateFormatted
             cell.timeLabel.text = formattedDataAndTime.timeFormatted
             return cell

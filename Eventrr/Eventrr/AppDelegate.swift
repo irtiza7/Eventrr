@@ -1,6 +1,7 @@
 import UIKit
 import FirebaseCore
 import FirebaseFirestore
+import RealmSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -9,6 +10,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         let _ = Firestore.firestore()
+        
+        do {
+            try _ = Realm()
+            print(Realm.Configuration.defaultConfiguration.fileURL!)
+        } catch {
+            print(error)
+        }
         
         return true
     }

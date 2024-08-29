@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import FirebaseFirestore
+import RealmSwift
 
 final class MyEventsViewModel {
     
@@ -15,25 +15,58 @@ final class MyEventsViewModel {
     // MARK: - Private Properties
     
     private let userService: UserServiceProtocol
-    private let databaseService: FirebaseService
-    private var cachedEvents: [EventModel] = []
+    private let realmService: RealmService
+    private var cachedEvents: Results<EventRealmModel>?
+    private var notificationToken: NotificationToken?
     
     // MARK: - Public Properties
     
     @Published public var eventsFetchAndFilterStatus: EventsFetchAndFilterStatus?
     
-    public var events: [EventModel] = []
+    public var events: [EventRealmModel] = []
     public var selectedFilter: MyEventFilter = .All
     
-    // MARK: - Initializers
+    // MARK: - Initializers and Deinitializers
     
     init(userService: UserServiceProtocol = UserService.shared!,
-         databaseService: FirebaseService = FirebaseService.shared) {
+         realmService: RealmService = RealmService.shared!) {
         self.userService = userService
-        self.databaseService = databaseService
+        self.realmService = realmService
+        setupSubscription()
+    }
+    
+    deinit {
+        notificationToken?.invalidate()
     }
     
     // MARK: - Private Methods
+    
+    private func setupSubscription() {
+        guard let id = UserService.shared?.user.id else {
+            eventsFetchAndFilterStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+            return
+        }
+        
+        Task { @MainActor in
+            cachedEvents = realmService
+                .fetchObjectsWhere(ofType: EventRealmModel.self, field: DatabaseTableColumns.Events.ownerId.rawValue, equalTo: id)
+            
+            notificationToken = cachedEvents?.observe { [weak self] changes in
+                switch changes {
+                case .initial(let initialResults):
+                    self?.cachedEvents = initialResults
+                    
+                case .update(let updatedResults, _, _, _):
+                    self?.cachedEvents = updatedResults
+                    
+                case .error(let error):
+                    print("[\(HomeViewModel.identifier)] - Error: \n\(error)")
+                }
+                
+                self?.filterEvents()
+            }
+        }
+    }
     
     private func fetchAdminEvents() {
         guard let id = UserService.shared?.user.id else {
@@ -41,26 +74,14 @@ final class MyEventsViewModel {
             return
         }
         
-        Task {
-            do {
-                let querySnapshot = try await databaseService.fetchDataAgainst(
-                    value: id,
-                    column: DatabaseTableColumns.Events.ownerId.rawValue,
-                    table: DatabaseTables.Events.rawValue
+        Task { @MainActor in
+            cachedEvents = realmService
+                .fetchObjectsWhere(
+                    ofType: EventRealmModel.self,
+                    field: DatabaseTableColumns.Events.ownerId.rawValue,
+                    equalTo: id
                 )
-                
-                var fetchedEvents: [EventModel] = []
-                for document in querySnapshot.documents {
-                    let decodedEvent = try Firestore.Decoder().decode(EventModel.self, from: document.data())
-                    fetchedEvents.append(decodedEvent)
-                }
-                
-                cachedEvents = fetchedEvents
-                filterEvents()
-            } catch {
-                print("[\(MyEventsViewModel.identifier)] - Error: \n\(error)")
-                eventsFetchAndFilterStatus = .failure(errorMessage: K.StringMessages.eventsFetchError)
-            }
+            filterEvents()
         }
     }
     
@@ -70,46 +91,31 @@ final class MyEventsViewModel {
             return
         }
         
-        Task {
-            do {
-                let data = [DatabaseTableColumns.EventAttendees.attendeeId.rawValue: attendeeId]
-                print(data)
-                let querySnapshot = try await databaseService.fetchAgainstArrayField(
-                    containingData: data,
-                    arrayFieldName: DatabaseTableColumns.Events.attendees.rawValue,
-                    table: DatabaseTables.Events.rawValue
+        Task { @MainActor in
+            cachedEvents = realmService
+                .fetchObjectsWhereArraySubfield(
+                    ofType: EventRealmModel.self,
+                    arrayField: DatabaseTableColumns.Events.attendees.rawValue,
+                    subField: DatabaseTableColumns.EventAttendees.attendeeId.rawValue,
+                    equalTo: attendeeId
                 )
-                
-                var fetchedEvents: [EventModel] = []
-                for document in querySnapshot.documents {
-                    let decodedEvent = try Firestore.Decoder().decode(EventModel.self, from: document.data())
-                    fetchedEvents.append(decodedEvent)
-                }
-                
-                cachedEvents = fetchedEvents
-                filterEvents()
-            } catch {
-                print("[\(MyEventsViewModel.identifier)] - Error: \n\(error)")
-                eventsFetchAndFilterStatus = .failure(errorMessage: K.StringMessages.eventsFetchError)
-            }
+            filterEvents()
         }
     }
     
-    private func applySelectedFilterToSearchedEvents(_ searchedEvents: [EventModel]) {
+    private func applySelectedFilterToSearchedEvents(_ searchedEvents: [EventRealmModel]) {
         switch selectedFilter {
         case .All:
             events = searchedEvents
-        
+            
         case .Past:
             events = searchedEvents.filter { event in
-                guard let eventDate = FormatUtility.convertStringToDate(dateString: event.date) else {return false}
-                return Date() > eventDate
+                return Date() > event.date
             }
-        
+            
         case .Future:
             events = searchedEvents.filter { event in
-                guard let eventDate = FormatUtility.convertStringToDate(dateString: event.date) else {return false}
-                return Date() < eventDate
+                return Date() < event.date
             }
         }
         eventsFetchAndFilterStatus = .success
@@ -126,27 +132,29 @@ final class MyEventsViewModel {
     }
     
     public func filterEvents() {
+        guard let cachedEvents else {return}
+        
         switch selectedFilter {
         case .All:
-            events = cachedEvents
+            events = Array(cachedEvents)
         case .Past:
             events = cachedEvents.filter { event in
-                guard let eventDate = FormatUtility.convertStringToDate(dateString: event.date) else {return false}
-                return Date() > eventDate
+                return Date() > event.date
             }
         case .Future:
             events = cachedEvents.filter { event in
-                guard let eventDate = FormatUtility.convertStringToDate(dateString: event.date) else {return false}
-                return Date() < eventDate
+                return Date() < event.date
             }
         }
         eventsFetchAndFilterStatus = .success
     }
     
     public func filterEventsContaining(titleOrLocation: String) {
-        var searchedEvents: [EventModel] = []
+        guard let cachedEvents else {return}
+        var searchedEvents: [EventRealmModel] = []
+        
         if titleOrLocation == "" {
-            searchedEvents = cachedEvents
+            searchedEvents = Array(cachedEvents)
         } else {
             searchedEvents = cachedEvents.filter { event in
                 let titleMatch = event.title.lowercased().contains(titleOrLocation.lowercased())

@@ -38,7 +38,7 @@ final class FirebaseService {
     public func sendPasswordResetEmail(email: String) async throws {
         return try await withCheckedThrowingContinuation { continuation in
             Auth.auth().sendPasswordReset(withEmail: email) { error in
-                if let error { 
+                if let error {
                     continuation.resume(throwing: error)
                     return
                 }
@@ -126,6 +126,38 @@ final class FirebaseService {
         }
     }
     
+    public func updateOwnerNameInEvents(ownerId: String, newName: String) async throws {
+        return try await withCheckedThrowingContinuation { continuation in
+            let eventsRef = Firestore.firestore().collection(DatabaseTables.Events.rawValue)
+            
+            eventsRef.whereField(DatabaseTableColumns.Events.ownerId.rawValue, isEqualTo: ownerId)
+                .getDocuments { snapshot, error in
+                    if let error {
+                        continuation.resume(throwing: error)
+                        return
+                    }
+                    
+                    guard let documents = snapshot?.documents else {return}
+                    
+                    let batch = Firestore.firestore().batch()
+                    for document in documents {
+                        let documentRef = eventsRef.document(document.documentID)
+                        batch.updateData([
+                            DatabaseTableColumns.Events.ownerName.rawValue: newName
+                        ], forDocument: documentRef)
+                    }
+                    
+                    batch.commit { error in
+                        if let error {
+                            continuation.resume(throwing: error)
+                            return
+                        }
+                        continuation.resume()
+                    }
+                }
+        }
+    }
+    
     public func addToArrayField(
         elementToAdd: [String: Any],
         arrayFieldName: String,
@@ -145,14 +177,14 @@ final class FirebaseService {
     }
     
     public func deleteFromArrayField(
-        elementToAdd: [String: Any],
+        elementToDelete: [String: Any],
         arrayFieldName: String,
         recordId: String,
         table: String
     ) async throws {
         return try await withCheckedThrowingContinuation { continuation in
             let docRef = Firestore.firestore().collection(table).document(recordId)
-            docRef.updateData([arrayFieldName: FieldValue.arrayRemove([elementToAdd])]) { error in
+            docRef.updateData([arrayFieldName: FieldValue.arrayRemove([elementToDelete])]) { error in
                 if let error {
                     continuation.resume(throwing: error)
                     return

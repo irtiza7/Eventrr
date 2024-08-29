@@ -23,13 +23,14 @@ struct EventModel: Codable {
     let ownerId: String
     let ownerName: String
     
-    var attendees: [EventAttendee] = []
+    var attendees: [EventAttendeeModel] = []
     
     init(
         id: String? = nil,
         title: String, category: String, date: String, fromTime: String, toTime: String, description: String,
         locationName: String, latitude: String, longitude: String,
-        ownerId: String, ownerName: String
+        ownerId: String, ownerName: String,
+        attendees: [EventAttendeeModel] = []
     ) {
         self.id = id
         self.title = title
@@ -43,19 +44,6 @@ struct EventModel: Codable {
         self.longitude = longitude
         self.ownerId = ownerId
         self.ownerName = ownerName
+        self.attendees = attendees
     }
-    
-    /*
-     Used while storing the model in firebase as it expects [String: String]
-     */
-//    func toDictionary() -> [String: String]? {
-//        let encoder = JSONEncoder()
-//        encoder.outputFormatting = .withoutEscapingSlashes
-//        
-//        if let data = try? encoder.encode(self) {
-//            let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-//            return json?.mapValues { "\($0)" }
-//        }
-//        return nil
-//    }
 }

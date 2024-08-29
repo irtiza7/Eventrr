@@ -213,21 +213,26 @@ class CreateEventViewController: UIViewController {
         guard isEventFormValid() == true else {return}
         
         guard let ownerId = UserService.shared?.user.id, let ownerName = UserService.shared?.user.name else {return}
+
+        let fromTimeString = FormatUtility.convertDateToString(date: fromTimePicker.date)
+        let toTimeString = FormatUtility.convertDateToString(date: toTimePicker.date)
+        let dateString = FormatUtility.convertDateToString(date: datePicker.date)
         
         viewModel.event = EventModel(
             id: viewModel.eventToEdit?.id ?? nil,
             
             title: titleTextField.text!,
             category: viewModel.selectedEventCategory.rawValue,
-            date: datePicker.date.description,
-            fromTime: fromTimePicker.date.description,
-            toTime: toTimePicker.date.description,
+            date: dateString,
+            fromTime: fromTimeString,
+            toTime: toTimeString,
             description: descriptionTextView.text,
             locationName: viewModel.selectedLocation!.name,
             latitude: String(viewModel.selectedLocation!.latitude),
             longitude: String(viewModel.selectedLocation!.longitude),
             ownerId: ownerId,
-            ownerName: ownerName
+            ownerName: ownerName,
+            attendees: viewModel.eventToEdit?.attendees ?? []
         )
         
         present(spinner, animated: true)

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 class HomeViewModel {
     
@@ -13,79 +14,95 @@ class HomeViewModel {
     
     // MARK: - Private Properties
     
-    private let userService: UserServiceProtocol
-    private let databaseService: FirebaseService
-    private var cachedEvents: [EventModel] = []
-//    private var eventAttendeesMapping: [String: UserEvent] = [:]
+    private let realmService: RealmService
+    private var cachedEvents: Results<EventRealmModel>?
+    private var notificationToken: NotificationToken?
     
     // MARK: - Public Properties
     
     @Published public var eventsFetchAndFilterStatus: EventsFetchAndFilterStatus?
-    public var events: [EventModel] = []
+    public var events: [EventRealmModel] = []
     public let categoriesList: [EventCategoryFilter] = EventCategoryFilter.allCases
     public var selectedCategory: EventCategoryFilter = .All
     
-    // MARK: - Initializers
+    // MARK: - Initializers and Deinitializers
     
-    init(userService: UserServiceProtocol = UserService.shared!,
-         databaseService: FirebaseService = FirebaseService.shared) {
-        self.userService = userService
-        self.databaseService = databaseService
+    init(realmService: RealmService = RealmService.shared!) {
+        self.realmService = realmService
+        setupSubscription()
     }
     
-    // MARK: - Pricate Methods
+    deinit {
+        notificationToken?.invalidate()
+    }
     
-    private func applySelectedCategoryToSearchedEvents(_ searchedEvents: [EventModel]) {
+    // MARK: - Private Methods
+    
+    private func applySelectedCategoryToSearchedEvents(_ searchedEvents: [EventRealmModel]) {
         if selectedCategory == .All {
-            events = searchedEvents
+            events = Array(searchedEvents)
         } else {
-            events = searchedEvents.filter { event in event.category == selectedCategory.rawValue }
+            events = Array(searchedEvents.filter { event in event.category == selectedCategory.rawValue })
         }
         eventsFetchAndFilterStatus = .success
     }
     
-    private func fetchEventAttendees() {
-        
+    
+    // MARK: - Private Methods
+    
+    private func setupSubscription() {
+        Task { @MainActor [weak self] in
+            self?.cachedEvents = self?.realmService
+                .fetchAllObjects(ofType: EventRealmModel.self)
+                .sorted(byKeyPath: DatabaseTableColumns.Events.date.rawValue, ascending: true)
+            
+            self?.notificationToken = self?.cachedEvents?.observe { [weak self] changes in
+                switch changes {
+                case .initial(let initialResults):
+                    self?.cachedEvents = initialResults
+                    
+                case .update(let updatedResults, _, _, _):
+                    self?.cachedEvents = updatedResults
+                    
+                case .error(let error):
+                    print("[\(HomeViewModel.identifier)] - Error: \n\(error)")
+                }
+                
+                self?.filterEventsByCategory()
+            }
+        }
     }
     
     // MARK: - Public Methods
     
     public func fetchAllEvents() {
-        Task {
-            do {
-                let querySnapshot = try await databaseService.fetchAllData(
-                    table: DatabaseTables.Events.rawValue
-                )
-                let documents = querySnapshot.documents
-                
-                var fetchedEvents: [EventModel] = []
-                for document in documents {
-                    let decodedEvent = try document.data(as: EventModel.self)
-                    fetchedEvents.append(decodedEvent)
-                }
-                cachedEvents = fetchedEvents
-                filterEventsByCategory()
-            } catch {
-                print("[\(HomeViewModel.identifier)] - Error \n\(error)")
-                eventsFetchAndFilterStatus = .failure(errorMessage: K.StringMessages.eventsFetchError)
-            }
+        Task { @MainActor [weak self] in
+            self?.cachedEvents = self?.realmService
+                .fetchAllObjects(ofType: EventRealmModel.self)
+                .sorted(byKeyPath: DatabaseTableColumns.Events.date.rawValue, ascending: true)
+            
+            self?.filterEventsByCategory()
         }
     }
     
     public func filterEventsByCategory() {
+        guard let cachedEvents = self.cachedEvents else { return }
+        let cachedEventsAsArray = Array(cachedEvents)
+        
         if selectedCategory == .All {
-            events = cachedEvents
+            events = cachedEventsAsArray
         } else {
-            events = cachedEvents.filter { event in event.category == selectedCategory.rawValue }
+            events = cachedEventsAsArray.filter { event in event.category == self.selectedCategory.rawValue }
         }
         eventsFetchAndFilterStatus = .success
     }
     
     public func filterEventsContaining(titleOrLocation: String) {
-        var searchedEvents: [EventModel] = []
+        guard let cachedEvents = self.cachedEvents else { return }
+        var searchedEvents: [EventRealmModel] = []
         
         if titleOrLocation == "" {
-            searchedEvents = cachedEvents
+            searchedEvents = Array(cachedEvents)
         } else {
             searchedEvents = cachedEvents.filter { event in
                 let titleMatch = event.title.lowercased().contains(titleOrLocation.lowercased())

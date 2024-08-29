@@ -33,6 +33,10 @@
 		D76D67F32C5C338000F0B944 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76D67F22C5C337F00F0B944 /* SignupViewController.swift */; };
 		D76EF35C2C605F7C00E5889B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76EF35B2C605F7C00E5889B /* LoginViewModel.swift */; };
 		D76EF35E2C60611200E5889B /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76EF35D2C60611200E5889B /* SignupViewModel.swift */; };
+		D77468FC2C7EAB4600F1037C /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77468FB2C7EAB4600F1037C /* RealmService.swift */; };
+		D77468FF2C7EAFFD00F1037C /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77468FE2C7EAFFD00F1037C /* NotificationService.swift */; };
+		D77469012C7EDDF200F1037C /* EventRealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77469002C7EDDF200F1037C /* EventRealmModel.swift */; };
+		D77469032C7EE0C500F1037C /* EventAttendeeRealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77469022C7EE0C500F1037C /* EventAttendeeRealmModel.swift */; };
 		D779EB222C753424003B9170 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D779EB212C753424003B9170 /* UserProfileView.swift */; };
 		D783FD6C2C625FF10021F6CD /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D783FD6B2C625FF10021F6CD /* Constants.swift */; };
 		D78E9D122C738E0200BC7875 /* Events.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D78E9D112C738E0200BC7875 /* Events.storyboard */; };
@@ -51,7 +55,7 @@
 		D7B182A22C73BF7A00FFF764 /* FilterTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B182A02C73BF7A00FFF764 /* FilterTagCollectionViewCell.swift */; };
 		D7B182A32C73BF7A00FFF764 /* FilterTagCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7B182A12C73BF7A00FFF764 /* FilterTagCollectionViewCell.xib */; };
 		D7BAA60E2C6B9ADA004F608E /* SetEventLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BAA60D2C6B9ADA004F608E /* SetEventLocationViewController.swift */; };
-		D7C015AE2C7CBB40007B0F84 /* EventAttendee.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C015AD2C7CBB40007B0F84 /* EventAttendee.swift */; };
+		D7C015AE2C7CBB40007B0F84 /* EventAttendeeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C015AD2C7CBB40007B0F84 /* EventAttendeeModel.swift */; };
 		D7C015B02C7CBCA7007B0F84 /* UserEventsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C015AF2C7CBCA7007B0F84 /* UserEventsService.swift */; };
 		D7CA65462C7D3A1E0050802F /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CA65452C7D3A1E0050802F /* ForgotPasswordViewModel.swift */; };
 		D7D3F7702C59611600B05D28 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3F76F2C59611600B05D28 /* AppDelegate.swift */; };
@@ -122,6 +126,10 @@
 		D76D67F22C5C337F00F0B944 /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		D76EF35B2C605F7C00E5889B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		D76EF35D2C60611200E5889B /* SignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
+		D77468FB2C7EAB4600F1037C /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
+		D77468FE2C7EAFFD00F1037C /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		D77469002C7EDDF200F1037C /* EventRealmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRealmModel.swift; sourceTree = "<group>"; };
+		D77469022C7EE0C500F1037C /* EventAttendeeRealmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAttendeeRealmModel.swift; sourceTree = "<group>"; };
 		D779EB212C753424003B9170 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		D783FD6B2C625FF10021F6CD /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D78E9D112C738E0200BC7875 /* Events.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Events.storyboard; sourceTree = "<group>"; };
@@ -140,7 +148,7 @@
 		D7B182A02C73BF7A00FFF764 /* FilterTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTagCollectionViewCell.swift; sourceTree = "<group>"; };
 		D7B182A12C73BF7A00FFF764 /* FilterTagCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterTagCollectionViewCell.xib; sourceTree = "<group>"; };
 		D7BAA60D2C6B9ADA004F608E /* SetEventLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetEventLocationViewController.swift; sourceTree = "<group>"; };
-		D7C015AD2C7CBB40007B0F84 /* EventAttendee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAttendee.swift; sourceTree = "<group>"; };
+		D7C015AD2C7CBB40007B0F84 /* EventAttendeeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAttendeeModel.swift; sourceTree = "<group>"; };
 		D7C015AF2C7CBCA7007B0F84 /* UserEventsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEventsService.swift; sourceTree = "<group>"; };
 		D7CA65452C7D3A1E0050802F /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
 		D7D3F76C2C59611600B05D28 /* Eventrr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Eventrr.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -307,6 +315,15 @@
 			path = Designables;
 			sourceTree = "<group>";
 		};
+		D77468FD2C7EABEC00F1037C /* RealmModels */ = {
+			isa = PBXGroup;
+			children = (
+				D77469002C7EDDF200F1037C /* EventRealmModel.swift */,
+				D77469022C7EE0C500F1037C /* EventAttendeeRealmModel.swift */,
+			);
+			path = RealmModels;
+			sourceTree = "<group>";
+		};
 		D779EB1E2C74F90F003B9170 /* SwiftUI Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -331,7 +348,7 @@
 				D72DA0892C6118AE0091D390 /* UserModel.swift */,
 				D73932BB2C665F770065597A /* EventModel.swift */,
 				D74E55EC2C6C1E03002E2936 /* LocationModel.swift */,
-				D7C015AD2C7CBB40007B0F84 /* EventAttendee.swift */,
+				D7C015AD2C7CBB40007B0F84 /* EventAttendeeModel.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -349,6 +366,7 @@
 		D79C118B2C5D702B0090BCC3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D77468FD2C7EABEC00F1037C /* RealmModels */,
 				D79012EB2C7E3B0500B1EFAF /* Filters */,
 				D79012EA2C7E3AFF00B1EFAF /* Data */,
 			);
@@ -484,6 +502,8 @@
 				D755D4812C605223006E21FC /* Popups.swift */,
 				D7DC576B2C6A8D0D007C72D4 /* UserService.swift */,
 				D7C015AF2C7CBCA7007B0F84 /* UserEventsService.swift */,
+				D77468FB2C7EAB4600F1037C /* RealmService.swift */,
+				D77468FE2C7EAFFD00F1037C /* NotificationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -733,13 +753,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				D79E40E32C7640C000306CB5 /* EditProfileView.swift in Sources */,
-				D7C015AE2C7CBB40007B0F84 /* EventAttendee.swift in Sources */,
+				D7C015AE2C7CBB40007B0F84 /* EventAttendeeModel.swift in Sources */,
 				D72230B72C654A9C0069E3E9 /* FirebaseModelConstants.swift in Sources */,
 				D7DC576C2C6A8D0D007C72D4 /* UserService.swift in Sources */,
 				D7A85ED42C76B32400190FE0 /* EnvironmentValues+Extension.swift in Sources */,
 				D73932B82C6659B30065597A /* HomeViewController.swift in Sources */,
 				D76D67F12C5C02D800F0B944 /* UITextFieldDesignable.swift in Sources */,
 				D79012E92C7DFFF100B1EFAF /* NoEventTableViewCell.swift in Sources */,
+				D77469012C7EDDF200F1037C /* EventRealmModel.swift in Sources */,
 				D74E34F52C7356FA001BD75E /* EventTableViewCell.swift in Sources */,
 				D74E55ED2C6C1E03002E2936 /* LocationModel.swift in Sources */,
 				D7FF40C92C76778900A31421 /* SwiftUIContants.swift in Sources */,
@@ -765,6 +786,7 @@
 				D7FF40C72C766BCA00A31421 /* EditProfileViewModel.swift in Sources */,
 				D79589A22C779D2700776B9A /* FormatUtility.swift in Sources */,
 				D7B1829F2C73AA3F00FFF764 /* ValidationUtility.swift in Sources */,
+				D77469032C7EE0C500F1037C /* EventAttendeeRealmModel.swift in Sources */,
 				D7BAA60E2C6B9ADA004F608E /* SetEventLocationViewController.swift in Sources */,
 				D72B2F342C7AB713009094A1 /* MyEventsViewController.swift in Sources */,
 				D7D3F7A12C596AFE00B05D28 /* FirebaseService.swift in Sources */,
@@ -775,12 +797,14 @@
 				D779EB222C753424003B9170 /* UserProfileView.swift in Sources */,
 				D72DA08A2C6118AE0091D390 /* UserModel.swift in Sources */,
 				D724583B2C77760400E93EB2 /* EventDetailsViewController.swift in Sources */,
+				D77468FF2C7EAFFD00F1037C /* NotificationService.swift in Sources */,
 				D79E40E52C7642B000306CB5 /* ChangePasswordView.swift in Sources */,
 				D79E40E12C7629E100306CB5 /* UserProfileViewModel.swift in Sources */,
 				D7D3F7722C59611600B05D28 /* SceneDelegate.swift in Sources */,
 				D72DA08C2C612D4F0091D390 /* NameAndRoleViewController.swift in Sources */,
 				D783FD6C2C625FF10021F6CD /* Constants.swift in Sources */,
 				D724583D2C7777FA00E93EB2 /* EventDetailsViewModel.swift in Sources */,
+				D77468FC2C7EAB4600F1037C /* RealmService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

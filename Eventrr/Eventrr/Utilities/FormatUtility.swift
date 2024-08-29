@@ -44,4 +44,18 @@ struct FormatUtility {
         timeFormatter.dateFormat = "HH:mm"
         return timeFormatter.date(from: timeString)
     }
+    
+    static func convertDateToString(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        formatter.timeZone = TimeZone.current
+        return formatter.string(from: date)
+    }
+    
+    static func convertStringToDateUTC(dateString: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        return formatter.date(from: dateString)
+    }
 }

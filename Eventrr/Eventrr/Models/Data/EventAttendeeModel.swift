@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct EventAttendee: Codable {
+struct EventAttendeeModel: Codable {
     let attendeeId: String
 }
