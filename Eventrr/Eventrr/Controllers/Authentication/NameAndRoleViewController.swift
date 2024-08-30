@@ -57,7 +57,7 @@ class NameAndRoleViewController: UIViewController {
     // MARK: - Private Methods
     
     private func saveAndNavigate(name: String) {
-        let spinner = Popups.loadingPopup()
+        let spinner = PopupService.loadingPopup()
         present(spinner, animated: true)
         
         Task {
@@ -72,7 +72,7 @@ class NameAndRoleViewController: UIViewController {
                 spinner.dismiss(animated: true)
                 
                 print("[\(NameAndRoleViewController.identifier)] - Error: \n\(error)]")
-                Popups.displayFailure(message: K.StringMessages.somethingWentWrong) { [weak self] popup in
+                PopupService.displayFailure(message: K.StringMessages.somethingWentWrong) { [weak self] popup in
                     self?.present(popup, animated: true)
                 }
             }

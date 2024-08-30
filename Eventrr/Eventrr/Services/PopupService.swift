@@ -8,10 +8,17 @@
 import Foundation
 import UIKit
 
-struct Popups {
+/// A service struct that provides various pop-up alert functionalities,
+/// such as displaying success, failure, and loading pop-ups, as well as confirmation pop-ups with customizable actions.
+struct PopupService {
     
     // MARK: - Static Properties
     
+    /// Displays a failure alert with a customizable title and message.
+    /// - Parameters:
+    ///   - title: The title of the alert. Defaults to the error title defined in `K.StringMessages`.
+    ///   - message: The message to be displayed in the alert.
+    ///   - presentHandler: A closure that handles the presentation of the alert controller.
     static func displayFailure(
         title: String = K.StringMessages.errorTitle,
         message: String,
@@ -31,6 +38,11 @@ struct Popups {
             presentHandler(alertVC)
         }
     
+    /// Displays a success alert with a customizable title and message.
+    /// - Parameters:
+    ///   - title: The title of the alert. Defaults to the success title defined in `K.StringMessages`.
+    ///   - message: The message to be displayed in the alert.
+    ///   - presentHandler: A closure that handles the presentation of the alert controller.
     static func displaySuccess(
         title: String = K.StringMessages.successTitle,
         message: String,
@@ -50,6 +62,8 @@ struct Popups {
             presentHandler(alertVC)
         }
     
+    /// Creates and returns a loading popup with an activity indicator.
+    /// - Returns: An `UIAlertController` instance configured as a loading popup.
     static func loadingPopup() -> UIAlertController {
         let alertVC = UIAlertController(title: " ", message: " ", preferredStyle: .alert)
         alertVC.view.layer.cornerRadius = K.UI.defaultPrimaryCornerRadius
@@ -66,6 +80,15 @@ struct Popups {
         return alertVC
     }
     
+    /// Creates and returns a confirmation popup with customizable actions and action titles.
+    /// - Parameters:
+    ///   - title: The title of the popup. Defaults to nil.
+    ///   - message: The message to be displayed in the popup. Defaults to nil.
+    ///   - popupStyle: The style of the popup (e.g., action sheet or alert).
+    ///   - actionTitles: An array of titles for the actions.
+    ///   - actionStyles: An array of styles for the actions (e.g., default, cancel, destructive).
+    ///   - actionHandlers: An array of closures to handle each action's selection.
+    /// - Returns: An `UIAlertController` instance configured as a confirmation popup.
     static func confirmationPopup(
         title: String? = nil,
         message: String? = nil,

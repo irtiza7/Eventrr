@@ -25,7 +25,7 @@ class LoginViewController: UIViewController {
     // MARK: - Private Properties
     
     private let viewModel = LoginViewModel()
-    private let spinner = Popups.loadingPopup()
+    private let spinner = PopupService.loadingPopup()
     private var cancellables: Set<AnyCancellable> = []
     private var presentingForFirstTime = true
     
@@ -108,14 +108,17 @@ class LoginViewController: UIViewController {
         viewModel.$isUserAlreadyLoggedIn
             .receive(on: DispatchQueue.main)
             .sink { [weak self] (status: IsUserAlreadyLoggedIn?) in
-                guard let status else {return}
-                guard let self else {return}
+                guard let status, let self else {return}
                 
                 switch status {
                 case .loggedIn:
                     self.viewModel.validateUserRequiredInformation()
+                
+                case .loggedInButOffline:
+                    self.viewModel.initializeUserServiceFromLocalRecord()
+                
                 case .failure(let errorMessage):
-                    Popups.displayFailure(
+                    PopupService.displayFailure(
                         title: K.StringMessages.loginFailurePopupTitle,
                         message: errorMessage) { [weak self] popup in
                             self?.present(popup, animated: true)
@@ -128,45 +131,50 @@ class LoginViewController: UIViewController {
         viewModel.$loginStatus
             .receive(on: DispatchQueue.main)
             .sink { [weak self] (status: LoginStatus?) in
-                guard let status else {return}
-                guard let self else {return}
+                guard let status, let self else {return}
                 
                 self.spinner.dismiss(animated: true)
                 
-                switch status {
-                case .success:
-                    self.viewModel.validateUserRequiredInformation()
-                    
-                case .failure(let errorMessage):
-                    Popups.displayFailure(
-                        title: K.StringMessages.loginFailurePopupTitle,
-                        message: errorMessage) { [weak self] popup in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                    switch status {
+                    case .success:
+                        self?.viewModel.validateUserRequiredInformation()
+                        
+                    case .failure(let errorMessage):
+                        PopupService.displayFailure(
+                            title: K.StringMessages.loginFailurePopupTitle,
+                            message: errorMessage
+                        ) { [weak self] popup in
                             self?.present(popup, animated: true)
                         }
+                    }
                 }
             }.store(in: &cancellables)
         
         viewModel.$userInformationStatus
             .receive(on: DispatchQueue.main)
             .sink { [weak self] (status: UserInformationStatus?) in
-                guard let status else {return}
-                guard let self else {return}
+                guard let status, let self else {return}
                 
                 self.spinner.dismiss(animated: true)
                 
                 switch status {
                 case .saved:
                     let storyboard = UIStoryboard(name: K.EventsStoryboardIdentifiers.eventsBundle, bundle: nil)
-                    let viewController = storyboard.instantiateViewController(withIdentifier: K.EventsStoryboardIdentifiers.mainTabViewController)
+                    let viewController = storyboard.instantiateViewController(
+                        withIdentifier: K.EventsStoryboardIdentifiers.mainTabViewController
+                    )
                     self.navigationController?.pushViewController(viewController, animated: true)
                     
                 case .notSaved:
                     let storyboard = UIStoryboard(name: K.MainStoryboardIdentifiers.mainBundle, bundle: nil)
-                    let viewController = storyboard.instantiateViewController(withIdentifier: NameAndRoleViewController.identifier)
+                    let viewController = storyboard.instantiateViewController(
+                        withIdentifier: NameAndRoleViewController.identifier
+                    )
                     self.navigationController?.pushViewController(viewController, animated: true)
                     
                 case .failure(let errorMessage):
-                    Popups.displayFailure(
+                    PopupService.displayFailure(
                         title: K.StringMessages.loginFailurePopupTitle,
                         message: errorMessage
                     ) { [weak self] popup in

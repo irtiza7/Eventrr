@@ -24,7 +24,7 @@ class HomeViewController: UIViewController {
     
     private let viewModel = HomeViewModel()
     private var cancellables: Set<AnyCancellable> = []
-    private let spinner = Popups.loadingPopup()
+    private let spinner = PopupService.loadingPopup()
     
     // MARK: - Life Cycle Methods
     
@@ -80,7 +80,7 @@ class HomeViewController: UIViewController {
                     self.tableView.reloadData()
                     
                 case .failure(let errorMessage):
-                    Popups.displayFailure(message: errorMessage) { [weak self] popup in
+                    PopupService.displayFailure(message: errorMessage) { [weak self] popup in
                         self?.present(popup, animated: true)
                     }
                 }

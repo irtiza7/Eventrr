@@ -44,7 +44,7 @@ struct UserProfileView: View {
                     
                     ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: SwiftUIConstants.fieldsCornerRadius)
-                            .strokeBorder(SwiftUIConstants.primaryAccentColor, style: StrokeStyle(lineWidth: 1.0))
+                            .strokeBorder(SwiftUIConstants.secondaryAccentColor, style: StrokeStyle(lineWidth: 1.0))
                             .background(Color(SwiftUIConstants.primaryBackgroundColor)
                                 .cornerRadius(SwiftUIConstants.fieldsCornerRadius))
                         
@@ -71,7 +71,7 @@ struct UserProfileView: View {
                     
                     ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: SwiftUIConstants.fieldsCornerRadius)
-                            .strokeBorder(SwiftUIConstants.primaryAccentColor, style: StrokeStyle(lineWidth: 1.0))
+                            .strokeBorder(SwiftUIConstants.secondaryAccentColor, style: StrokeStyle(lineWidth: 1.0))
                             .background(Color(SwiftUIConstants.primaryBackgroundColor)
                                 .cornerRadius(SwiftUIConstants.fieldsCornerRadius))
                         
@@ -98,7 +98,7 @@ struct UserProfileView: View {
                     
                     ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: SwiftUIConstants.fieldsCornerRadius)
-                            .strokeBorder(SwiftUIConstants.primaryAccentColor, style: StrokeStyle(lineWidth: 1.0))
+                            .strokeBorder(SwiftUIConstants.secondaryAccentColor, style: StrokeStyle(lineWidth: 1.0))
                             .background(Color(SwiftUIConstants.primaryBackgroundColor)
                                 .cornerRadius(SwiftUIConstants.fieldsCornerRadius))
                         
@@ -146,7 +146,7 @@ struct UserProfileView: View {
                 Button(action: {
                     logoutUser()
                 }) {
-                    Text("LOGOUT")
+                    Text("Logout")
                         .padding()
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity)

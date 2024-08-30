@@ -29,7 +29,7 @@ class SignupViewController: UIViewController {
     // MARK: - Private Properties
     
     private let viewModel = SignupViewModel()
-    private let spinner = Popups.loadingPopup()
+    private let spinner = PopupService.loadingPopup()
     private var cancellables: Set<AnyCancellable> = []
     
     // MARK: - Life Cycle Methods
@@ -102,7 +102,7 @@ class SignupViewController: UIViewController {
                     navigationController?.pushViewController(viewController, animated: true)
                     
                 case .failure(let errorMessage):
-                    Popups.displayFailure(
+                    PopupService.displayFailure(
                         title: K.StringMessages.signupFailurePopupTitle,
                         message: errorMessage
                     ) {

@@ -94,7 +94,7 @@
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
-                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="admin@eventrr.com" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bs2-cH-mfw" customClass="UITextFieldDesignable" customModule="Eventrr" customModuleProvider="target">
+                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bs2-cH-mfw" customClass="UITextFieldDesignable" customModule="Eventrr" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="25.333333333333343" width="314" height="45"/>
                                                                         <color key="backgroundColor" name="WhitePrimary"/>
                                                                         <constraints>
@@ -150,7 +150,7 @@
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
-                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="12345678" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="GXn-TU-SVy" customClass="UITextFieldDesignable" customModule="Eventrr" customModuleProvider="target">
+                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="GXn-TU-SVy" customClass="UITextFieldDesignable" customModule="Eventrr" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="25.333333333333314" width="314" height="45"/>
                                                                         <color key="backgroundColor" name="WhitePrimary"/>
                                                                         <constraints>
@@ -210,7 +210,7 @@
                                                                 </constraints>
                                                                 <color key="tintColor" name="BlackPrimary"/>
                                                                 <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="LOGIN" cornerStyle="capsule">
+                                                                <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="Login " cornerStyle="capsule">
                                                                     <imageReference key="image" image="arrow.right" catalog="system" symbolScale="medium"/>
                                                                     <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
                                                                     <color key="baseForegroundColor" name="WhitePrimary"/>
@@ -336,7 +336,7 @@
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
-                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="abc@abc.com" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="6i6-xf-R2Y" customClass="UITextFieldDesignable" customModule="Eventrr" customModuleProvider="target">
+                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="6i6-xf-R2Y" customClass="UITextFieldDesignable" customModule="Eventrr" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="25.333333333333343" width="314" height="45"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="314" id="EOu-dk-bWN"/>
@@ -385,7 +385,7 @@
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
-                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="12345678" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="vdt-xk-KIz" customClass="UITextFieldDesignable" customModule="Eventrr" customModuleProvider="target">
+                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="vdt-xk-KIz" customClass="UITextFieldDesignable" customModule="Eventrr" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="25.333333333333314" width="314" height="45"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="314" id="HWa-q1-AIR"/>
@@ -434,7 +434,7 @@
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
-                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="12345678" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="LjT-fe-JWT" customClass="UITextFieldDesignable" customModule="Eventrr" customModuleProvider="target">
+                                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="LjT-fe-JWT" customClass="UITextFieldDesignable" customModule="Eventrr" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="25.333333333333371" width="314" height="45"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="314" id="P6y-YR-LTD"/>
@@ -473,7 +473,7 @@
                                                         </constraints>
                                                         <color key="tintColor" name="BlackPrimary"/>
                                                         <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="SIGNUP" cornerStyle="capsule">
+                                                        <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="Signup " cornerStyle="capsule">
                                                             <imageReference key="image" image="arrow.right" catalog="system" symbolScale="medium"/>
                                                             <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
                                                             <color key="baseForegroundColor" name="WhitePrimary"/>
@@ -667,7 +667,7 @@
                                                 </constraints>
                                                 <color key="tintColor" name="BlackPrimary"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="SAVE" cornerStyle="capsule">
+                                                <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="Save " cornerStyle="capsule">
                                                     <imageReference key="image" image="arrow.right" catalog="system" symbolScale="medium"/>
                                                     <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
                                                     <color key="baseForegroundColor" name="WhitePrimary"/>
@@ -792,7 +792,7 @@
                                                 </constraints>
                                                 <color key="tintColor" name="BlackPrimary"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="SEND RESET LINK" cornerStyle="capsule">
+                                                <buttonConfiguration key="configuration" style="plain" title="Send Reset Link" cornerStyle="capsule">
                                                     <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
                                                     <color key="baseForegroundColor" name="WhitePrimary"/>
                                                 </buttonConfiguration>
@@ -850,25 +850,25 @@
     </scenes>
     <designables>
         <designable name="6i6-xf-R2Y">
-            <size key="intrinsicContentSize" width="92" height="18.666666666666668"/>
+            <size key="intrinsicContentSize" width="4" height="18.666666666666668"/>
         </designable>
         <designable name="GXn-TU-SVy">
-            <size key="intrinsicContentSize" width="66" height="17"/>
+            <size key="intrinsicContentSize" width="4" height="17"/>
         </designable>
         <designable name="Hh2-WI-Myl">
             <size key="intrinsicContentSize" width="4" height="18.666666666666668"/>
         </designable>
         <designable name="LjT-fe-JWT">
-            <size key="intrinsicContentSize" width="66" height="17"/>
+            <size key="intrinsicContentSize" width="4" height="17"/>
         </designable>
         <designable name="bs2-cH-mfw">
-            <size key="intrinsicContentSize" width="129" height="18.666666666666668"/>
+            <size key="intrinsicContentSize" width="4" height="18.666666666666668"/>
         </designable>
         <designable name="q4Y-yx-YLC">
             <size key="intrinsicContentSize" width="4" height="18.666666666666668"/>
         </designable>
         <designable name="vdt-xk-KIz">
-            <size key="intrinsicContentSize" width="66" height="17"/>
+            <size key="intrinsicContentSize" width="4" height="17"/>
         </designable>
     </designables>
     <resources>

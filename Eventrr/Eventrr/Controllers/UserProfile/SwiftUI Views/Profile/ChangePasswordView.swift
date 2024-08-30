@@ -105,7 +105,7 @@ struct ChangePasswordView: View {
                 Button(action: {
                     changePassword()
                 }) {
-                    Text("UPDATE")
+                    Text("Update")
                         .padding()
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity)

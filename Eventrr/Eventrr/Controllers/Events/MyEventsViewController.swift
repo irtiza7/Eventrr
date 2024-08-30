@@ -23,7 +23,7 @@ class MyEventsViewController: UIViewController {
     
     private let viewModel = MyEventsViewModel()
     private var cancellabels: Set<AnyCancellable> = []
-    private let spinner = Popups.loadingPopup()
+    private let spinner = PopupService.loadingPopup()
     
     // MARK: - Life Cycle Methods
     
@@ -71,7 +71,7 @@ class MyEventsViewController: UIViewController {
                     self.tableView.reloadData()
                     
                 case .failure(let errorMessage):
-                    Popups.displayFailure(message: errorMessage) { [weak self] popup in
+                    PopupService.displayFailure(message: errorMessage) { [weak self] popup in
                         self?.present(popup, animated: true)
                     }
                 }

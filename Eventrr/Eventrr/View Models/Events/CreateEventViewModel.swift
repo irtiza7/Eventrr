@@ -15,7 +15,7 @@ final class CreateEventViewModel {
     
     // MARK: - Private Properties
     
-    private let userService: UserServiceProtocol
+    private let userService: UserServiceProtocol?
     private let databaseService: FirebaseService
     
     // MARK: - Public Properties
@@ -31,7 +31,7 @@ final class CreateEventViewModel {
     
     // MARK: - Initializers
     
-    init(userService: UserServiceProtocol = UserService.shared!,
+    init(userService: UserServiceProtocol? = UserService.shared,
          databaseService: FirebaseService = FirebaseService.shared) {
         self.userService = userService
         self.databaseService = databaseService

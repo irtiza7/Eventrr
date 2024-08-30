@@ -10,11 +10,11 @@ import FirebaseAuth
 
 class EditProfileViewModel: ObservableObject {
     
-    var selectedRole: UserRole = .Admin
     @Published var modifiedName: String = ""
     @Published var user: UserModel?
     
     public var userRolesList: [UserRole] = []
+    public var selectedRole: UserRole = .Admin
     
     init() {
         if UserRole.allCases.count != 0 {
@@ -22,8 +22,7 @@ class EditProfileViewModel: ObservableObject {
         }
         
         guard let currentUser = UserService.shared?.user,
-        let name = currentUser.name,
-        let role = currentUser.role else {return}
+              let name = currentUser.name, let role = currentUser.role else {return}
         
         user = currentUser
         modifiedName = name
@@ -33,12 +32,8 @@ class EditProfileViewModel: ObservableObject {
     // MARK: - Public Methods
     
     public func updateProfile() async -> String? {
-        guard let currentUser = user, let id = currentUser.id else {
-            return "Something went wrong, try later."
-        }
-        guard modifiedName != "" else {
-            return "Name can't be empty."
-        }
+        guard let currentUser = user, let id = currentUser.id else { return K.StringMessages.somethingWentWrong }
+        guard modifiedName != "" else { return "Name can't be empty." }
         
         var isInformationModified = false
         var data: [String: String] = [:]
@@ -67,6 +62,10 @@ class EditProfileViewModel: ObservableObject {
             try await FirebaseService.shared.updateOwnerNameInEvents(ownerId: id, newName: modifiedName)
             
             try Auth.auth().signOut()
+            
+            Task { @MainActor  in
+                RealmService.shared?.deleteAllObjects(ofType: UserRealmModel.self)
+            }
         } catch {
             print("[\(String(describing: EditProfileView.self))] - Error: \n\(error)")
             return "Counld't update profile, try later."

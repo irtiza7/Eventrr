@@ -81,7 +81,7 @@ struct EditProfileView: View {
                 Button(action: {
                     updateProfile()
                 }) {
-                    Text("UPDATE")
+                    Text("Update")
                         .padding()
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity)

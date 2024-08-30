@@ -39,7 +39,7 @@ class CreateEventViewController: UIViewController {
     // MARK: - Private Properties
     
     private var cancellables: Set<AnyCancellable> = []
-    private let spinner = Popups.loadingPopup()
+    private let spinner = PopupService.loadingPopup()
     
     // MARK: - Public Properties
     
@@ -85,13 +85,12 @@ class CreateEventViewController: UIViewController {
     }
     
     @IBAction func createButtonPressed(_ sender: UIButton) {
-        let titles = [viewModel.eventToEdit == nil ? K.ButtonAndPopupActionTitle.create : K.ButtonAndPopupActionTitle.update,
-                      K.ButtonAndPopupActionTitle.saveAsDraft,
-                      K.ButtonAndPopupActionTitle.continueEditing]
+        let titles = [
+            viewModel.eventToEdit == nil ? K.ButtonAndPopupActionTitle.create : K.ButtonAndPopupActionTitle.update,
+            K.ButtonAndPopupActionTitle.continueEditing
+        ]
         
-        let styles = [UIAlertAction.Style.default,
-                      UIAlertAction.Style.default,
-                      UIAlertAction.Style.cancel]
+        let styles = [UIAlertAction.Style.default, UIAlertAction.Style.cancel]
         
         var actions: [(UIAlertController) -> ()] = []
         
@@ -101,18 +100,12 @@ class CreateEventViewController: UIViewController {
             self?.createOrUpdateEvent()
         }
         
-        /* Handler for "Save as Draft" */
-        actions.append {
-            [weak self] _ in
-            self?.saveAsDraft()
-        }
-        
         /* Handler for "Continue Editing" */
         actions.append { (popup: UIAlertController) in
             popup.dismiss(animated: true)
         }
         
-        let popup = Popups.confirmationPopup(
+        let popup = PopupService.confirmationPopup(
             popupStyle: .actionSheet,
             actionTitles: titles,
             actionStyles: styles,
@@ -122,13 +115,9 @@ class CreateEventViewController: UIViewController {
     }
     
     @IBAction func discardButtonPressed(_ sender: UIButton) {
-        let titles = [K.ButtonAndPopupActionTitle.discard,
-                      K.ButtonAndPopupActionTitle.saveAsDraft,
-                      K.ButtonAndPopupActionTitle.continueEditing]
-        
-        let styles = [UIAlertAction.Style.destructive,
-                      UIAlertAction.Style.default,
-                      UIAlertAction.Style.cancel]
+        let titles = [K.ButtonAndPopupActionTitle.discard, K.ButtonAndPopupActionTitle.continueEditing]
+
+        let styles = [UIAlertAction.Style.destructive, UIAlertAction.Style.cancel]
         
         var actions: [(UIAlertController) -> ()] = []
         
@@ -138,18 +127,12 @@ class CreateEventViewController: UIViewController {
             self?.navigationController?.dismiss(animated: true)
         }
         
-        /* Handler for "Save as Draft" */
-        actions.append {
-            [weak self] _ in
-            self?.saveAsDraft()
-        }
-        
         /* Handler for "Continue Editing" */
         actions.append { (popup: UIAlertController) in
             popup.dismiss(animated: true)
         }
         
-        let popup = Popups.confirmationPopup(
+        let popup = PopupService.confirmationPopup(
             popupStyle: .actionSheet,
             actionTitles: titles,
             actionStyles: styles,
@@ -173,7 +156,7 @@ class CreateEventViewController: UIViewController {
                     self.navigationController?.dismiss(animated: true)
                 
                 case .failure(let errorMessage):
-                    Popups.displayFailure(message: errorMessage) { [weak self] popup in
+                    PopupService.displayFailure(message: errorMessage) { [weak self] popup in
                         self?.present(popup, animated: true)
                     }
                 }
@@ -242,10 +225,6 @@ class CreateEventViewController: UIViewController {
         } else {
             viewModel.createEvent()
         }
-    }
-    
-    private func saveAsDraft() {
-        print("draft")
     }
     
     private func validateIndividualFields() {
@@ -331,7 +310,7 @@ class CreateEventViewController: UIViewController {
         guard let accentPrimaryColor = UIColor(named: K.ColorConstants.AccentPrimary.rawValue)?.cgColor else {return}
         guard let backgroundPrimaryColor = UIColor(named: K.ColorConstants.WhitePrimary.rawValue)?.cgColor else {return}
         
-        let buttonTitle = viewModel.eventToEdit == nil ? K.ButtonAndPopupActionTitle.create.uppercased() : K.ButtonAndPopupActionTitle.update.uppercased()
+        let buttonTitle = viewModel.eventToEdit == nil ? K.ButtonAndPopupActionTitle.create : K.ButtonAndPopupActionTitle.update
         
         let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 20, weight: .semibold),

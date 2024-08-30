@@ -28,10 +28,10 @@ final class MyEventsViewModel {
     
     // MARK: - Initializers and Deinitializers
     
-    init(userService: UserServiceProtocol = UserService.shared!,
-         realmService: RealmService = RealmService.shared!) {
+    init(userService: UserServiceProtocol = UserService.shared!, realmService: RealmService = RealmService.shared!) {
         self.userService = userService
         self.realmService = realmService
+        
         setupSubscription()
     }
     
