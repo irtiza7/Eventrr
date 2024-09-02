@@ -17,17 +17,14 @@ class ChangePasswordViewModel: ObservableObject {
     
     public var user: UserModel?
     
-    init() {
-        guard let user = UserService.shared?.user else {return}
+    init(userService: UserServiceProtocol? = UserService.shared) {
+        guard let user = userService?.user else {return}
         self.user = user
         userEmail = user.email
     }
     
     public func reauthenticateUser() async throws -> String? {
-        let credential: AuthCredential = EmailAuthProvider.credential(
-            withEmail: userEmail,
-            password: currentPassword
-        )
+        let credential: AuthCredential = EmailAuthProvider.credential(withEmail: userEmail, password: currentPassword)
         
         do {
             try await FirebaseService.shared.reauthenticateUser(credential: credential)
@@ -50,19 +47,24 @@ class ChangePasswordViewModel: ObservableObject {
             UserService.shared = nil
             try Auth.auth().signOut()
             
+            Task { @MainActor  in
+                RealmService.shared?.deleteAllObjects(ofType: UserRealmModel.self)
+            }
             return nil
+            
         } catch let error as AuthError {
             UserService.shared = nil
             throw error
+            
         } catch {
             print("[\(String(describing: ChangePasswordViewModel.self))] - Error: \n\(error)")
-            return "Something went wrong, try later."
+            return K.StringMessages.somethingWentWrong
         }
     }
     
     public func validateFields() throws -> String? {
         guard userEmail != "", currentPassword != "", newPassword != "", confirmPassword != "" else {
-            return "Required fields are empty."
+            return K.StringMessages.requiredFieldString
         }
         
         guard let user else { throw AuthError.userNotAuthenticated }
@@ -75,11 +77,9 @@ class ChangePasswordViewModel: ObservableObject {
         if let _ = ValidationUtility.validatePassword(confirmPassword) { return "Enter a valid confirm password." }
         if currentPassword == newPassword { return "New password is same as old password." }
         
-        if let errorMessage = ValidationUtility.validatePasswordAndConfirmPassword(
-            newPassword,
-            confirmPassword
-        ) { return errorMessage }
-        
+        if let errorMessage = ValidationUtility.validatePasswordAndConfirmPassword(newPassword, confirmPassword) {
+            return errorMessage
+        }
         return nil
     }
 }

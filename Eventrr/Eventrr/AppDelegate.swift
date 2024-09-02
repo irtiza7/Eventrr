@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(error)
         }
         
+        let _ = NetworkConnectionStatusService.shared
+        
         return true
     }
 }

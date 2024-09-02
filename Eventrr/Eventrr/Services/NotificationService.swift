@@ -9,10 +9,15 @@ import Foundation
 import UserNotifications
 import FirebaseAuth
 
-class NotificationService {
+/// A singleton service class that manages the scheduling and cancellation of event notifications.
+/// It also handles the user's authentication state and requests notification permissions from the system.
+///
+/// > Important: Requires permission from the user to show notifications.
+final class NotificationService {
     
     static var shared: NotificationService?
     
+    /// Creates a shared singleton instance of Notification Service.
     static func createInstance() {
         if NotificationService.shared == nil {
             NotificationService.shared = NotificationService()
@@ -21,32 +26,31 @@ class NotificationService {
     
     // MARK: - Private Properties
     
-    private var authStateHandle: AuthStateDidChangeListenerHandle?
+    /// Stores a reference to the observer of user's autheentication (Firebase Auth) state.
+    private var authStateHandler: AuthStateDidChangeListenerHandle?
     
-    // MARK: - Initializers
+    // MARK: - Initializers and Deinitializers
     
     private init() {
         requestNotificationPermission()
         setupAuthStateListener()
     }
     
-    // MARK: - Deinitialzers
-    
     deinit {
-        if let handle = authStateHandle {
+        if let handle = authStateHandler {
             Auth.auth().removeStateDidChangeListener(handle)
         }
     }
     
     // MARK: - Private Methods
     
-    /*
-     Will be called when the user logs out of the app.
-     */
-    func cancelAllNotifications() {
+    /// Cancels all the scheduled notifications.
+    /// Can be called once the user sign outs of the app.
+    private func cancelAllNotifications() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
+    /// Requests permission from the system, to show event notifications to the user.
     private func requestNotificationPermission() {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
@@ -56,12 +60,9 @@ class NotificationService {
         }
     }
     
-    /*
-     Method will listen to the authentication state and will remove all the added notifications
-     once the user has been logged out.
-     */
+    /// Setups a listener to the user's authentication (Firebase Auth) state. Cancels all the scheduled notifications, once the user is signed out.
     private func setupAuthStateListener() {
-        authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] auth, user in
+        authStateHandler = Auth.auth().addStateDidChangeListener { [weak self] auth, user in
             if user == nil {
                 self?.cancelAllNotifications()
             }
@@ -70,6 +71,13 @@ class NotificationService {
     
     // MARK: - Public Methods
     
+    /// Schedules a notification 1 hour before the  starting time of given event.
+    ///
+    /// Can be called when the user joins an event.
+    /// - Parameters:
+    ///   - eventId: Id of event for which notification is to be set.
+    ///   - eventTitle: Title of event for which notification is to be set. This title is also shown in the notification.
+    ///   - fromTime: Starting time of event, and the notification is set 1 hour before this time.
     public func scheduleEventNotification(eventId: String, eventTitle: String, fromTime: String) {
         guard let eventDate = FormatUtility.convertStringToDateUTC(dateString: fromTime) else { return }
         
@@ -81,7 +89,10 @@ class NotificationService {
         content.sound = UNNotificationSound.default
         
         guard let triggerDate = Calendar.current.date(byAdding: .hour, value: -1, to: eventDate) else { return }
-        let triggerComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: triggerDate)
+        let triggerComponents = Calendar.current.dateComponents(
+            [.year, .month, .day, .hour, .minute],
+            from: triggerDate
+        )
         
         let trigger: UNCalendarNotificationTrigger
         
@@ -110,10 +121,11 @@ class NotificationService {
         }
     }
     
-    /*
-     Will be called once the user leaves an event.
-     */
-    func cancelEventNotification(eventId: String) {
+    /// Deletes a notification of provided event.
+    ///
+    /// Should be called once the user leaves a joined event.
+    /// - Parameter eventId: Id of event for which the notification should be deleted.
+    public func cancelEventNotification(eventId: String) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [eventId])
     }
 }

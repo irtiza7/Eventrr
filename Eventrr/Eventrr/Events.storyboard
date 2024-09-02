@@ -339,7 +339,7 @@
                                         </constraints>
                                         <color key="tintColor" name="WhitePrimary"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="JOIN">
+                                        <buttonConfiguration key="configuration" style="plain" title="Join">
                                             <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
                                         </buttonConfiguration>
                                         <connections>
@@ -357,7 +357,7 @@
                                                 </constraints>
                                                 <color key="tintColor" name="WhitePrimary"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title=" DELETE">
+                                                <buttonConfiguration key="configuration" style="plain" title=" Delete">
                                                     <imageReference key="image" image="bin.xmark" catalog="system" symbolScale="medium"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" weight="bold"/>
                                                     <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
@@ -374,7 +374,7 @@
                                                 </constraints>
                                                 <color key="tintColor" name="WhitePrimary"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title=" EDIT">
+                                                <buttonConfiguration key="configuration" style="plain" title=" Edit">
                                                     <imageReference key="image" image="pencil.and.list.clipboard" catalog="system" symbolScale="medium"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" weight="bold"/>
                                                     <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
@@ -880,7 +880,7 @@
                                                                 </constraints>
                                                                 <color key="tintColor" name="BlackPrimary"/>
                                                                 <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" title="CREATE" cornerStyle="capsule">
+                                                                <buttonConfiguration key="configuration" style="plain" title="Create" cornerStyle="capsule">
                                                                     <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
                                                                     <color key="baseForegroundColor" name="WhitePrimary"/>
                                                                 </buttonConfiguration>
@@ -896,7 +896,7 @@
                                                                 </constraints>
                                                                 <color key="tintColor" name="BlackPrimary"/>
                                                                 <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" title="DISCARD" cornerStyle="capsule">
+                                                                <buttonConfiguration key="configuration" style="plain" title="Discard" cornerStyle="capsule">
                                                                     <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
                                                                     <color key="baseForegroundColor" name="WhitePrimary"/>
                                                                 </buttonConfiguration>
@@ -1072,7 +1072,7 @@
                                 </constraints>
                                 <color key="tintColor" name="WhitePrimary"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="SELECT LOCATION" cornerStyle="capsule">
+                                <buttonConfiguration key="configuration" style="plain" title="Select Location" cornerStyle="capsule">
                                     <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="20"/>
                                     <color key="baseForegroundColor" name="WhitePrimary"/>
                                 </buttonConfiguration>

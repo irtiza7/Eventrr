@@ -9,7 +9,8 @@ import Foundation
 import RealmSwift
 import FirebaseFirestore
 
-class RealmService {
+/// A singleton service class responsible for managing Realm database operations and synchronizing data with Firestore.
+final class RealmService {
     
     static var shared: RealmService?
     
@@ -23,7 +24,8 @@ class RealmService {
     
     private let realm = try! Realm()
     private let databaseService: FirebaseService
-    private var listener: ListenerRegistration?
+    private var eventListener: ListenerRegistration?
+    private var userListener: ListenerRegistration?
     
     // MARK: - Initializers and Deinitializers
     
@@ -33,22 +35,26 @@ class RealmService {
     }
     
     deinit {
-        listener?.remove()
+        eventListener?.remove()
+        userListener?.remove()
     }
     
     // MARK: - Private Methods
     
-    func addListeners() {
-        listener = Firestore.firestore().collection(DatabaseTables.Events.rawValue)
+    /// Adds a listener to the Firestore collection for real-time updates.
+    private func addListeners() {
+        eventListener = Firestore.firestore().collection(DatabaseTables.Events.rawValue)
             .addSnapshotListener { [weak self] snapshot, error in
                 if let _ = error { return }
                 
                 guard let documents = snapshot?.documents else {return}
-                self?.parseEvents(documents: documents)
+                self?.parseAndSaveEvents(documents: documents)
             }
     }
     
-    private func parseEvents(documents: [QueryDocumentSnapshot]) {
+    /// Parses the Firestore documents and updates the Realm database.
+    /// - Parameter documents: An array of `QueryDocumentSnapshot` representing the Firestore documents.
+    private func parseAndSaveEvents(documents: [QueryDocumentSnapshot]) {
         do {
             try realm.write {
                 realm.delete(realm.objects(EventRealmModel.self))
@@ -81,7 +87,8 @@ class RealmService {
                         
                         eventRealmModel.attendees.append(realmAttendee)
                     }
-                    realm.add(eventRealmModel, update: .modified)
+                    
+                    realm.add(eventRealmModel)
                 }
             }
         } catch {
@@ -91,14 +98,30 @@ class RealmService {
     
     // MARK: - Public Methods
     
+    /// Fetches all objects of a specified type from the Realm database.
+    /// - Parameter ofType: The type of objects to fetch.
+    /// - Returns: A `Results` object containing all fetched objects of the specified type.
     public func fetchAllObjects<T: Object>(ofType: T.Type) -> Results<T> {
         realm.objects(ofType.self)
     }
     
+    /// Fetches objects of a specified type from the Realm database where a field matches a given value.
+    /// - Parameters:
+    ///   - ofType: The type of objects to fetch.
+    ///   - field: The field to filter by.
+    ///   - value: The value to match in the specified field.
+    /// - Returns: A `Results` object containing all fetched objects that match the filter criteria.
     public func fetchObjectsWhere<T: Object>(ofType: T.Type, field: String, equalTo value: String) -> Results<T> {
         realm.objects(ofType.self).filter("\(field) == %@", value)
     }
     
+    /// Fetches objects of a specified type from the Realm database where an array subfield matches a given value.
+    /// - Parameters:
+    ///   - ofType: The type of objects to fetch.
+    ///   - arrayField: The name of the array field to filter by.
+    ///   - subField: The name of the subfield within the array field.
+    ///   - value: The value to match in the specified subfield.
+    /// - Returns: A `Results` object containing all fetched objects that match the filter criteria.
     public func fetchObjectsWhereArraySubfield<T: Object>(
         ofType: T.Type,
         arrayField: String,
@@ -107,5 +130,35 @@ class RealmService {
     ) -> Results<T> {
         let predicate = NSPredicate(format: "ANY \(arrayField).\(subField) == %@", value)
         return realm.objects(ofType.self).filter(predicate)
+    }
+    
+    public func deleteAllObjects<T: Object>(ofType: T.Type) {
+        do {
+            try realm.write {
+                realm.delete(realm.objects(ofType.self))
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    public func saveUserDataToLocalStorage(user: UserModel) {
+        print(user)
+        do {
+            try realm.write {
+                realm.delete(realm.objects(UserRealmModel.self))
+                
+                let userRealmModel = UserRealmModel()
+                userRealmModel.id = user.id!
+                userRealmModel.authId = user.authId
+                userRealmModel.email = user.email
+                userRealmModel.name = user.name!
+                userRealmModel.role = user.role!.rawValue
+                
+                realm.add(userRealmModel)
+            }
+        } catch {
+            print(error)
+        }
     }
 }

@@ -33,7 +33,7 @@ class EventDetailsViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let spinner = Popups.loadingPopup()
+    private let spinner = PopupService.loadingPopup()
     private var cancellables: Set<AnyCancellable> = []
     
     // MARK: - Public Properties
@@ -92,7 +92,7 @@ class EventDetailsViewController: UIViewController {
             
             actions.append { _ in }
             
-            let popup = Popups.confirmationPopup(
+            let popup = PopupService.confirmationPopup(
                 message: K.StringMessages.eventLeaveConfirmationMessage,
                 popupStyle: .alert,
                 actionTitles: actionTitles,
@@ -122,7 +122,7 @@ class EventDetailsViewController: UIViewController {
             
             actions.append { _ in }
             
-            let popup = Popups.confirmationPopup(
+            let popup = PopupService.confirmationPopup(
                 message: K.StringMessages.eventJoinConfirmationMessage,
                 popupStyle: .alert,
                 actionTitles: actionTitles,
@@ -172,7 +172,7 @@ class EventDetailsViewController: UIViewController {
         
         actions.append { _ in }
         
-        let popup = Popups.confirmationPopup(
+        let popup = PopupService.confirmationPopup(
             message: K.StringMessages.eventDeletionConfirmationMessage,
             popupStyle: .alert,
             actionTitles: actionTitles,
@@ -198,7 +198,7 @@ class EventDetailsViewController: UIViewController {
             let isAttendee = attendees.contains { $0.attendeeId == userId }
             viewModel.hasUserJoinedEvent = isAttendee
             
-            let buttonTitle = isAttendee ? K.ButtonAndPopupActionTitle.leave.uppercased() : K.ButtonAndPopupActionTitle.join.uppercased()
+            let buttonTitle = isAttendee ? K.ButtonAndPopupActionTitle.leave : K.ButtonAndPopupActionTitle.join
             var attributes: [NSAttributedString.Key: Any] = [:]
             
             if let primaryAccent = UIColor(named: K.ColorConstants.AccentPrimary.rawValue),
@@ -264,7 +264,7 @@ class EventDetailsViewController: UIViewController {
                 
                 switch deletionStatus {
                 case .failure(let errorMessage):
-                    Popups.displayFailure(message: errorMessage) { [weak self] alertVC in
+                    PopupService.displayFailure(message: errorMessage) { [weak self] alertVC in
                         self?.present(alertVC, animated: true)
                     }
                 case .success:
@@ -301,7 +301,7 @@ class EventDetailsViewController: UIViewController {
                     self.navigationController?.popViewController(animated: true)
                     
                 case .failure(let errorMessage):
-                    Popups.displayFailure(message: errorMessage) { [weak self] alertVC in
+                    PopupService.displayFailure(message: errorMessage) { [weak self] alertVC in
                         self?.present(alertVC, animated: true)
                     }
                 }

@@ -20,7 +20,7 @@ class ForgotPasswordViewController: UIViewController {
     
     // MARK: - Public Properties
     
-    private let spinner = Popups.loadingPopup()
+    private let spinner = PopupService.loadingPopup()
     private var cancellables: Set<AnyCancellable> = []
     
     // MARK: - Public Properties
@@ -68,12 +68,12 @@ class ForgotPasswordViewController: UIViewController {
                 
                 switch status {
                 case .success(let message):
-                    Popups.displaySuccess(message: message) { [weak self] popup in
+                    PopupService.displaySuccess(message: message) { [weak self] popup in
                         self?.present(popup, animated: true)
                     }
                     
                 case .failure(let errorMessage):
-                    Popups.displayFailure(message: errorMessage) { [weak self] popup in
+                    PopupService.displayFailure(message: errorMessage) { [weak self] popup in
                         self?.present(popup, animated: true)
                     }
                 }

@@ -22,7 +22,7 @@ struct FormatUtility {
                 return ("Invalid Date", "Invalid Time")
             }
             
-            dateFormatter.dateFormat = "E d MMM yy"
+            dateFormatter.dateFormat = "E d MMM yyyy"
             let dateFormatted = dateFormatter.string(from: date)
             
             dateFormatter.dateFormat = "h:mm a"

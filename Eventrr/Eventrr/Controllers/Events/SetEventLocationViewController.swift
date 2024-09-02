@@ -58,7 +58,7 @@ class SetEventLocationViewController: UIViewController {
     
     @IBAction func selectLocationButtonPressed(_ sender: UIButton) {
         guard let selectedLocation else {
-            Popups.displayFailure(message: K.StringMessages.pleaseSelectAValidLocation) { [weak self] popup in
+            PopupService.displayFailure(message: K.StringMessages.pleaseSelectAValidLocation) { [weak self] popup in
                 self?.present(popup, animated: true)
             }
             return
@@ -100,7 +100,7 @@ class SetEventLocationViewController: UIViewController {
             locationManager.requestLocation()
         
         case .denied, .restricted:
-            Popups.displayFailure(
+            PopupService.displayFailure(
                 message: K.StringMessages.locationPermissionError) { [weak self] popup in
                     self?.present(popup, animated: true)
                 }
@@ -168,7 +168,7 @@ extension SetEventLocationViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("[\(SetEventLocationViewController.identifier)] -  Error: \n\(error)")
-        Popups.displayFailure(message: K.StringMessages.currentLocationFetchError) { [weak self] popup in
+        PopupService.displayFailure(message: K.StringMessages.currentLocationFetchError) { [weak self] popup in
             self?.present(popup, animated: true)
         }
     }

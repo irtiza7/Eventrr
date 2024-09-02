@@ -25,9 +25,13 @@ class UserProfileViewModel: ObservableObject {
         do {
             try Auth.auth().signOut()
             UserService.shared = nil
+            
+            Task { @MainActor  in
+                RealmService.shared?.deleteAllObjects(ofType: UserRealmModel.self)
+            }
         } catch {
             print("[\(String(describing: UserProfileView.self))] - Error: \n\(error)")
-            return "Something went wrong, try later."
+            return K.StringMessages.somethingWentWrong
         }
         return nil
     }
