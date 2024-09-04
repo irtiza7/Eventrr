@@ -81,6 +81,12 @@ final class LoginViewModel {
     
     // MARK: - Public Methods
     
+    /// Initializes `UserService` using the first user record from the local Realm database.
+    ///
+    /// If the Realm service is unavailable or the user data is invalid, updates `userInformationStatus`
+    /// with a failure message. If successful, it sets up the `UserService` and marks `userInformationStatus` as saved.
+    ///
+    /// - Note: This method runs on the main thread (`@MainActor`).
     @MainActor
     public func initializeUserServiceFromLocalRecord() {
         guard let realmService else {

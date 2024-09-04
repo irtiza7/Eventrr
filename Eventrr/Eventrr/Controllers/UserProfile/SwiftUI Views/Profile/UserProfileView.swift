@@ -11,6 +11,7 @@ import FirebaseAuth
 struct UserProfileView: View {
     
     @Environment(\.navigationController) private var navigationController: UINavigationController?
+    @State private var showLogoutConfirmation = false
     @State private var isShowingEditProfile = false
     @State private var isShowingChangePassword = false
     @State private var showAlert = false
@@ -144,7 +145,7 @@ struct UserProfileView: View {
                     .padding(.vertical, 20)
                 
                 Button(action: {
-                    logoutUser()
+                    showLogoutConfirmation = true
                 }) {
                     Text("Logout")
                         .padding()
@@ -153,6 +154,15 @@ struct UserProfileView: View {
                         .background(SwiftUIConstants.redAccentColor)
                         .foregroundColor(SwiftUIConstants.primaryBackgroundColor)
                         .cornerRadius(SwiftUIConstants.buttonCornerRadius)
+                }
+                .confirmationDialog(
+                    "Are you sure?",
+                    isPresented: $showLogoutConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Logout", role: .destructive) {
+                        logoutUser()
+                    }
                 }
                 
                 Spacer()
