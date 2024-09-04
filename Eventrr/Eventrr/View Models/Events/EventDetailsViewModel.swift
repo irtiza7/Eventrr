@@ -48,18 +48,32 @@ class EventDetailsViewModel {
             return
         }
         
-        Task {
-            do {
-                try await databaseService.addToArrayField(
+        if NetworkConnectionStatusService.shared.isNetworkAvailable() {
+            Task {
+                do {
+                    try await databaseService.addToArrayField(
+                        elementToAdd: encodedData,
+                        arrayFieldName: DatabaseTableColumns.Events.attendees.rawValue,
+                        recordId: eventId,
+                        table: DatabaseTables.Events.rawValue
+                    )
+                    joinAndLeaveEventStatus = .joinSuccessful
+                } catch {
+                    print("[\(EventDetailsViewModel.identifier)] - Error: \n\(error)")
+                    joinAndLeaveEventStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+                }
+            }
+        } else {
+            Task {
+                try? await databaseService.addToArrayField(
                     elementToAdd: encodedData,
                     arrayFieldName: DatabaseTableColumns.Events.attendees.rawValue,
                     recordId: eventId,
                     table: DatabaseTables.Events.rawValue
                 )
-                joinAndLeaveEventStatus = .joinSuccessful
-            } catch {
-                print("[\(EventDetailsViewModel.identifier)] - Error: \n\(error)")
-                joinAndLeaveEventStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.joinAndLeaveEventStatus = .joinSuccessful
             }
         }
     }
@@ -77,34 +91,58 @@ class EventDetailsViewModel {
             return
         }
         
-        Task {
-            do {
-                try await databaseService.deleteFromArrayField(
+        if NetworkConnectionStatusService.shared.isNetworkAvailable() {
+            Task {
+                do {
+                    try await databaseService.deleteFromArrayField(
+                        elementToDelete: encodedData,
+                        arrayFieldName: DatabaseTableColumns.Events.attendees.rawValue,
+                        recordId: eventId,
+                        table: DatabaseTables.Events.rawValue
+                    )
+                    joinAndLeaveEventStatus = .leaveSuccessful
+                } catch {
+                    print("[\(EventDetailsViewModel.identifier)] - Error: \n\(error)")
+                    joinAndLeaveEventStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+                }
+            }
+        } else {
+            Task {
+                try? await databaseService.deleteFromArrayField(
                     elementToDelete: encodedData,
                     arrayFieldName: DatabaseTableColumns.Events.attendees.rawValue,
                     recordId: eventId,
                     table: DatabaseTables.Events.rawValue
                 )
-                joinAndLeaveEventStatus = .leaveSuccessful
-            } catch {
-                print("[\(EventDetailsViewModel.identifier)] - Error: \n\(error)")
-                joinAndLeaveEventStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.joinAndLeaveEventStatus = .leaveSuccessful
             }
         }
     }
     
     public func deleteEvent() {
-        Task {
-            do {
-                guard let id = selectedEvent?.id else {
+        guard let id = selectedEvent?.id else {
+            deletionError = .failure(message: K.StringMessages.somethingWentWrong)
+            return
+        }
+        
+        if NetworkConnectionStatusService.shared.isNetworkAvailable() {
+            Task {
+                do {
+                    try await databaseService.delete(recordId: id, table: DatabaseTables.Events.rawValue)
+                    deletionError = .success
+                } catch {
+                    print("[\(EventDetailsViewModel.identifier)] - Error: \n\(error)")
                     deletionError = .failure(message: K.StringMessages.somethingWentWrong)
-                    return
                 }
-                try await databaseService.delete(recordId: id, table: DatabaseTables.Events.rawValue)
-                deletionError = .success
-            } catch {
-                print("[\(EventDetailsViewModel.identifier)] - Error: \n\(error)")
-                deletionError = .failure(message: K.StringMessages.somethingWentWrong)
+            }
+        } else {
+            Task {
+                try? await databaseService.delete(recordId: id, table: DatabaseTables.Events.rawValue)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.deletionError = .success
             }
         }
     }

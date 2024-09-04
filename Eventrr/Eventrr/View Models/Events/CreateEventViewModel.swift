@@ -45,18 +45,28 @@ final class CreateEventViewModel {
             return
         }
         
-        Task {
-            do {
-                let _ = try await databaseService.create(data: encodedEvent, table: DatabaseTables.Events.rawValue)
-                eventCreateAndUpdateStatus = .success
-            } catch {
-                print("[\(CreateEventViewModel.identifier)] - Error: \n\(error)")
-                
-                if let parsedError = FirebaseService.shared.parseNetworkError(error as NSError) {
-                    eventCreateAndUpdateStatus = .failure(errorMessage: parsedError.message)
-                } else {
-                    eventCreateAndUpdateStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+        if NetworkConnectionStatusService.shared.isNetworkAvailable() {
+            Task {
+                do {
+                    let _ = try await databaseService.create(data: encodedEvent, table: DatabaseTables.Events.rawValue)
+                    eventCreateAndUpdateStatus = .success
+                } catch {
+                    print("[\(CreateEventViewModel.identifier)] - Error: \n\(error)")
+                    
+                    if let parsedError = FirebaseService.shared.parseNetworkError(error as NSError) {
+                        eventCreateAndUpdateStatus = .failure(errorMessage: parsedError.message)
+                    } else {
+                        eventCreateAndUpdateStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+                    }
                 }
+            }
+        } else {
+            Task {
+                let _ =  try? await databaseService.create(data: encodedEvent, table: DatabaseTables.Events.rawValue)
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.eventCreateAndUpdateStatus = .success
             }
         }
     }
@@ -67,18 +77,28 @@ final class CreateEventViewModel {
             return
         }
         
-        Task {
-            do {
-                try await databaseService.update(data: encodedEvent, recordId: id, table: DatabaseTables.Events.rawValue)
-                eventCreateAndUpdateStatus = .success
-            } catch {
-                print("[\(CreateEventViewModel.identifier)] - Error: \n\(error)")
-                
-                if let parsedError = FirebaseService.shared.parseNetworkError(error as NSError) {
-                    eventCreateAndUpdateStatus = .failure(errorMessage: parsedError.message)
-                } else {
-                    eventCreateAndUpdateStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+        if NetworkConnectionStatusService.shared.isNetworkAvailable() {
+            Task {
+                do {
+                    try await databaseService.update(data: encodedEvent, recordId: id, table: DatabaseTables.Events.rawValue)
+                    eventCreateAndUpdateStatus = .success
+                } catch {
+                    print("[\(CreateEventViewModel.identifier)] - Error: \n\(error)")
+                    
+                    if let parsedError = FirebaseService.shared.parseNetworkError(error as NSError) {
+                        eventCreateAndUpdateStatus = .failure(errorMessage: parsedError.message)
+                    } else {
+                        eventCreateAndUpdateStatus = .failure(errorMessage: K.StringMessages.somethingWentWrong)
+                    }
                 }
+            }
+        } else {
+            Task {
+                try? await databaseService.update(data: encodedEvent, recordId: id, table: DatabaseTables.Events.rawValue)
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.eventCreateAndUpdateStatus = .success
             }
         }
     }
