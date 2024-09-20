@@ -1,4 +1,16 @@
-# Eventrr
+<p align="center">
+  <img src="./Eventrr/Eventrr/Assets.xcassets/LogoTransparent.imageset/Logo%20Transparent.png" alt="App Logo" width="150"/>
+</p>
+
+<h1 align="center">Eventrr</h1>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Language-Swift%205-orange.svg" alt="Language Badge"/>
+  <img src="https://img.shields.io/badge/Platform-iOS%2015.0%2B-blue.svg" alt="Platform Badge"/>
+  <img src="https://img.shields.io/badge/Framework-UIKit%20%7C%20SwiftUI-green.svg" alt="Framework Badge"/>
+  <img src="https://img.shields.io/badge/Backend-Firebase-brightgreen.svg" alt="Backend Badge"/>
+  <img src="https://img.shields.io/badge/Database-Firebase%20Firestore-yellowgreen.svg" alt="Database Badge"/>
+</p>
 
 Eventrr is an iOS event management app built using **Swift**, combining the power of **UIKit** and **SwiftUI** for an intuitive and modern user experience. The app leverages **Firebase** for backend services and cloud storage, with **Realm** used for local data persistence. Whether you're an admin managing events or an attendee joining them, Eventrr simplifies the entire process.
 
